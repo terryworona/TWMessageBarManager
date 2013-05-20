@@ -2,6 +2,8 @@
 
 A singleton-manager for presenting system-wide notifications via a dropdown message bar. 
 
+<img src="Screenshot.png">
+
 ## Author
 
 <p>
@@ -15,10 +17,6 @@ A singleton-manager for presenting system-wide notifications via a dropdown mess
 <p>
 	Email me at <a href="mailto:terryworona@gmail.com">terryworona@gmail.com</a>
 </p>
-
-<img src="Screenshot.png">
-
-<br/>
 
 ## Installation
 
