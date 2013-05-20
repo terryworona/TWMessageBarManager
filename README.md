@@ -50,20 +50,28 @@ The default display duration is ***3 seconds***. You can override this value by 
 
 By default, if a user ***taps*** a on a message while it is presented, it will automatically dismiss. To be notified of the touch, simply supply a callback block:
 
-	[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Title" description:@"Description" type:MessageBarMessageTypeError callback:^{
-		NSLog@"Message Tapped!";
-	}];
+
+    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
+                                                 description:@"Your account was successfully updated."
+                                                        type:MessageBarMessageTypeSuccess callback:^{
+                                                            NSLog(@"Message bar tapped!");
+    }];
 	
 ### Queue
 
-The managed is backed by a queue that manages suquential requests to present a message. You can stack as many messages you want on the stack and they will be presetented one after another:
+The manager is backed by a queue that manages sequential requests to present a message. You can stack as many messages you want on the stack and they will be presetented one after another:
 
-	[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Message 1" 	description:@"Description 1" type:MessageBarMessageTypeError];
-	
-		[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Message 2" 	description:@"Description 2" type:MessageBarMessageTypeSuccess];
-		
-			[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Message 2" 	description:@"Description 3" type:MessageBarMessageTypeInfo];
+    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Message 1"
+                                                 description:@"Description 1"
+                                                        type:MessageBarMessageTypeSuccess];
 
+    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Message 2"
+                                                 description:@"Description 2"
+                                                        type:MessageBarMessageTypeError];
+
+    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Message 3"
+                                                 description:@"Description 3"
+                                                        type:MessageBarMessageTypeInfo];
 
 ### Customization
 
@@ -137,8 +145,6 @@ Add new colors and icons to the stylesheet:
 Displaying a new message with the message type. 
 
 		[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Title" 	description:@"Description" type:MessageBarMessageTypeWarning];
-
-## 
 
 
 ## License
