@@ -33,8 +33,11 @@ As a singleton class, the manager can be accessed from anywhere within your app 
 All messages can be preseted via ***showMessageWithTitle:description:type:***. Additional arguments include duration and callback blocks to catch a user tap. 
 
 Basic message:
+	
+	    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Title"
+                                                 description:@"Description"
+                                                        type:MessageBarMessageTypeError];
 
-	[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Title" 	description:@"Description" type:MessageBarMessageTypeError];
 
 The default display duration is ***3 seconds***. You can override this value by supplying it as an additional argument:
 
@@ -70,10 +73,6 @@ The MessageBarStyleSheet has functions pertaining to background and stroke color
 
 ### New Types
 	
-Adding another message type, for instance, ***MessageBarMessageTypeWarning***, is as easy as 1, 2, 3!
-
-#### Step 1
-
 Add the new type to the typedef found in ***MessageBarManager.h***
 
 	typedef enum {
@@ -83,8 +82,6 @@ Add the new type to the typedef found in ***MessageBarManager.h***
 	    MessageBarMessageTypeWarning
 	} MessageBarMessageType;
 	
-#### Step 2
-
 Add new colors and icons to the stylesheet:
 
 	+ (UIColor*)backgroundColorForMessageType:(MessageBarMessageType)type
@@ -135,11 +132,11 @@ Add new colors and icons to the stylesheet:
     	return iconImage;
 	}
 
-#### Step 3 
-
 Displaying a new message with the message type. 
 
 		[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Title" 	description:@"Description" type:MessageBarMessageTypeWarning];
+
+## 
 
 
 ## License
