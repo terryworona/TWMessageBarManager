@@ -1,6 +1,6 @@
 # MessageBarManager
 
-A iOS manager for presenting system-wide notifications via a dropdown message bar. 
+An iOS manager for presenting system-wide notifications via a dropdown message bar. 
 
 <img src="Screenshot.png">
 
