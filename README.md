@@ -33,16 +33,18 @@ As a singleton class, the manager can be accessed from anywhere within your app 
 All messages can be preseted via ***showMessageWithTitle:description:type:***. Additional arguments include duration and callback blocks to catch a user tap. 
 
 Basic message:
-	
-	    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Title"
-                                                 description:@"Description"
-                                                        type:MessageBarMessageTypeError];
+
+    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
+                                                 description:@"Your account was successfully updated."
+                                                        type:MessageBarMessageTypeSuccess];
 
 
 The default display duration is ***3 seconds***. You can override this value by supplying it as an additional argument:
 
-	[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Title" description:@"Description" type:MessageBarMessageTypeError forDuration:10];
-
+    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
+                                                 description:@"Your account was successfully updated."
+                                                        type:MessageBarMessageTypeSuccess
+                                                 forDuration:6.0];
 
 ### Callbacks
 
