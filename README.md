@@ -1,6 +1,6 @@
 # MessageBarManager
 
-*MessageBarManager* provides a simple solution for presenting system-wide messages. 
+A singleton-manager for presenting system-wide notifications via a dropdown message bar. 
 
 ## Author
 
@@ -16,9 +16,17 @@
 	Email me at <a href="mailto:terryworona@gmail.com">terryworona@gmail.com</a>
 </p>
 
-<img src="https://github.com/terryworona/FireChat/raw/master/screens/firechat.png">
+<img src="Screenshot.png">
 
 <br/>
+
+## Installation
+
+To install, drag the ***/Classes*** folder into your project and import ***MessageBarManager.h** anywhere you would like to present a message:
+
+	#import "MessageBarManager.h"
+
+You will also need to enable ***ARC*** in your project. 
 
 ## Usage
 
@@ -30,7 +38,7 @@ As a singleton class, the manager can be accessed from anywhere within your app 
 	
 ### Presenting a basic message
 
-All messages can be preseted via ***showMessageWithTitle:description:type:***. Additional arguments include duration and callback blocks to catch a user tap. 
+All messages can be preseted via ***showMessageWithTitle:description:type:***. Additional arguments include duration and callback blocks to be notified of a user tap. 
 
 Basic message:
 
@@ -39,7 +47,7 @@ Basic message:
                                                         type:MessageBarMessageTypeSuccess];
 
 
-The default display duration is ***3 seconds***. You can override this value by supplying it as an additional argument:
+The default display duration is ***3 seconds***. You can override this value by supplying an additional argument:
 
     [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
                                                  description:@"Your account was successfully updated."
@@ -48,7 +56,7 @@ The default display duration is ***3 seconds***. You can override this value by 
 
 ### Callbacks
 
-By default, if a user ***taps*** a on a message while it is presented, it will automatically dismiss. To be notified of the touch, simply supply a callback block:
+By default, if a user ***taps*** on a message while it is presented, it will automatically dismiss. To be notified of the touch, simply supply a callback block:
 
 
     [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
@@ -59,7 +67,7 @@ By default, if a user ***taps*** a on a message while it is presented, it will a
 	
 ### Queue
 
-The manager is backed by a queue that manages sequential requests to present a message. You can stack as many messages you want on the stack and they will be presetented one after another:
+The manager is backed by a queue that can handle an infinite number of sequential requests. You can stack as many messages you want on the stack and they will be presetented one after another:
 
     [[MessageBarManager sharedInstance] showMessageWithTitle:@"Message 1"
                                                  description:@"Description 1"
@@ -75,7 +83,7 @@ The manager is backed by a queue that manages sequential requests to present a m
 
 ### Customization
 
-The MessageBarStyleSheet has functions pertaining to background and stroke color as well as icon images. All of these functions may be subclassed and/or directly modified to customize the look and feel of the message bar. 
+The ***MessageBarStyleSheet*** has functions pertaining to background and stroke color as well as icon images. All of these functions may be subclassed and/or directly modified to customize the look and feel of the message bar. 
 
 	+ (UIColor*)backgroundColorForMessageType:(MessageBarMessageType)type;
 	+ (UIColor*)strokeColorForMessageType:(MessageBarMessageType)type;
@@ -83,13 +91,13 @@ The MessageBarStyleSheet has functions pertaining to background and stroke color
 
 ### New Types
 	
-Add the new type to the typedef found in ***MessageBarManager.h***
+Add the new type to the typedef found in ***MessageBarManager.h***. 
 
 	typedef enum {
     	MessageBarMessageTypeError,
 	    MessageBarMessageTypeSuccess,
     	MessageBarMessageTypeInfo,
-	    MessageBarMessageTypeWarning
+	    MessageBarMessageTypeWarning // new type for warnings
 	} MessageBarMessageType;
 	
 Add new colors and icons to the stylesheet:
@@ -102,7 +110,7 @@ Add new colors and icons to the stylesheet:
     	    …
 		
 			case MessageBarMessageTypeWarning:
-            	backgroundColor = [UIColor grayColor];
+            	backgroundColor = [UIColor grayColor]; // warnings to be gray background
 	            break;
     	    default:
         	    break;
@@ -118,12 +126,12 @@ Add new colors and icons to the stylesheet:
     	    …
 		
 			case MessageBarMessageTypeWarning:
-            	backgroundColor = [UIColor darkGrayColor];
+            	strokeColor = [UIColor darkGrayColor];
 	            break;
     	    default:
         	    break;
 	    }
-	    return backgroundColor;
+	    return strokeColor;
 	}
 	
 	+ (UIImage*)iconImageForMessageType:(MessageBarMessageType)type
@@ -134,7 +142,7 @@ Add new colors and icons to the stylesheet:
     		…
     	
 	        case MessageBarMessageTypeWarning:
-    	        iconImage = [UIImage imageNamed:kImageIconWarning];
+    	        iconImage = [UIImage imageNamed:@"icon-warning.png"]; // warning icon
         	    break;
 	        default:
     	        break;
@@ -142,10 +150,10 @@ Add new colors and icons to the stylesheet:
     	return iconImage;
 	}
 
-Displaying a new message with the message type. 
+Displaying a new message with the message type:
 
     [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Warning!"
-                                                 description:@"Your account hasn't been updated in over a month!"
+                                                 description:@"Your account has expired!"
                                                         type:MessageBarMessageTypeWarning];
 
 ## License
