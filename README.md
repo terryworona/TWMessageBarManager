@@ -133,7 +133,7 @@ Add new colors and icons to the stylesheet:
     	
     		…
     	
-	        case MessageBarMessageTypeInfo:
+	        case MessageBarMessageTypeWarning:
     	        iconImage = [UIImage imageNamed:kImageIconWarning];
         	    break;
 	        default:
@@ -144,8 +144,9 @@ Add new colors and icons to the stylesheet:
 
 Displaying a new message with the message type. 
 
-		[[GAMessageBarManager sharedInstance] showMessageWithTitle:@"Title" 	description:@"Description" type:MessageBarMessageTypeWarning];
-
+    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Warning!"
+                                                 description:@"Your account hasn't been updated in over a month!"
+                                                        type:MessageBarMessageTypeWarning];
 
 ## License
 
