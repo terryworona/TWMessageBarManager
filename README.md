@@ -20,7 +20,7 @@ An iOS manager for presenting system-wide notifications via a dropdown message b
 
 ## Installation
 
-To install, drag the ***/Classes*** folder into your project and import ***MessageBarManager.h** anywhere you would like to present a message:
+To install, drag the ***/Classes*** folder into your project and import ***MessageBarManager.h*** anywhere you would like to present a message:
 
 	#import "MessageBarManager.h"
 
