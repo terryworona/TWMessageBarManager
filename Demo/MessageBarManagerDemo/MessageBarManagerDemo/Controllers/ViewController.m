@@ -74,26 +74,23 @@
 
 - (void)errorButtonPressed:(id)sender
 {
-
-    
     [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarErrorTitle
                                                  description:kStringMessageBarErrorMessage
-                                                        type:MessageBarMessageTypeError callback:^{
-                                                            NSLog(@"Message bar tapped!");
-    }];
+                                                        type:MessageBarMessageTypeError];
 }
 
 - (void)successButtonPressed:(id)sender
 {
     [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarSuccessTitle
                                                  description:kStringMessageBarSuccessMessage
-                                                        type:MessageBarMessageTypeSuccess
-                                                 forDuration:6.0];
+                                                        type:MessageBarMessageTypeSuccess];
 }
 
 - (void)infoButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle description:kStringMessageBarInfoMessage type:MessageBarMessageTypeInfo];
+    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
+                                                 description:kStringMessageBarInfoMessage
+                                                        type:MessageBarMessageTypeInfo];
 }
 
 @end
