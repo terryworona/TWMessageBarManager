@@ -31,7 +31,6 @@
 @property (nonatomic, strong) NSString *titleString;
 @property (nonatomic, strong) NSString *descriptionString;
 @property (nonatomic, assign) MessageBarMessageType messageType;
-@property (nonatomic, strong) UIImageView *shadowView;
 
 @property (nonatomic, assign) BOOL hasCallback;
 @property (nonatomic, strong) NSArray *callbacks;
@@ -210,7 +209,6 @@ static UIColor *descriptionColor = nil;
 @synthesize titleString = _titleString;
 @synthesize descriptionString = _descriptionString;
 @synthesize messageType = _messageType;
-@synthesize shadowView = _shadowView;
 
 @synthesize hasCallback = _hasCallback;
 @synthesize callbacks = _callbacks;
@@ -307,14 +305,6 @@ static UIColor *descriptionColor = nil;
     CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, kMessageBarMaxDescriptionHeight) lineBreakMode:NSLineBreakByTruncatingTail];
     [descriptionColor set];
 	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
-}
-
-#pragma mark - Layout
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    _shadowView.frame = CGRectMake(0, [self height], [self width], _shadowView.image.size.height);
 }
 
 #pragma mark - Getters
