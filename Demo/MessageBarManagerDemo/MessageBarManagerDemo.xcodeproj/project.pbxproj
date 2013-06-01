@@ -17,7 +17,6 @@
 		5649826A1741BF7A00077B8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 564982691741BF7A00077B8C /* main.m */; };
 		569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF41741C09300F2B74C /* AppDelegate.m */; };
 		569FCDF91741C09300F2B74C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF71741C09300F2B74C /* ViewController.m */; };
-		569FCDFD1741C34600F2B74C /* MessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDFC1741C34600F2B74C /* MessageBarManager.m */; };
 		56DE553117458A7B0026B7D2 /* icon-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DE552B17458A7B0026B7D2 /* icon-error.png */; };
 		56DE553217458A7B0026B7D2 /* icon-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DE552C17458A7B0026B7D2 /* icon-error@2x.png */; };
 		56DE553317458A7B0026B7D2 /* icon-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DE552D17458A7B0026B7D2 /* icon-info.png */; };
@@ -42,8 +41,8 @@
 		569FCDF41741C09300F2B74C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		569FCDF61741C09300F2B74C /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		569FCDF71741C09300F2B74C /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		569FCDFB1741C34600F2B74C /* MessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBarManager.h; sourceTree = "<group>"; };
-		569FCDFC1741C34600F2B74C /* MessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBarManager.m; sourceTree = "<group>"; };
+		56CD5A25175A777B00E9B94E /* MessageBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MessageBarManager.h; path = ../../../Classes/MessageBarManager.h; sourceTree = "<group>"; };
+		56CD5A26175A777B00E9B94E /* MessageBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MessageBarManager.m; path = ../../../Classes/MessageBarManager.m; sourceTree = "<group>"; };
 		56DE552B17458A7B0026B7D2 /* icon-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error.png"; sourceTree = "<group>"; };
 		56DE552C17458A7B0026B7D2 /* icon-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-error@2x.png"; sourceTree = "<group>"; };
 		56DE552D17458A7B0026B7D2 /* icon-info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info.png"; sourceTree = "<group>"; };
@@ -150,8 +149,8 @@
 		569FCDFA1741C33700F2B74C /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				569FCDFB1741C34600F2B74C /* MessageBarManager.h */,
-				569FCDFC1741C34600F2B74C /* MessageBarManager.m */,
+				56CD5A25175A777B00E9B94E /* MessageBarManager.h */,
+				56CD5A26175A777B00E9B94E /* MessageBarManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -261,7 +260,6 @@
 				5649826A1741BF7A00077B8C /* main.m in Sources */,
 				569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */,
 				569FCDF91741C09300F2B74C /* ViewController.m in Sources */,
-				569FCDFD1741C34600F2B74C /* MessageBarManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

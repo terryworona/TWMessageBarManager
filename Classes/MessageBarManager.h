@@ -10,17 +10,12 @@
 typedef enum {
     MessageBarMessageTypeError,
     MessageBarMessageTypeSuccess,
-    MessageBarMessageTypeInfo,
-    MessageBarMessageTypeLogo
+    MessageBarMessageTypeInfo
 } MessageBarMessageType;
 
 @interface MessageBarManager : NSObject
 
 + (MessageBarManager *)sharedInstance;
-+ (CGFloat)durationForMessageType:(MessageBarMessageType)messageType;
-
-- (void)showGenericServerError;
-- (void)showSaveErrorWithResourceName:(NSString*)resource;
 
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type;
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type callback:(void (^)())callback;
@@ -28,8 +23,15 @@ typedef enum {
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration;
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration callback:(void (^)())callback;
 
-- (void)showAppUpgradeAvailableWithCallback:(void (^)())buttonCallback;
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withButtonCallback:(void (^)())buttonCallback;
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withButtonCallback:(void (^)())buttonCallback callback:(void (^)())callback;
+@end
+
+@interface MessageBarStyleSheet : NSObject
+
+// Colors (override for customization)
++ (UIColor*)backgroundColorForMessageType:(MessageBarMessageType)type;
++ (UIColor*)strokeColorForMessageType:(MessageBarMessageType)type;
+
+// Icon images (override for customization)
++ (UIImage*)iconImageForMessageType:(MessageBarMessageType)type;
 
 @end

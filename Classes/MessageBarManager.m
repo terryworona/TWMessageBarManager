@@ -5,49 +5,36 @@
 //  Copyright (c) 2013 Terry Worona. All rights reserved.
 //
 
-#import "GAMessageBarManager.h"
+#import "MessageBarManager.h"
 
-// Constants
-#import "GAConstants.h"
-
-// quartz
+// Quartz
 #import <QuartzCore/QuartzCore.h>
 
 // Delegate
 #import "AppDelegate.h"
 
-// Drawing
-#import "GADrawUtils.h"
+// Constants
+#import "UIConstants.h"
 
-#define kGAMessageBarAlpha 0.96
-#define kGAMessageBarPadding 10
-#define kGAMessageBarButtonWidth 60
-#define kGAMessageBarButtonHeight 30
-#define kGAMessageBarMaxDescriptionHeight 250
-#define kGAMessageBarIconSize 36
-#define kGAMessageBarRegularDisplayDelay 3.0
-#define kGAMessageBarErrorDisplayDelay 5.0
-#define kGAMessageBarTextOffset 2.0
+#define kMessageBarAlpha 0.96
+#define kMessageBarPadding 10
+#define kMessageBarMaxDescriptionHeight 250
+#define kMessageBarIconSize 36
+#define kMessageBarDisplayDelay 3.0
+#define kMessageBarTextOffset 2.0
+#define kMessageBarAnimationDuration 0.25
 
-typedef enum {
-    GAMessageViewTypeVirgin = 1,
-    GAMessageViewTypeHit
-} GAMessageViewType;
+@class MessageView;
 
-@class GAMessageView;
-
-@interface GAMessageView : UIView
+@interface MessageView : UIView
 
 @property (nonatomic, strong) NSString *titleString;
 @property (nonatomic, strong) NSString *descriptionString;
-@property (nonatomic, assign) GAMessageBarMessageType messageType;
+@property (nonatomic, assign) MessageBarMessageType messageType;
 @property (nonatomic, strong) UIImageView *shadowView;
 
 @property (nonatomic, assign) BOOL hasCallback;
 @property (nonatomic, strong) NSArray *callbacks;
-
-@property (nonatomic, assign) BOOL hasButtonCallback;
-@property (nonatomic, strong) NSArray *buttonCallbacks;
 
 @property (nonatomic, assign, getter = isHit) BOOL hit;
 
@@ -56,27 +43,24 @@ typedef enum {
 
 @property (nonatomic, assign) CGFloat duration;
 
-@property (nonatomic, strong) UIButton *button;
-
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type;
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type buttonText:(NSString*)buttonText;
-
-- (void)buttonPressed:(id)sender;
+- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type;
 
 @end
 
-@interface GAMessageBarManager ()
+@interface MessageBarManager ()
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, assign) CGFloat messageBarOffset;
+
++ (CGFloat)durationForMessageType:(MessageBarMessageType)messageType;
 
 - (void)showNextMessage;
 - (void)itemSelected:(UITapGestureRecognizer*)recognizer;
 
 @end
 
-@implementation GAMessageBarManager
+@implementation MessageBarManager
 
 @synthesize messageBarQueue = _messageBarQueue;
 @synthesize messageVisible = _messageVisible;
@@ -84,35 +68,19 @@ typedef enum {
 
 #pragma mark - Singleton
 
-+ (GAMessageBarManager *)sharedInstance
++ (MessageBarManager *)sharedInstance
 {
     static dispatch_once_t pred;
-    static GAMessageBarManager *instance = nil;
+    static MessageBarManager *instance = nil;
     dispatch_once(&pred, ^{ instance = [[self alloc] init]; });
 	return instance;
 }
 
 #pragma mark - Static
 
-+ (CGFloat)durationForMessageType:(GAMessageBarMessageType)messageType
++ (CGFloat)durationForMessageType:(MessageBarMessageType)messageType
 {
-    switch (messageType) {
-        case GAMessageBarMessageTypeError:
-            return kGAMessageBarErrorDisplayDelay;
-            break;
-        case GAMessageBarMessageTypeSuccess:
-            return kGAMessageBarRegularDisplayDelay;
-            break;
-        case GAMessageBarMessageTypeInfo:
-            return kGAMessageBarRegularDisplayDelay;
-            break;
-        case GAMessageBarMessageTypeLogo:
-            return kGAMessageBarRegularDisplayDelay;
-            break;
-        default:
-            break;
-    }
-    return kGAMessageBarRegularDisplayDelay;
+    return kMessageBarDisplayDelay;
 }
 
 #pragma mark - Alloc/Init
@@ -129,85 +97,29 @@ typedef enum {
 
 #pragma mark - Public
 
-- (void)showGenericServerError
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type
 {
-    [self showMessageWithTitle:kGAStringMessageUnexpectedErrorTitle description:kGAStringMessageUnexpectedErrorMessage type:GAMessageBarMessageTypeError];
+    [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] callback:nil];
 }
 
-- (void)showSaveErrorWithResourceName:(NSString*)resource
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type callback:(void (^)())callback
 {
-    [self showMessageWithTitle:kGAStringMessageResourceSaveErrorTitle description:[NSString stringWithFormat:kGAStringMessageResourceSaveErrorMessage, [resource lowercaseString]] type:GAMessageBarMessageTypeError];
+    [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type
-{
-    [self showMessageWithTitle:title description:description type:type forDuration:[GAMessageBarManager durationForMessageType:type] callback:nil];
-}
-
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type callback:(void (^)())callback
-{
-    [self showMessageWithTitle:title description:description type:type forDuration:[GAMessageBarManager durationForMessageType:type] callback:callback];
-}
-
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type forDuration:(CGFloat)duration
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration
 {
     [self showMessageWithTitle:title description:description type:type forDuration:duration callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type forDuration:(CGFloat)duration callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration callback:(void (^)())callback
 {
-    GAMessageView *messageView = [[GAMessageView alloc] initWithTitle:title description:description type:type];
+    MessageView *messageView = [[MessageView alloc] initWithTitle:title description:description type:type];
 
     messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
     messageView.hasCallback = callback ? YES : NO;
     
     messageView.duration = duration;
-    messageView.hidden = YES;
-    
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.window insertSubview:messageView atIndex:1];
-    [_messageBarQueue addObject:messageView];
-    
-    if (!_messageVisible){
-        [self showNextMessage];
-    }
-}
-
-- (void)showAppUpgradeAvailableWithCallback:(void (^)())buttonCallback
-{
-    GAMessageView *messageView = [[GAMessageView alloc] initWithTitle:kGAStringMessageUpdateMessageTitle description:kGAStringMessageUpdateMessage type:GAMessageBarMessageTypeLogo buttonText:kGAStringLabelView];
-
-    messageView.hasButtonCallback = buttonCallback ? YES : NO;
-    messageView.buttonCallbacks = buttonCallback ? [NSArray arrayWithObject:buttonCallback] : [NSArray array];
-    
-    messageView.duration = [GAMessageBarManager durationForMessageType:GAMessageBarMessageTypeLogo];
-    messageView.hidden = YES;
-    
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.window insertSubview:messageView atIndex:1];
-    [_messageBarQueue addObject:messageView];
-    
-    if (!_messageVisible){
-        [self showNextMessage];
-    }
-}
-
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type withButtonCallback:(void (^)())buttonCallback
-{
-    [self showMessageWithTitle:title description:description type:type withButtonCallback:buttonCallback callback:nil];
-}
-
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type withButtonCallback:(void (^)())buttonCallback callback:(void (^)())callback
-{
-    GAMessageView *messageView = [[GAMessageView alloc] initWithTitle:title description:description type:type buttonText:kGAStringLabelView];
-    
-    messageView.hasButtonCallback = buttonCallback ? YES : NO;
-    messageView.buttonCallbacks = buttonCallback ? [NSArray arrayWithObject:buttonCallback] : [NSArray array];
-    
-    messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
-    messageView.hasCallback = callback ? YES : NO;
-    
-    messageView.duration = [GAMessageBarManager durationForMessageType:type];
     messageView.hidden = YES;
     
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -226,7 +138,7 @@ typedef enum {
     if ([_messageBarQueue count] > 0){
         _messageVisible = YES;
         
-        GAMessageView *messageView = [_messageBarQueue objectAtIndex:0];
+        MessageView *messageView = [_messageBarQueue objectAtIndex:0];
         messageView.frame = CGRectMake(0, -[messageView height], [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
@@ -236,7 +148,8 @@ typedef enum {
 
         if (messageView){
             [_messageBarQueue removeObject:messageView];
-            [UIView animateWithDuration:kGANumericDefaultAnimationDuration animations:^{
+            
+            [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, _messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             
@@ -249,19 +162,20 @@ typedef enum {
 
 - (void)itemSelected:(id)sender
 {
-    GAMessageView *messageView = nil;
+    MessageView *messageView = nil;
     BOOL itemHit = NO;
     if ([sender isKindOfClass:[UIGestureRecognizer class]]){
-        messageView = (GAMessageView*)((UIGestureRecognizer*)sender).view;
+        messageView = (MessageView*)((UIGestureRecognizer*)sender).view;
         itemHit = YES;
     }
-    else if ([sender isKindOfClass:[GAMessageView class]]){
-        messageView = (GAMessageView*)sender;
+    else if ([sender isKindOfClass:[MessageView class]]){
+        messageView = (MessageView*)sender;
     }
     
     if (messageView && ![messageView isHit]){
         messageView.hit = YES;
-        [UIView animateWithDuration:kGANumericDefaultAnimationDuration animations:^{
+        
+        [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
             [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - _messageBarOffset, [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             _messageVisible = NO;
@@ -291,9 +205,7 @@ static UIColor *titleColor = nil;
 static UIFont *descriptionFont = nil;
 static UIColor *descriptionColor = nil;
 
-static UIColor *shadowColor = nil;
-
-@implementation GAMessageView
+@implementation MessageView
 
 @synthesize titleString = _titleString;
 @synthesize descriptionString = _descriptionString;
@@ -303,25 +215,16 @@ static UIColor *shadowColor = nil;
 @synthesize hasCallback = _hasCallback;
 @synthesize callbacks = _callbacks;
 
-@synthesize hasButtonCallback = _hasButtonCallback;
-@synthesize buttonCallbacks = _buttonCallbacks;
-
 @synthesize hit = _hit;
 
 @synthesize width = _width;
 @synthesize height = _height;
 
 @synthesize duration = _duration;
-@synthesize button = _button;
 
 #pragma mark - Alloc/Init
 
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type
-{
-    return [self initWithTitle:title description:description type:type buttonText:nil];
-}
-
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(GAMessageBarMessageType)type buttonText:(NSString*)buttonText
+- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type 
 {
     self = [super initWithFrame:CGRectZero];
     if (self){
@@ -330,79 +233,23 @@ static UIColor *shadowColor = nil;
         self.clipsToBounds = NO;
         self.userInteractionEnabled = YES;
         
-        _shadowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kGAImageBarShadowTop]];
-        [self addSubview:_shadowView];
-        
         _titleString = title;
         _descriptionString = description;
         _messageType = type;
         
-        titleFont = kGAFontMessageBarTitle;
-        titleColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+        titleFont = [UIFont boldSystemFontOfSize:16.0];
+        titleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
         
-        descriptionFont = kGAFontMessageBarMessage;
-        descriptionColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-        
-        shadowColor = [UIColor colorWithWhite:0.2 alpha:0.25];
+        descriptionFont = [UIFont systemFontOfSize:14.0];
+        descriptionColor = [UIColor colorWithWhite:1.0 alpha:1.0];
         
         _height = 0.0;
         _width = 0.0;
         
         _hasCallback = NO;
         _hit = NO;
-        
-        if (buttonText){
-            _button = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            
-            _button.titleLabel.font = [UIFont fontWithName:kGAFontSommetRoundedBlack size:14.0];
-            _button.titleLabel.adjustsFontSizeToFitWidth = YES;
-            _button.titleLabel.shadowOffset = CGSizeMake(0, -1);
-            _button.titleLabel.textAlignment = UITextAlignmentCenter;
-            [_button setTitleShadowColor:kGAColorDarkGray forState:UIControlStateNormal];
-            [_button setTitleShadowColor:kGAColorDarkGray forState:UIControlStateDisabled];
-            [_button setTitleShadowColor:kGAColorDarkGray forState:UIControlStateSelected];
-            [_button setTitleShadowColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-            [_button setTitleShadowColor:[UIColor blackColor] forState:UIControlStateHighlighted | UIControlStateSelected];
-            
-            [_button setTitle:buttonText forState:UIControlStateNormal];
-            [_button setTitle:buttonText forState:UIControlStateDisabled];
-            [_button setTitle:buttonText forState:UIControlStateSelected];
-            [_button setTitle:buttonText forState:UIControlStateHighlighted];
-            [_button setTitle:buttonText forState:UIControlStateHighlighted | UIControlStateSelected];
-            
-            UIImage *buttonBackgroundImage = [UIImage imageNamed:kGAImageButtonNotification];
-            buttonBackgroundImage = [buttonBackgroundImage stretchableImageWithLeftCapWidth:ceil(buttonBackgroundImage.size.width/2) topCapHeight:ceil(buttonBackgroundImage.size.height/2)];
-            
-            UIImage *buttonBackgroundDepressedImage = [UIImage imageNamed:kGAImageButtonNotificationDepressed];
-            buttonBackgroundDepressedImage = [buttonBackgroundDepressedImage stretchableImageWithLeftCapWidth:ceil(buttonBackgroundDepressedImage.size.width/2) topCapHeight:ceil(buttonBackgroundDepressedImage.size.height/2)];
-            
-            [_button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
-            [_button setBackgroundImage:buttonBackgroundImage forState:UIControlStateDisabled];
-            [_button setBackgroundImage:buttonBackgroundDepressedImage forState:UIControlStateSelected];
-            [_button setBackgroundImage:buttonBackgroundDepressedImage forState:UIControlStateHighlighted];
-            [_button setBackgroundImage:buttonBackgroundDepressedImage forState:UIControlStateHighlighted | UIControlStateSelected];
-
-            [_button setNeedsDisplay];
-            
-            [self addSubview:_button];
-        }
     }
     return self;
-}
-
-#pragma mark - Button Presses
-
-- (void)buttonPressed:(id)sender
-{
-    if ([_buttonCallbacks count] > 0){
-        id obj = [_buttonCallbacks objectAtIndex:0];
-        if (![obj isEqual:[NSNull null]]) {
-            ((void (^)())obj)();
-            
-            [[GAMessageBarManager sharedInstance] performSelector:@selector(itemSelected:) withObject:self afterDelay:0];
-        }
-    }
 }
 
 #pragma mark - Drawing
@@ -413,35 +260,11 @@ static UIColor *shadowColor = nil;
     
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	// bg gradient
-	CGRect gradientRect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    
+    // background fill
     CGContextSaveGState(context);
     {
-        switch (_messageType) {
-            case GAMessageBarMessageTypeError:
-                drawVerticalLinearGradient(context, gradientRect,
-                                           [UIColor colorWithRed:0.858 green:0.329 blue:0.309 alpha:kGAMessageBarAlpha].CGColor, // light red
-                                           [UIColor colorWithRed:0.756 green:0.019 blue:0.0 alpha:kGAMessageBarAlpha].CGColor); // dark red
-                break;
-            case GAMessageBarMessageTypeSuccess:
-                drawVerticalLinearGradient(context, gradientRect,
-                                           [UIColor colorWithRed:0.149 green:0.749 blue:0.149 alpha:kGAMessageBarAlpha].CGColor, // light green
-                                           [UIColor colorWithRed:0.0 green:0.549 blue:0.0 alpha:kGAMessageBarAlpha].CGColor); // dark green
-                break;
-            case GAMessageBarMessageTypeInfo:
-                drawVerticalLinearGradient(context, gradientRect,
-                                           [UIColor colorWithRed:0.0 green:0.776 blue:0.831 alpha:kGAMessageBarAlpha].CGColor, // light teal
-                                           [UIColor colorWithRed:0.0 green:0.560 blue:0.6 alpha:kGAMessageBarAlpha].CGColor); // dark teal
-                break;
-            case GAMessageBarMessageTypeLogo:
-                drawVerticalLinearGradient(context, gradientRect,
-                                           [UIColor colorWithRed:0.0 green:0.776 blue:0.831 alpha:kGAMessageBarAlpha].CGColor, // light teal
-                                           [UIColor colorWithRed:0.0 green:0.560 blue:0.6 alpha:kGAMessageBarAlpha].CGColor); // dark teal
-                break;                
-            default:
-                break;
-        }
+        [[MessageBarStyleSheet backgroundColorForMessageType:_messageType] set];
+        CGContextFillRect(context, rect);
     }
     CGContextRestoreGState(context);
 
@@ -450,74 +273,40 @@ static UIColor *shadowColor = nil;
     {
         CGContextBeginPath(context);
         CGContextMoveToPoint(context, 0, rect.size.height);
-        switch (_messageType) {
-            case GAMessageBarMessageTypeError:
-                CGContextSetRGBStrokeColor(context, 0.984f, 0.0f, 0.0f, 1.0f); // red
-                break;
-            case GAMessageBarMessageTypeSuccess:
-                CGContextSetRGBStrokeColor(context, 0.074f, 0.749f, 0.074f, 1.0f); // green
-                break;
-            case GAMessageBarMessageTypeInfo:
-                CGContextSetRGBStrokeColor(context, 0.007f, 0.686f, 0.737f, 1.0f); // teal
-                break;
-            case GAMessageBarMessageTypeLogo:
-                CGContextSetRGBStrokeColor(context, 0.007f, 0.686f, 0.737f, 1.0f); // teal
-                break;
-            default:
-                break;
-        }
+        CGContextSetStrokeColorWithColor(context, [MessageBarStyleSheet strokeColorForMessageType:_messageType].CGColor);
         CGContextSetLineWidth(context, 1.0);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
         CGContextStrokePath(context);
     }
     CGContextRestoreGState(context);
 
-    CGFloat xOffset = kGAMessageBarPadding;
-    CGFloat yOffset = kGAMessageBarPadding;
+    CGFloat xOffset = kMessageBarPadding;
+    CGFloat yOffset = kMessageBarPadding;
     
     // icon
     CGContextSaveGState(context);
     {
-        switch (_messageType) {
-            case GAMessageBarMessageTypeError:
-                [[UIImage imageNamed:kGAImageIconNotificationWarning] drawInRect:CGRectMake(xOffset, yOffset, kGAMessageBarIconSize, kGAMessageBarIconSize)];
-                break;
-            case GAMessageBarMessageTypeSuccess:
-                [[UIImage imageNamed:kGAImageIconNotificationCheckmark] drawInRect:CGRectMake(xOffset, yOffset, kGAMessageBarIconSize, kGAMessageBarIconSize)];
-                break;
-            case GAMessageBarMessageTypeInfo:
-                [[UIImage imageNamed:kGAImageIconNotificationInfo] drawInRect:CGRectMake(xOffset, yOffset, kGAMessageBarIconSize, kGAMessageBarIconSize)];
-                break;
-            case GAMessageBarMessageTypeLogo:
-                [[UIImage imageNamed:kGAImageIconNotificationLogo] drawInRect:CGRectMake(xOffset, yOffset, kGAMessageBarIconSize, kGAMessageBarIconSize)];
-                break;
-            default:
-                break;
-        }
+        [[MessageBarStyleSheet iconImageForMessageType:_messageType] drawInRect:CGRectMake(xOffset, yOffset, kMessageBarIconSize, kMessageBarIconSize)];
     }
     CGContextRestoreGState(context);
     
-    yOffset -= kGAMessageBarTextOffset;
-    xOffset += kGAMessageBarIconSize + kGAMessageBarPadding;
+    yOffset -= kMessageBarTextOffset;
+    xOffset += kMessageBarIconSize + kMessageBarPadding;
 
-    CGFloat maxWith = _button ? (rect.size.width - (kGAMessageBarPadding * 3) - ceil(kGAMessageBarPadding * 0.5) - kGAMessageBarIconSize) - kGAMessageBarButtonWidth : (rect.size.width - (kGAMessageBarPadding * 3) - kGAMessageBarIconSize);
+    CGFloat maxWith = (rect.size.width - (kMessageBarPadding * 3) - kMessageBarIconSize);
     
-    CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:UILineBreakModeTailTruncation];
+    CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:NSLineBreakByTruncatingTail];
     if (_titleString && !_descriptionString){
-        yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kGAMessageBarTextOffset;
+        yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kMessageBarTextOffset;
     }
-    [shadowColor set];
-    [_titleString drawInRect:CGRectMake(xOffset, yOffset-1, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentLeft];
     [titleColor set];
-	[_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentLeft];
+	[_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 
     yOffset += titleLabelSize.height;
     
-    CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, kGAMessageBarMaxDescriptionHeight) lineBreakMode:UILineBreakModeTailTruncation];
-    [shadowColor set];
-	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset-1, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentLeft];
+    CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, kMessageBarMaxDescriptionHeight) lineBreakMode:NSLineBreakByTruncatingTail];
     [descriptionColor set];
-	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentLeft];
+	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 }
 
 #pragma mark - Layout
@@ -526,7 +315,6 @@ static UIColor *shadowColor = nil;
 {
     [super layoutSubviews];
     _shadowView.frame = CGRectMake(0, [self height], [self width], _shadowView.image.size.height);
-    _button.frame = CGRectMake(self.frame.size.width - kGAMessageBarButtonWidth - kGAMessageBarPadding, ceil(self.frame.size.height * 0.5) - ceil(kGAMessageBarButtonHeight * 0.5), kGAMessageBarButtonWidth, kGAMessageBarButtonHeight);
 }
 
 #pragma mark - Getters
@@ -534,10 +322,10 @@ static UIColor *shadowColor = nil;
 - (CGFloat)height
 {
     if (_height == 0){
-        CGFloat maxWith = _button ? ([self width] - (kGAMessageBarPadding * 3) - ceil(kGAMessageBarPadding * 0.5) - kGAMessageBarIconSize) - kGAMessageBarButtonWidth : ([self width] - (kGAMessageBarPadding * 3) - kGAMessageBarIconSize);
-        CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:UILineBreakModeTailTruncation];
-        CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, 10000) lineBreakMode:UILineBreakModeTailTruncation];
-        _height = MAX((kGAMessageBarPadding*2) + titleLabelSize.height + descriptionLabelSize.height, (kGAMessageBarPadding*2) + kGAMessageBarIconSize);
+        CGFloat maxWith = ([self width] - (kMessageBarPadding * 3) - kMessageBarIconSize);
+        CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:NSLineBreakByTruncatingTail];
+        CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, 10000) lineBreakMode:NSLineBreakByTruncatingTail];
+        _height = MAX((kMessageBarPadding*2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding*2) + kMessageBarIconSize);
     }
     return _height;
 }
@@ -548,6 +336,69 @@ static UIColor *shadowColor = nil;
         _width = [UIScreen mainScreen].bounds.size.width;
     }
     return _width;
+}
+
+@end
+
+@implementation MessageBarStyleSheet
+
+#pragma mark - Colors
+
++ (UIColor*)backgroundColorForMessageType:(MessageBarMessageType)type
+{
+    UIColor *backgroundColor = nil;
+    switch (type) {
+        case MessageBarMessageTypeError:
+            backgroundColor = [UIColor colorWithRed:1.0 green:0.611 blue:0.0 alpha:kMessageBarAlpha]; // orange
+            break;
+        case MessageBarMessageTypeSuccess:
+            backgroundColor = [UIColor colorWithRed:0.0f green:0.831f blue:0.176f alpha:kMessageBarAlpha]; // green
+            break;
+        case MessageBarMessageTypeInfo:
+            backgroundColor = [UIColor colorWithRed:0.0 green:0.482 blue:1.0 alpha:kMessageBarAlpha]; // blue
+            break;
+        default:
+            break;
+    }
+    return backgroundColor;
+}
+
++ (UIColor*)strokeColorForMessageType:(MessageBarMessageType)type
+{
+    UIColor *strokeColor = nil;
+    switch (type) {
+        case MessageBarMessageTypeError:
+            strokeColor = [UIColor colorWithRed:0.949f green:0.580f blue:0.0f alpha:1.0f]; // orange
+            break;
+        case MessageBarMessageTypeSuccess:
+            strokeColor = [UIColor colorWithRed:0.0f green:0.772f blue:0.164f alpha:1.0f]; // orange
+            break;
+        case MessageBarMessageTypeInfo:
+            strokeColor = [UIColor colorWithRed:0.0f green:0.415f blue:0.803f alpha:1.0f]; // orange
+            break;
+        default:
+            break;
+    }
+    return strokeColor;
+}
+
++ (UIImage*)iconImageForMessageType:(MessageBarMessageType)type
+{
+    UIImage *iconImage = nil;
+    switch (type) {
+        case MessageBarMessageTypeError:
+            iconImage = [UIImage imageNamed:kImageIconError];
+            break;
+        case MessageBarMessageTypeSuccess:
+            iconImage = [UIImage imageNamed:kImageIconSucces];
+            break;
+        case MessageBarMessageTypeInfo:
+            iconImage = [UIImage imageNamed:kImageIconInfo];
+            break;
+        default:
+            break;
+    }
+    return iconImage;
 }
 
 @end
