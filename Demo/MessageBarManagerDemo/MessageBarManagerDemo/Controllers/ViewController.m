@@ -8,11 +8,11 @@
 
 #import "ViewController.h"
 
-// Managers
-#import "MessageBarManager.h"
-
 // Constants
 #import "StringConstants.h"
+
+// Messages
+#import "MessageBarManager.h"
 
 #define kViewControllerButtonPadding 10
 #define kViewControllerButtonHeight 50

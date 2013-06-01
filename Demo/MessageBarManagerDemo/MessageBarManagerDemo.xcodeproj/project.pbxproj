@@ -23,6 +23,7 @@
 		56DE553417458A7B0026B7D2 /* icon-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DE552E17458A7B0026B7D2 /* icon-info@2x.png */; };
 		56DE553517458A7B0026B7D2 /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DE552F17458A7B0026B7D2 /* icon-success.png */; };
 		56DE553617458A7B0026B7D2 /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DE553017458A7B0026B7D2 /* icon-success@2x.png */; };
+		56E8B354175A78A2003E2E48 /* MessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CD5A26175A777B00E9B94E /* MessageBarManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -260,6 +261,7 @@
 				5649826A1741BF7A00077B8C /* main.m in Sources */,
 				569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */,
 				569FCDF91741C09300F2B74C /* ViewController.m in Sources */,
+				56E8B354175A78A2003E2E48 /* MessageBarManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
