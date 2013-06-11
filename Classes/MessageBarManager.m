@@ -10,11 +10,7 @@
 // Quartz
 #import <QuartzCore/QuartzCore.h>
 
-// Delegate
-#import "AppDelegate.h"
-
 // Constants
-//#import "UIConstants.h"
 #define kImageIconError @"icon-error.png"
 #define kImageIconSuccess @"icon-success.png"
 #define kImageIconInfo @"icon-info.png"
@@ -124,8 +120,7 @@
     messageView.duration = duration;
     messageView.hidden = YES;
     
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.window insertSubview:messageView atIndex:1];
+    [[[UIApplication sharedApplication] keyWindow] insertSubview:messageView atIndex:1];
     [_messageBarQueue addObject:messageView];
     
     if (!_messageVisible){
