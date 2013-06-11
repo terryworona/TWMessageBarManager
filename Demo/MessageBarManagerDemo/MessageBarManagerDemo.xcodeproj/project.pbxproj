@@ -51,7 +51,6 @@
 		56CD5A25175A777B00E9B94E /* MessageBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MessageBarManager.h; path = ../../../Classes/MessageBarManager.h; sourceTree = "<group>"; };
 		56CD5A26175A777B00E9B94E /* MessageBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MessageBarManager.m; path = ../../../Classes/MessageBarManager.m; sourceTree = "<group>"; };
 		56DE553917458AB20026B7D2 /* StringConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringConstants.h; sourceTree = "<group>"; };
-		56DE553A17458AB20026B7D2 /* UIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,7 +182,6 @@
 			isa = PBXGroup;
 			children = (
 				56DE553917458AB20026B7D2 /* StringConstants.h */,
-				56DE553A17458AB20026B7D2 /* UIConstants.h */,
 			);
 			path = Constants;
 			sourceTree = "<group>";

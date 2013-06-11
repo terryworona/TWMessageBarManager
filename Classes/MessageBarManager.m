@@ -10,11 +10,12 @@
 // Quartz
 #import <QuartzCore/QuartzCore.h>
 
-// Constants
-#define kImageIconError @"icon-error.png"
-#define kImageIconSuccess @"icon-success.png"
-#define kImageIconInfo @"icon-info.png"
+// Image Constants
+#define kMessageBarImageIconError @"icon-error.png"
+#define kMessageBarImageIconSuccess @"icon-success.png"
+#define kMessageBarImageIconInfo @"icon-info.png"
 
+// Numeric Constants
 #define kMessageBarAlpha 0.96
 #define kMessageBarPadding 10
 #define kMessageBarMaxDescriptionHeight 250
@@ -375,13 +376,13 @@ static UIColor *descriptionColor = nil;
     UIImage *iconImage = nil;
     switch (type) {
         case MessageBarMessageTypeError:
-            iconImage = [UIImage imageNamed:kImageIconError];
+            iconImage = [UIImage imageNamed:kMessageBarImageIconError];
             break;
         case MessageBarMessageTypeSuccess:
-            iconImage = [UIImage imageNamed:kImageIconSuccess];
+            iconImage = [UIImage imageNamed:kMessageBarImageIconSuccess];
             break;
         case MessageBarMessageTypeInfo:
-            iconImage = [UIImage imageNamed:kImageIconInfo];
+            iconImage = [UIImage imageNamed:kMessageBarImageIconInfo];
             break;
         default:
             break;
