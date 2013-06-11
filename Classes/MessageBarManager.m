@@ -14,7 +14,10 @@
 #import "AppDelegate.h"
 
 // Constants
-#import "UIConstants.h"
+//#import "UIConstants.h"
+#define kImageIconError @"icon-error.png"
+#define kImageIconSuccess @"icon-success.png"
+#define kImageIconInfo @"icon-info.png"
 
 #define kMessageBarAlpha 0.96
 #define kMessageBarPadding 10
@@ -380,7 +383,7 @@ static UIColor *descriptionColor = nil;
             iconImage = [UIImage imageNamed:kImageIconError];
             break;
         case MessageBarMessageTypeSuccess:
-            iconImage = [UIImage imageNamed:kImageIconSucces];
+            iconImage = [UIImage imageNamed:kImageIconSuccess];
             break;
         case MessageBarMessageTypeInfo:
             iconImage = [UIImage imageNamed:kImageIconInfo];
