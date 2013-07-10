@@ -70,6 +70,30 @@
     [self.view addSubview:_infoButton];
 }
 
+#pragma mark - Orientation
+
+// pre-iOS 6 support
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (BOOL)automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers
+{
+    return YES;
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 #pragma mark - Button Presses
 
 - (void)errorButtonPressed:(id)sender
