@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 	:tag => "v1.0"
   }
 
-  s.platform     = :ios,
+  s.platform     = :ios, '6.1'
   s.source_files  = 'Classes', 'Classes/**/*.{h,m}'
   s.requires_arc = true
 end

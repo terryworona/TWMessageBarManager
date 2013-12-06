@@ -6,7 +6,7 @@ An iOS manager for presenting system-wide notifications via a dropdown message b
 
 ## Requirements
 
-- Requires iOS 6 or later
+- Requires iOS 6.1 or later
 - Requires Automatic Reference Counting (ARC)
 
 ## Author
