@@ -2,7 +2,12 @@
 
 An iOS manager for presenting system-wide notifications via a dropdown message bar. 
 
-<img src="Screenshot.png">
+<img src="Screenshots/main.png">
+
+## Requirements
+
+- Requires iOS 6 or later
+- Requires Automatic Reference Counting (ARC)
 
 ## Author
 
@@ -20,11 +25,21 @@ An iOS manager for presenting system-wide notifications via a dropdown message b
 
 ## Installation
 
-To install, drag the ***/Classes*** folder into your project and import ***MessageBarManager.h*** anywhere you would like to present a message:
+<a href="http://cocoapods.org/" target="_blank">CocoaPods</a> is the recommended method of installing the MessageBarManager.
 
-	#import "MessageBarManager.h"
+### The Pod Way
 
-You will also need to enable ***ARC*** in your project. 
+Simply add the following line to your <code>Podfile</code>:
+
+	pod 'MessageBarManager'
+	
+### The Old School Way
+
+The simpliest way to use MessageBarManager with your application is to drag and drop the <i>/Classes</i> folder into you're Xcode 5 project. It's also recommended you rename the <i>/Classes</i> folder to something more descriptive (ie. "<i>MessageBarManager</i>").
+
+<center>
+	<img src="Screenshots/installation.png">
+</center>
 
 ## Usage
 
@@ -156,10 +171,4 @@ Displaying a new message with the message type:
 
 ## License
 
-Copyright (C) 2013 Terry Worona
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software" ), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Usage is provided under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT</a> License. See <a href="Classes/LICENSE" >LICENSE</a> for full details.
