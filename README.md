@@ -171,4 +171,4 @@ Displaying a new message with the message type:
 
 ## License
 
-Usage is provided under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT</a> License. See <a href="Classes/LICENSE" >LICENSE</a> for full details.
+Usage is provided under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT</a> License. See <a href="LICENSE">LICENSE</a> for full details.
