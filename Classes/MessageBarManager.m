@@ -307,30 +307,61 @@ static UIColor *descriptionColor = nil;
     yOffset -= kMessageBarTextOffset;
     xOffset += kMessageBarIconSize + kMessageBarPadding;
 
-    CGFloat maxWith = (rect.size.width - (kMessageBarPadding * 3) - kMessageBarIconSize);
-    
-    CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:NSLineBreakByTruncatingTail];
+    CGSize titleLabelSize = [self titleSize];
     if (_titleString && !_descriptionString){
         yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kMessageBarTextOffset;
     }
-    [titleColor set];
-	[_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+    NSMutableParagraphStyle *titleParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    titleParagraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    titleParagraphStyle.alignment = NSTextAlignmentLeft;
+    NSDictionary *titleAttributes = @{NSFontAttributeName : titleFont, NSParagraphStyleAttributeName : titleParagraphStyle, NSForegroundColorAttributeName: titleColor};
+    [_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withAttributes:titleAttributes];
 
     yOffset += titleLabelSize.height;
     
-    CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, kMessageBarMaxDescriptionHeight) lineBreakMode:NSLineBreakByTruncatingTail];
-    [descriptionColor set];
-	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+    CGSize descriptionLabelSize = [self descriptionSize];
+    NSMutableParagraphStyle *descriptionParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    descriptionParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    descriptionParagraphStyle.alignment = NSTextAlignmentLeft;
+    NSDictionary *descriptionAttributes = @{NSFontAttributeName : descriptionFont, NSParagraphStyleAttributeName : descriptionParagraphStyle, NSForegroundColorAttributeName: descriptionColor};
+    [_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withAttributes:descriptionAttributes];
 }
 
 #pragma mark - Getters
 
+-(CGFloat)maxWidth
+{
+  CGFloat maxWidth = ([self width] - (kMessageBarPadding * 3) - kMessageBarIconSize);
+  return maxWidth;
+}
+
+-(CGSize)titleSize
+{
+  CGFloat maxWidth = [self maxWidth];
+  NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:titleFont forKey: NSFontAttributeName];
+  CGSize titleLabelSize = [_titleString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                                                     options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:titleStringAttributes
+                                                     context:nil].size;
+  return titleLabelSize;
+}
+
+-(CGSize)descriptionSize
+{
+  CGFloat maxWidth = [self maxWidth];
+  NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:descriptionFont forKey: NSFontAttributeName];
+  CGSize descriptionLabelSize = [_descriptionString boundingRectWithSize:CGSizeMake(maxWidth, kMessageBarMaxDescriptionHeight)
+                                                                 options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
+                                                              attributes:descriptionStringAttributes
+                                                                 context:nil].size;
+  return descriptionLabelSize;
+}
+
 - (CGFloat)height
 {
     if (_height == 0){
-        CGFloat maxWith = ([self width] - (kMessageBarPadding * 3) - kMessageBarIconSize);
-        CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:NSLineBreakByTruncatingTail];
-        CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, 10000) lineBreakMode:NSLineBreakByTruncatingTail];
+        CGSize titleLabelSize = [self titleSize];
+        CGSize descriptionLabelSize = [self descriptionSize];
         _height = MAX((kMessageBarPadding*2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding*2) + kMessageBarIconSize);
     }
     return _height;
