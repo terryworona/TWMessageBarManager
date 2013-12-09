@@ -30,6 +30,7 @@
 
 @property (nonatomic, strong) NSString *titleString;
 @property (nonatomic, strong) NSString *descriptionString;
+@property (nonatomic, assign) CGFloat verticalOffset;
 @property (nonatomic, assign) MessageBarMessageType messageType;
 
 @property (nonatomic, assign) BOOL hasCallback;
@@ -72,7 +73,7 @@
     static dispatch_once_t pred;
     static MessageBarManager *instance = nil;
     dispatch_once(&pred, ^{ instance = [[self alloc] init]; });
-	return instance;
+   return instance;
 }
 
 #pragma mark - Static
@@ -101,9 +102,19 @@
     [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] callback:nil];
 }
 
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset
+{
+	[self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] withVerticalOffset:verticalOffset callback:nil];
+}
+
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type callback:(void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] callback:callback];
+}
+
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset callback:(void (^)())callback
+{
+	[self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] withVerticalOffset:verticalOffset callback:callback];
 }
 
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration
@@ -111,13 +122,18 @@
     [self showMessageWithTitle:title description:description type:type forDuration:duration callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset forDuration:(CGFloat)duration
+{
+	[self showMessageWithTitle:title description:description type:type forDuration:duration withVerticalOffset:verticalOffset callback:nil];
+}
+
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration withVerticalOffset:(CGFloat)verticalOffset callback:(void (^)())callback
 {
     MessageView *messageView = [[MessageView alloc] initWithTitle:title description:description type:type];
 
     messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
     messageView.hasCallback = callback ? YES : NO;
-    
+	if (verticalOffset) { messageView.verticalOffset = verticalOffset; }
     messageView.duration = duration;
     messageView.hidden = YES;
     
@@ -148,7 +164,7 @@
             [_messageBarQueue removeObject:messageView];
             
             [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, _messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+                [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.verticalOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
@@ -255,8 +271,8 @@ static UIColor *descriptionColor = nil;
 {
     [super drawRect:rect];
     
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	
+   CGContextRef context = UIGraphicsGetCurrentContext();
+
     // background fill
     CGContextSaveGState(context);
     {
@@ -297,13 +313,13 @@ static UIColor *descriptionColor = nil;
         yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kMessageBarTextOffset;
     }
     [titleColor set];
-	[_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+   [_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 
     yOffset += titleLabelSize.height;
     
     CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, kMessageBarMaxDescriptionHeight) lineBreakMode:NSLineBreakByTruncatingTail];
     [descriptionColor set];
-	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+   [_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 }
 
 #pragma mark - Getters
