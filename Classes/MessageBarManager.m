@@ -30,6 +30,7 @@
 
 @property (nonatomic, strong) NSString *titleString;
 @property (nonatomic, strong) NSString *descriptionString;
+@property (nonatomic, assign) CGFloat verticalOffset;
 @property (nonatomic, assign) MessageBarMessageType messageType;
 
 @property (nonatomic, assign) BOOL hasCallback;
@@ -98,26 +99,42 @@
 
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type
 {
-    [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] callback:nil];
+  [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] withVerticalOffset:_messageBarOffset callback:nil];
+}
+
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset
+{
+	[self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] withVerticalOffset:verticalOffset callback:nil];
 }
 
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type callback:(void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] callback:callback];
+  [self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type]  withVerticalOffset:_messageBarOffset callback:callback];
+}
+
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset callback:(void (^)())callback
+{
+	[self showMessageWithTitle:title description:description type:type forDuration:[MessageBarManager durationForMessageType:type] withVerticalOffset:verticalOffset callback:callback];
 }
 
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration
 {
-    [self showMessageWithTitle:title description:description type:type forDuration:duration callback:nil];
+  [self showMessageWithTitle:title description:description type:type forDuration:duration withVerticalOffset:_messageBarOffset callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset forDuration:(CGFloat)duration
+{
+	[self showMessageWithTitle:title description:description type:type forDuration:duration withVerticalOffset:verticalOffset callback:nil];
+}
+
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration withVerticalOffset:(CGFloat)verticalOffset callback:(void (^)())callback
 {
     MessageView *messageView = [[MessageView alloc] initWithTitle:title description:description type:type];
-
+    
     messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
     messageView.hasCallback = callback ? YES : NO;
     
+    messageView.verticalOffset = verticalOffset ? verticalOffset : _messageBarOffset;
     messageView.duration = duration;
     messageView.hidden = YES;
     
@@ -166,7 +183,7 @@
             [_messageBarQueue removeObject:messageView];
             
             [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, _messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+              [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.verticalOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
@@ -192,7 +209,7 @@
         messageView.hit = YES;
         
         [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
-            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - _messageBarOffset, [messageView width], [messageView height])]; // slide back up
+            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - messageView.verticalOffset, [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             _messageVisible = NO;
             [messageView removeFromSuperview];
@@ -308,30 +325,61 @@ static UIColor *descriptionColor = nil;
     yOffset -= kMessageBarTextOffset;
     xOffset += kMessageBarIconSize + kMessageBarPadding;
 
-    CGFloat maxWith = (rect.size.width - (kMessageBarPadding * 3) - kMessageBarIconSize);
-    
-    CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:NSLineBreakByTruncatingTail];
+    CGSize titleLabelSize = [self titleSize];
     if (_titleString && !_descriptionString){
         yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kMessageBarTextOffset;
     }
-    [titleColor set];
-	[_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+    NSMutableParagraphStyle *titleParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    titleParagraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    titleParagraphStyle.alignment = NSTextAlignmentLeft;
+    NSDictionary *titleAttributes = @{NSFontAttributeName : titleFont, NSParagraphStyleAttributeName : titleParagraphStyle, NSForegroundColorAttributeName: titleColor};
+    [_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withAttributes:titleAttributes];
 
     yOffset += titleLabelSize.height;
     
-    CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, kMessageBarMaxDescriptionHeight) lineBreakMode:NSLineBreakByTruncatingTail];
-    [descriptionColor set];
-	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+    CGSize descriptionLabelSize = [self descriptionSize];
+    NSMutableParagraphStyle *descriptionParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+    descriptionParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    descriptionParagraphStyle.alignment = NSTextAlignmentLeft;
+    NSDictionary *descriptionAttributes = @{NSFontAttributeName : descriptionFont, NSParagraphStyleAttributeName : descriptionParagraphStyle, NSForegroundColorAttributeName: descriptionColor};
+    [_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withAttributes:descriptionAttributes];
 }
 
 #pragma mark - Getters
 
+-(CGFloat)maxWidth
+{
+  CGFloat maxWidth = ([self width] - (kMessageBarPadding * 3) - kMessageBarIconSize);
+  return maxWidth;
+}
+
+-(CGSize)titleSize
+{
+  CGFloat maxWidth = [self maxWidth];
+  NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:titleFont forKey: NSFontAttributeName];
+  CGSize titleLabelSize = [_titleString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                                                     options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
+                                                  attributes:titleStringAttributes
+                                                     context:nil].size;
+  return titleLabelSize;
+}
+
+-(CGSize)descriptionSize
+{
+  CGFloat maxWidth = [self maxWidth];
+  NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:descriptionFont forKey: NSFontAttributeName];
+  CGSize descriptionLabelSize = [_descriptionString boundingRectWithSize:CGSizeMake(maxWidth, kMessageBarMaxDescriptionHeight)
+                                                                 options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
+                                                              attributes:descriptionStringAttributes
+                                                                 context:nil].size;
+  return descriptionLabelSize;
+}
+
 - (CGFloat)height
 {
     if (_height == 0){
-        CGFloat maxWith = ([self width] - (kMessageBarPadding * 3) - kMessageBarIconSize);
-        CGSize titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWith lineBreakMode:NSLineBreakByTruncatingTail];
-        CGSize descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:CGSizeMake(maxWith, 10000) lineBreakMode:NSLineBreakByTruncatingTail];
+        CGSize titleLabelSize = [self titleSize];
+        CGSize descriptionLabelSize = [self descriptionSize];
         _height = MAX((kMessageBarPadding*2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding*2) + kMessageBarIconSize);
     }
     return _height;

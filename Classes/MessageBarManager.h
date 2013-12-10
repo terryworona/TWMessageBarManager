@@ -18,10 +18,16 @@ typedef enum {
 + (MessageBarManager *)sharedInstance;
 
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type;
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)vertOffset;
+
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type callback:(void (^)())callback;
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset callback:(void (^)())callback;
 
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration;
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration callback:(void (^)())callback;
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type withVerticalOffset:(CGFloat)verticalOffset forDuration:(CGFloat)duration;
+
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type forDuration:(CGFloat)duration withVerticalOffset:(CGFloat)verticalOffset callback:(void (^)())callback;
+
 
 - (void)hideAll; // not animated
 
