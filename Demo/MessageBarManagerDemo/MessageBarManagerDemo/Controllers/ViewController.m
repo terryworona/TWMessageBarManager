@@ -22,11 +22,13 @@
 @property (nonatomic, strong) UIButton *errorButton;
 @property (nonatomic, strong) UIButton *successButton;
 @property (nonatomic, strong) UIButton *infoButton;
+@property (nonatomic, strong) UIButton *hideAllButton;
 
 // Button presses
 - (void)errorButtonPressed:(id)sender;
 - (void)successButtonPressed:(id)sender;
 - (void)infoButtonPressed:(id)sender;
+- (void)hideAllButtonPressed:(id)sender;
 
 @end
 
@@ -45,7 +47,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     CGFloat xOffset = kViewControllerButtonPadding;
-    CGFloat yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(kViewControllerButtonHeight * 0.5);
+    CGFloat totalheight = (kViewControllerButtonHeight * 4) + (kViewControllerButtonPadding * 3);
+    CGFloat yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(totalheight * 0.5);
     
     _errorButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_errorButton setTitle:kStringButtonLabelErrorMessage forState:UIControlStateNormal];
@@ -53,7 +56,7 @@
     [_errorButton addTarget:self action:@selector(errorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_errorButton];
 
-    yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(kViewControllerButtonHeight * 0.5) - kViewControllerButtonHeight - kViewControllerButtonPadding;
+    yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
     
     _successButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_successButton setTitle:kStringButtonLabelSuccessMessage forState:UIControlStateNormal];
@@ -61,13 +64,21 @@
     [_successButton addTarget:self action:@selector(successButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_successButton];
 
-    yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(kViewControllerButtonHeight * 0.5) + kViewControllerButtonHeight + kViewControllerButtonPadding;
+    yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
 
     _infoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_infoButton setTitle:kStringButtonLabelInfoMessage forState:UIControlStateNormal];
     _infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset*2), kViewControllerButtonHeight);
     [_infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_infoButton];
+    
+    yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
+
+    _hideAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_hideAllButton setTitle:kStringButtonLabelHideAll forState:UIControlStateNormal];
+    _hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset*2), kViewControllerButtonHeight);
+    [_hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_hideAllButton];
 }
 
 #pragma mark - Orientation
@@ -115,6 +126,11 @@
     [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
                                                  description:kStringMessageBarInfoMessage
                                                         type:MessageBarMessageTypeInfo];
+}
+
+- (void)hideAllButtonPressed:(id)sender
+{
+    [[MessageBarManager sharedInstance] hideAll];
 }
 
 @end

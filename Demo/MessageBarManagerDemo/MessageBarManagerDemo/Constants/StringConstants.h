@@ -22,3 +22,4 @@
 #define kStringButtonLabelSuccessMessage localize(@"button.label.success.message", @"Success Message")
 #define kStringButtonLabelErrorMessage localize(@"button.label.error.message", @"Error Message")
 #define kStringButtonLabelInfoMessage localize(@"button.label.info.message", @"Information Message")
+#define kStringButtonLabelHideAll localize(@"button.label.hide.all", @"Hide All")

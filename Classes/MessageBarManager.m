@@ -129,6 +129,24 @@
     }
 }
 
+- (void)hideAll
+{
+    MessageView *currentMessageView = nil;
+    
+    for (UIView *subview in [[[UIApplication sharedApplication] keyWindow] subviews])
+    {
+        if ([subview isKindOfClass:[MessageView class]])
+        {
+            currentMessageView = (MessageView*)subview;
+            [currentMessageView removeFromSuperview];
+        }
+    }
+    
+    _messageVisible = NO;
+    [_messageBarQueue removeAllObjects];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
 #pragma mark - Private
 
 - (void)showNextMessage
@@ -141,7 +159,7 @@
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
 
-        UITapGestureRecognizer *gest = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(itemSelected:)];
+        UITapGestureRecognizer *gest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(itemSelected:)];
         [messageView addGestureRecognizer:gest];
 
         if (messageView){
