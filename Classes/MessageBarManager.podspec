@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
 
   s.platform = :ios, '6.1'
   s.source_files = 'Classes', 'Classes/**/*.{h,m}'
-  s.resources = ["Icons/*.png"]
+  s.resources = ["Classes/Icons/*.png"]
   s.requires_arc = true
 end
