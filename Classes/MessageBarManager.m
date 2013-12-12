@@ -127,9 +127,9 @@
     messageView.hidden = YES;
     
     [[[UIApplication sharedApplication] keyWindow] insertSubview:messageView atIndex:1];
-    [_messageBarQueue addObject:messageView];
+    [self.messageBarQueue addObject:messageView];
     
-    if (!_messageVisible)
+    if (!self.messageVisible)
     {
         [self showNextMessage];
     }
@@ -148,8 +148,8 @@
         }
     }
     
-    _messageVisible = NO;
-    [_messageBarQueue removeAllObjects];
+    self.messageVisible = NO;
+    [self.messageBarQueue removeAllObjects];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
@@ -157,11 +157,11 @@
 
 - (void)showNextMessage
 {
-    if ([_messageBarQueue count] > 0)
+    if ([self.messageBarQueue count] > 0)
     {
-        _messageVisible = YES;
+        self.messageVisible = YES;
         
-        MessageView *messageView = [_messageBarQueue objectAtIndex:0];
+        MessageView *messageView = [self.messageBarQueue objectAtIndex:0];
         messageView.frame = CGRectMake(0, -[messageView height], [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
@@ -171,10 +171,10 @@
 
         if (messageView)
         {
-            [_messageBarQueue removeObject:messageView];
+            [self.messageBarQueue removeObject:messageView];
             
             [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, _messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+                [messageView setFrame:CGRectMake(messageView.frame.origin.x, self.messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
@@ -203,9 +203,9 @@
         messageView.hit = YES;
         
         [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
-            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - _messageBarOffset, [messageView width], [messageView height])]; // slide back up
+            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - self.messageBarOffset, [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
-            _messageVisible = NO;
+            self.messageVisible = NO;
             [messageView removeFromSuperview];
             
             if (itemHit)
@@ -220,7 +220,7 @@
                 }
             }
             
-            if([_messageBarQueue count] > 0)
+            if([self.messageBarQueue count] > 0)
             {
                 [self showNextMessage];
             }
@@ -279,7 +279,7 @@ static UIColor *descriptionColor = nil;
     // background fill
     CGContextSaveGState(context);
     {
-        [[MessageBarStyleSheet backgroundColorForMessageType:_messageType] set];
+        [[MessageBarStyleSheet backgroundColorForMessageType:self.messageType] set];
         CGContextFillRect(context, rect);
     }
     CGContextRestoreGState(context);
@@ -289,7 +289,7 @@ static UIColor *descriptionColor = nil;
     {
         CGContextBeginPath(context);
         CGContextMoveToPoint(context, 0, rect.size.height);
-        CGContextSetStrokeColorWithColor(context, [MessageBarStyleSheet strokeColorForMessageType:_messageType].CGColor);
+        CGContextSetStrokeColorWithColor(context, [MessageBarStyleSheet strokeColorForMessageType:self.messageType].CGColor);
         CGContextSetLineWidth(context, 1.0);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
         CGContextStrokePath(context);
@@ -302,7 +302,7 @@ static UIColor *descriptionColor = nil;
     // icon
     CGContextSaveGState(context);
     {
-        [[MessageBarStyleSheet iconImageForMessageType:_messageType] drawInRect:CGRectMake(xOffset, yOffset, kMessageBarIconSize, kMessageBarIconSize)];
+        [[MessageBarStyleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kMessageBarIconSize, kMessageBarIconSize)];
     }
     CGContextRestoreGState(context);
     
@@ -310,40 +310,40 @@ static UIColor *descriptionColor = nil;
     xOffset += kMessageBarIconSize + kMessageBarPadding;
     
     CGSize titleLabelSize = [self titleSize];
-    if (_titleString && !_descriptionString)
+    if (self.titleString && !self.descriptionString)
     {
         yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kMessageBarTextOffset;
     }
     [titleColor set];
-	[_titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+	[self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 
     yOffset += titleLabelSize.height;
     
     CGSize descriptionLabelSize = [self descriptionSize];
     [descriptionColor set];
-	[_descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+	[self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 }
 
 #pragma mark - Getters
 
 - (CGFloat)height
 {
-    if (_height == 0)
+    if (self.height == 0)
     {
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
-        _height = MAX((kMessageBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding * 2) + kMessageBarIconSize);
+        self.height = MAX((kMessageBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding * 2) + kMessageBarIconSize);
     }
-    return _height;
+    return self.height;
 }
 
 - (CGFloat)width
 {
-    if (_width == 0)
+    if (self.width == 0)
     {
-        _width = [UIScreen mainScreen].bounds.size.width;
+        self.width = [UIScreen mainScreen].bounds.size.width;
     }
-    return _width;
+    return self.width;
 }
 
 - (CGFloat)availableWidth
@@ -356,7 +356,7 @@ static UIColor *descriptionColor = nil;
 {
     CGFloat maxWidth = [self availableWidth];
     NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:titleFont forKey: NSFontAttributeName];
-    CGSize titleLabelSize = [_titleString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+    CGSize titleLabelSize = [self.titleString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
                                                        options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
                                                     attributes:titleStringAttributes
                                                        context:nil].size;
@@ -367,7 +367,7 @@ static UIColor *descriptionColor = nil;
 {
     CGFloat maxWidth = [self availableWidth];
     NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:descriptionFont forKey: NSFontAttributeName];
-    CGSize descriptionLabelSize = [_descriptionString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+    CGSize descriptionLabelSize = [self.descriptionString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
                                                                    options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
                                                                 attributes:descriptionStringAttributes
                                                                    context:nil].size;

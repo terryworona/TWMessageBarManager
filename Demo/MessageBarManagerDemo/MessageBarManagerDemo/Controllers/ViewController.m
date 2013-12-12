@@ -46,35 +46,35 @@
     CGFloat totalheight = (kViewControllerButtonHeight * 4) + (kViewControllerButtonPadding * 3);
     CGFloat yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(totalheight * 0.5);
     
-    _errorButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [_errorButton setTitle:kStringButtonLabelErrorMessage forState:UIControlStateNormal];
-    _errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
-    [_errorButton addTarget:self action:@selector(errorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_errorButton];
+    self.errorButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.errorButton setTitle:kStringButtonLabelErrorMessage forState:UIControlStateNormal];
+    self.errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    [self.errorButton addTarget:self action:@selector(errorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.errorButton];
 
     yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
     
-    _successButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [_successButton setTitle:kStringButtonLabelSuccessMessage forState:UIControlStateNormal];
-    _successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
-    [_successButton addTarget:self action:@selector(successButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_successButton];
+    self.successButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.successButton setTitle:kStringButtonLabelSuccessMessage forState:UIControlStateNormal];
+    self.successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    [self.successButton addTarget:self action:@selector(successButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.successButton];
 
     yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
 
-    _infoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [_infoButton setTitle:kStringButtonLabelInfoMessage forState:UIControlStateNormal];
-    _infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
-    [_infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_infoButton];
+    self.infoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.infoButton setTitle:kStringButtonLabelInfoMessage forState:UIControlStateNormal];
+    self.infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    [self.infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.infoButton];
     
     yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
 
-    _hideAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [_hideAllButton setTitle:kStringButtonLabelHideAll forState:UIControlStateNormal];
-    _hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
-    [_hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_hideAllButton];
+    self.hideAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.hideAllButton setTitle:kStringButtonLabelHideAll forState:UIControlStateNormal];
+    self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    [self.hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.hideAllButton];
 }
 
 #pragma mark - Orientation
@@ -95,7 +95,6 @@
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-
 {
     return UIInterfaceOrientationPortrait;
 }
