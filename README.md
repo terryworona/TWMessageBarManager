@@ -2,7 +2,7 @@
 
 An iOS manager for presenting system-wide notifications via a dropdown message bar. 
 
-<img src="Screenshots/main.png">
+<img src="https://raw.github.com/terryworona/MessageBarManager/master/Screenshots/main.png">
 
 ## Requirements
 
@@ -43,7 +43,7 @@ Your podfile should look something like:
 The simpliest way to use MessageBarManager with your application is to drag and drop the <i>/Classes</i> folder into you're Xcode 5 project. It's also recommended you rename the <i>/Classes</i> folder to something more descriptive (ie. "<i>MessageBarManager</i>").
 
 <center>
-	<img src="Screenshots/installation.png">
+	<img src="https://raw.github.com/terryworona/MessageBarManager/master/Screenshots/installation.png">
 </center>
 
 ## Usage
