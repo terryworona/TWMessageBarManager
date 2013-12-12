@@ -30,6 +30,9 @@
 - (void)infoButtonPressed:(id)sender;
 - (void)hideAllButtonPressed:(id)sender;
 
+// Generators
+- (UIButton *)buttonWithTitle:(NSString *)title;
+
 @end
 
 @implementation ViewController
@@ -46,32 +49,28 @@
     CGFloat totalheight = (kViewControllerButtonHeight * 4) + (kViewControllerButtonPadding * 3);
     CGFloat yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(totalheight * 0.5);
     
-    self.errorButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.errorButton setTitle:kStringButtonLabelErrorMessage forState:UIControlStateNormal];
+    self.errorButton = [self buttonWithTitle:kStringButtonLabelErrorMessage];
     self.errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [self.errorButton addTarget:self action:@selector(errorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.errorButton];
 
     yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
     
-    self.successButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.successButton setTitle:kStringButtonLabelSuccessMessage forState:UIControlStateNormal];
+    self.successButton = [self buttonWithTitle:kStringButtonLabelSuccessMessage];
     self.successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [self.successButton addTarget:self action:@selector(successButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.successButton];
 
     yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
 
-    self.infoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.infoButton setTitle:kStringButtonLabelInfoMessage forState:UIControlStateNormal];
+    self.infoButton = [self buttonWithTitle:kStringButtonLabelInfoMessage];
     self.infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [self.infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.infoButton];
     
     yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
 
-    self.hideAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.hideAllButton setTitle:kStringButtonLabelHideAll forState:UIControlStateNormal];
+    self.hideAllButton = [self buttonWithTitle:kStringButtonLabelHideAll];
     self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [self.hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.hideAllButton];
@@ -125,6 +124,32 @@
 - (void)hideAllButtonPressed:(id)sender
 {
     [[MessageBarManager sharedInstance] hideAll];
+}
+
+#pragma mark - Generators
+
+- (UIButton *)buttonWithTitle:(NSString *)title
+{
+    UIButton *button = [[UIButton alloc] init];
+
+    // Background color
+    button.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
+    
+    // Title text
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitle:title forState:UIControlStateDisabled];
+    [button setTitle:title forState:UIControlStateSelected];
+    [button setTitle:title forState:UIControlStateHighlighted];
+    [button setTitle:title forState:UIControlStateHighlighted | UIControlStateSelected];
+    
+    // Title color
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateSelected];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted | UIControlStateSelected];
+    
+    return button;
 }
 
 @end
