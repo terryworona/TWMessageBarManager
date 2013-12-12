@@ -34,10 +34,6 @@
 
 @implementation ViewController
 
-@synthesize errorButton = _errorButton;
-@synthesize successButton = _successButton;
-@synthesize infoButton = _infoButton;
-
 #pragma mark - View Lifecycle
 
 - (void)loadView
@@ -52,7 +48,7 @@
     
     _errorButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_errorButton setTitle:kStringButtonLabelErrorMessage forState:UIControlStateNormal];
-    _errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset*2), kViewControllerButtonHeight);
+    _errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [_errorButton addTarget:self action:@selector(errorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_errorButton];
 
@@ -60,7 +56,7 @@
     
     _successButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_successButton setTitle:kStringButtonLabelSuccessMessage forState:UIControlStateNormal];
-    _successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset*2), kViewControllerButtonHeight);
+    _successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [_successButton addTarget:self action:@selector(successButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_successButton];
 
@@ -68,7 +64,7 @@
 
     _infoButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_infoButton setTitle:kStringButtonLabelInfoMessage forState:UIControlStateNormal];
-    _infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset*2), kViewControllerButtonHeight);
+    _infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [_infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_infoButton];
     
@@ -76,17 +72,16 @@
 
     _hideAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_hideAllButton setTitle:kStringButtonLabelHideAll forState:UIControlStateNormal];
-    _hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset*2), kViewControllerButtonHeight);
+    _hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
     [_hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_hideAllButton];
 }
 
 #pragma mark - Orientation
 
-// pre-iOS 6 support
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait); // pre-iOS 6 support
 }
 
 - (BOOL)automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers
