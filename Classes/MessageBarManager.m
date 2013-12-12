@@ -358,21 +358,20 @@ static UIColor *descriptionColor = nil;
 
 - (CGSize)titleSize
 {
-    CGFloat maxWidth = [self availableWidth];
-    
+    CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize titleLabelSize;
     
     if ([self isRunningiOS7OrLater])
     {
         NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:titleFont forKey: NSFontAttributeName];
-        titleLabelSize = [self.titleString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+        titleLabelSize = [self.titleString boundingRectWithSize:boundedSize
                                                         options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
                                                      attributes:titleStringAttributes
                                                         context:nil].size;
     }
     else
     {
-        titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWidth lineBreakMode:NSLineBreakByTruncatingTail];
+        titleLabelSize = [_titleString sizeWithFont:titleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
     
     return titleLabelSize;
@@ -380,23 +379,22 @@ static UIColor *descriptionColor = nil;
 
 - (CGSize)descriptionSize
 {
-    CGFloat maxWidth = [self availableWidth];
-    
+    CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize descriptionLabelSize;
     
     if ([self isRunningiOS7OrLater])
     {
         NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:descriptionFont forKey: NSFontAttributeName];
-        descriptionLabelSize = [self.descriptionString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+        descriptionLabelSize = [self.descriptionString boundingRectWithSize:boundedSize
                                                                     options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
                                                                  attributes:descriptionStringAttributes
                                                                     context:nil].size;
     }
     else
     {
-        descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont forWidth:maxWidth lineBreakMode:NSLineBreakByTruncatingTail];
+        descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
-
+    
     return descriptionLabelSize;
 }
 
