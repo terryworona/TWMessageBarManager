@@ -328,22 +328,22 @@ static UIColor *descriptionColor = nil;
 
 - (CGFloat)height
 {
-    if (self.height == 0)
+    if (_height == 0)
     {
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
-        self.height = MAX((kMessageBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding * 2) + kMessageBarIconSize);
+        _height = MAX((kMessageBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding * 2) + kMessageBarIconSize);
     }
-    return self.height;
+    return _height;
 }
 
 - (CGFloat)width
 {
-    if (self.width == 0)
+    if (_width == 0)
     {
-        self.width = [UIScreen mainScreen].bounds.size.width;
+        _width = [UIScreen mainScreen].bounds.size.width;
     }
-    return self.width;
+    return _width;
 }
 
 - (CGFloat)availableWidth
