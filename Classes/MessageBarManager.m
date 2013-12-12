@@ -22,6 +22,7 @@
 #define kMessageBarDisplayDelay 3.0
 #define kMessageBarTextOffset 2.0
 #define kMessageBarAnimationDuration 0.25
+#define kMessageBariOS7Identifier 7
 
 @class MessageView;
 
@@ -49,6 +50,9 @@
 - (CGFloat)availableWidth;
 - (CGSize)titleSize;
 - (CGSize)descriptionSize;
+
+// Helpers
+- (BOOL)isRunningiOS7OrLater;
 
 @end
 
@@ -355,23 +359,54 @@ static UIColor *descriptionColor = nil;
 - (CGSize)titleSize
 {
     CGFloat maxWidth = [self availableWidth];
-    NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:titleFont forKey: NSFontAttributeName];
-    CGSize titleLabelSize = [self.titleString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                                                       options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
-                                                    attributes:titleStringAttributes
-                                                       context:nil].size;
+    
+    CGSize titleLabelSize;
+    
+    if ([self isRunningiOS7OrLater])
+    {
+        NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:titleFont forKey: NSFontAttributeName];
+        titleLabelSize = [self.titleString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                                                        options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
+                                                     attributes:titleStringAttributes
+                                                        context:nil].size;
+    }
+    else
+    {
+        titleLabelSize = [_titleString sizeWithFont:titleFont forWidth:maxWidth lineBreakMode:NSLineBreakByTruncatingTail];
+    }
+    
     return titleLabelSize;
 }
 
 - (CGSize)descriptionSize
 {
     CGFloat maxWidth = [self availableWidth];
-    NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:descriptionFont forKey: NSFontAttributeName];
-    CGSize descriptionLabelSize = [self.descriptionString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                                                                   options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin
-                                                                attributes:descriptionStringAttributes
-                                                                   context:nil].size;
+    
+    CGSize descriptionLabelSize;
+    
+    if ([self isRunningiOS7OrLater])
+    {
+        NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:descriptionFont forKey: NSFontAttributeName];
+        descriptionLabelSize = [self.descriptionString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                                                                    options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
+                                                                 attributes:descriptionStringAttributes
+                                                                    context:nil].size;
+    }
+    else
+    {
+        descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont forWidth:maxWidth lineBreakMode:NSLineBreakByTruncatingTail];
+    }
+
     return descriptionLabelSize;
+}
+
+#pragma mark - Helpers
+
+- (BOOL)isRunningiOS7OrLater
+{
+	NSString *systemVersion = [UIDevice currentDevice].systemVersion;
+    NSUInteger systemInt = [systemVersion intValue];
+    return (systemInt >= kMessageBariOS7Identifier);
 }
 
 @end
