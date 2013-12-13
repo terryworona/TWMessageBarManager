@@ -13,18 +13,20 @@
 // Numerics (TWMessageBarStyleSheet)
 CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
 
+// Numerics (TWMessageView)
+CGFloat const kTWMessageViewBarPadding = 10.0f;
+CGFloat const kTWMessageViewIconSize = 36.0f;
+CGFloat const kTWMessageViewTextOffset = 2.0f;
+NSUInteger const kTWMessageViewiOS7Identifier = 7;
+
+// Numerics (TWMessageBarManager)
+CGFloat const kTWMessageBarManagerDisplayDelay = 3.0f;
+CGFloat const kTWMessageBarManagerAnimationDuration = 0.25f;
+
 // Strings (TWMessageBarStyleSheet)
 NSString * const kTWMessageBarStyleSheetImageIconError = @"icon-error.png";
 NSString * const kTWMessageBarStyleSheetImageIconSuccess = @"icon-success.png";
 NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
-
-// Numeric Constants
-#define kMessageBarPadding 10
-#define kMessageBarIconSize 36
-#define kMessageBarDisplayDelay 3.0
-#define kMessageBarTextOffset 2.0
-#define kMessageBarAnimationDuration 0.25
-#define kMessageBariOS7Identifier 7
 
 @interface TWMessageView : UIView
 
@@ -87,7 +89,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType
 {
-    return kMessageBarDisplayDelay;
+    return kTWMessageBarManagerDisplayDelay;
 }
 
 #pragma mark - Alloc/Init
@@ -177,7 +179,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
         {
             [self.messageBarQueue removeObject:messageView];
             
-            [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
+            [UIView animateWithDuration:kTWMessageBarManagerAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, self.messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             
@@ -206,7 +208,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
     {
         messageView.hit = YES;
         
-        [UIView animateWithDuration:kMessageBarAnimationDuration animations:^{
+        [UIView animateWithDuration:kTWMessageBarManagerAnimationDuration animations:^{
             [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - self.messageBarOffset, [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             self.messageVisible = NO;
@@ -300,23 +302,23 @@ static UIColor *descriptionColor = nil;
     }
     CGContextRestoreGState(context);
 
-    CGFloat xOffset = kMessageBarPadding;
-    CGFloat yOffset = kMessageBarPadding;
+    CGFloat xOffset = kTWMessageViewBarPadding;
+    CGFloat yOffset = kTWMessageViewBarPadding;
     
     // icon
     CGContextSaveGState(context);
     {
-        [[TWMessageBarStyleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kMessageBarIconSize, kMessageBarIconSize)];
+        [[TWMessageBarStyleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
     }
     CGContextRestoreGState(context);
     
-    yOffset -= kMessageBarTextOffset;
-    xOffset += kMessageBarIconSize + kMessageBarPadding;
+    yOffset -= kTWMessageViewTextOffset;
+    xOffset += kTWMessageViewIconSize + kTWMessageViewBarPadding;
     
     CGSize titleLabelSize = [self titleSize];
     if (self.titleString && !self.descriptionString)
     {
-        yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kMessageBarTextOffset;
+        yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
     }
     [titleColor set];
 	[self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
@@ -336,7 +338,7 @@ static UIColor *descriptionColor = nil;
     {
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
-        _height = MAX((kMessageBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kMessageBarPadding * 2) + kMessageBarIconSize);
+        _height = MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize);
     }
     return _height;
 }
@@ -352,7 +354,7 @@ static UIColor *descriptionColor = nil;
 
 - (CGFloat)availableWidth
 {
-    CGFloat maxWidth = ([self width] - (kMessageBarPadding * 3) - kMessageBarIconSize);
+    CGFloat maxWidth = ([self width] - (kTWMessageViewBarPadding * 3) - kTWMessageViewIconSize);
     return maxWidth;
 }
 
@@ -404,7 +406,7 @@ static UIColor *descriptionColor = nil;
 {
 	NSString *systemVersion = [UIDevice currentDevice].systemVersion;
     NSUInteger systemInt = [systemVersion intValue];
-    return (systemInt >= kMessageBariOS7Identifier);
+    return systemInt >= kTWMessageViewiOS7Identifier;
 }
 
 @end
