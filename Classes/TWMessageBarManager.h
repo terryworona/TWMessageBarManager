@@ -72,7 +72,7 @@ typedef enum {
 
 @end
 
-@interface MessageBarStyleSheet : NSObject
+@interface TWMessageBarStyleSheet : NSObject
 
 /**
  *  Background color of message view.

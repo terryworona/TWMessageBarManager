@@ -10,13 +10,16 @@
 // Quartz
 #import <QuartzCore/QuartzCore.h>
 
-// Image Constants
-#define kMessageBarImageIconError @"icon-error.png"
-#define kMessageBarImageIconSuccess @"icon-success.png"
-#define kMessageBarImageIconInfo @"icon-info.png"
+// Numerics (TWMessageBarStyleSheet)
+CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
+
+// Strings (TWMessageBarStyleSheet)
+NSString * const kTWMessageBarStyleSheetImageIconError = @"icon-error.png";
+NSString * const kTWMessageBarStyleSheetImageIconSuccess = @"icon-success.png";
+NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
+
 
 // Numeric Constants
-#define kMessageBarAlpha 0.96
 #define kMessageBarPadding 10
 #define kMessageBarIconSize 36
 #define kMessageBarDisplayDelay 3.0
@@ -283,7 +286,7 @@ static UIColor *descriptionColor = nil;
     // background fill
     CGContextSaveGState(context);
     {
-        [[MessageBarStyleSheet backgroundColorForMessageType:self.messageType] set];
+        [[TWMessageBarStyleSheet backgroundColorForMessageType:self.messageType] set];
         CGContextFillRect(context, rect);
     }
     CGContextRestoreGState(context);
@@ -293,7 +296,7 @@ static UIColor *descriptionColor = nil;
     {
         CGContextBeginPath(context);
         CGContextMoveToPoint(context, 0, rect.size.height);
-        CGContextSetStrokeColorWithColor(context, [MessageBarStyleSheet strokeColorForMessageType:self.messageType].CGColor);
+        CGContextSetStrokeColorWithColor(context, [TWMessageBarStyleSheet strokeColorForMessageType:self.messageType].CGColor);
         CGContextSetLineWidth(context, 1.0);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
         CGContextStrokePath(context);
@@ -306,7 +309,7 @@ static UIColor *descriptionColor = nil;
     // icon
     CGContextSaveGState(context);
     {
-        [[MessageBarStyleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kMessageBarIconSize, kMessageBarIconSize)];
+        [[TWMessageBarStyleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kMessageBarIconSize, kMessageBarIconSize)];
     }
     CGContextRestoreGState(context);
     
@@ -409,7 +412,7 @@ static UIColor *descriptionColor = nil;
 
 @end
 
-@implementation MessageBarStyleSheet
+@implementation TWMessageBarStyleSheet
 
 #pragma mark - Colors
 
@@ -419,13 +422,13 @@ static UIColor *descriptionColor = nil;
     switch (type)
     {
         case TWMessageBarMessageTypeError:
-            backgroundColor = [UIColor colorWithRed:1.0 green:0.611 blue:0.0 alpha:kMessageBarAlpha]; // orange
+            backgroundColor = [UIColor colorWithRed:1.0 green:0.611 blue:0.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // orange
             break;
         case TWMessageBarMessageTypeSuccess:
-            backgroundColor = [UIColor colorWithRed:0.0f green:0.831f blue:0.176f alpha:kMessageBarAlpha]; // green
+            backgroundColor = [UIColor colorWithRed:0.0f green:0.831f blue:0.176f alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // green
             break;
         case TWMessageBarMessageTypeInfo:
-            backgroundColor = [UIColor colorWithRed:0.0 green:0.482 blue:1.0 alpha:kMessageBarAlpha]; // blue
+            backgroundColor = [UIColor colorWithRed:0.0 green:0.482 blue:1.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // blue
             break;
         default:
             break;
@@ -459,13 +462,13 @@ static UIColor *descriptionColor = nil;
     switch (type)
     {
         case TWMessageBarMessageTypeError:
-            iconImage = [UIImage imageNamed:kMessageBarImageIconError];
+            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconError];
             break;
         case TWMessageBarMessageTypeSuccess:
-            iconImage = [UIImage imageNamed:kMessageBarImageIconSuccess];
+            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconSuccess];
             break;
         case TWMessageBarMessageTypeInfo:
-            iconImage = [UIImage imageNamed:kMessageBarImageIconInfo];
+            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconInfo];
             break;
         default:
             break;
