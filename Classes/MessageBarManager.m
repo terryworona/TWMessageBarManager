@@ -96,7 +96,7 @@
 {
     if(self = [super init])
     {
-        _messageBarQueue = [[NSMutableArray alloc] init];        
+        _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _messageBarOffset = [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
@@ -123,7 +123,7 @@
 - (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
 {
     MessageView *messageView = [[MessageView alloc] initWithTitle:title description:description type:type];
-
+    
     messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
     messageView.hasCallback = callback ? YES : NO;
     
@@ -169,10 +169,16 @@
         messageView.frame = CGRectMake(0, -[messageView height], [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
-
+        
         UITapGestureRecognizer *gest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(itemSelected:)];
         [messageView addGestureRecognizer:gest];
-
+        if (self.allowsSwiping){
+            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+            [panRecognizer setMinimumNumberOfTouches:1];
+            [panRecognizer setMaximumNumberOfTouches:1];
+            [messageView addGestureRecognizer:panRecognizer];
+        }
+        
         if (messageView)
         {
             [self.messageBarQueue removeObject:messageView];
@@ -185,7 +191,40 @@
         }
     }
 }
+-(void)pan:(id)sender { // on pan
+    __block UIView *view = [(UIPanGestureRecognizer*)sender view];
+    CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:view.superview];
+    [view setCenter:CGPointMake([sender view].center.x+translatedPoint.x, [sender view].center.y)];
+    if ([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
+        CGFloat velocityX = (0.2*[(UIPanGestureRecognizer*)sender velocityInView:view].x); // calculate velocity
+        
+        CGFloat finalX = 0 - CGRectGetWidth(view.frame)/2; // off screen
+        CGFloat finalY = view.center.y;
+        
+        BOOL returnsToMiddle = (view.center.x > CGRectGetWidth(view.frame) * 0.2); // is it over far enough to conisder it that the user wants it offscreen?
+        if (returnsToMiddle){
+            finalX = CGRectGetWidth(view.frame)/2.f;// return back to middle, not gone far enough
+        }
+        if (!returnsToMiddle){
+            [NSObject cancelPreviousPerformRequestsWithTarget:self]; // cancel itemSelected
+        }
+        CGFloat animationDuration = (ABS(velocityX)*.0002)+.2; // duration
+        [UIView animateWithDuration:animationDuration delay:0.0 options:(UIViewAnimationOptionCurveEaseOut) animations:^{ //
+            [[sender view] setCenter:CGPointMake(finalX, finalY)];
 
+        } completion:^(BOOL finished) {
+            if (finished && !returnsToMiddle){
+                if (view.superview){ // just make sure it has a superview
+                    self.messageVisible = NO; // no message visible
+                    [view removeFromSuperview]; // remove
+                    [self showNextMessage]; // show next message
+                }
+            }
+        }];
+    }
+    [(UIPanGestureRecognizer*)sender setTranslation:CGPointMake(0, 0) inView:view];
+    
+}
 #pragma mark - Gestures
 
 - (void)itemSelected:(id)sender
@@ -244,7 +283,7 @@ static UIColor *descriptionColor = nil;
 
 #pragma mark - Alloc/Init
 
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type 
+- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type
 {
     self = [super initWithFrame:CGRectZero];
     if (self)
@@ -268,9 +307,11 @@ static UIColor *descriptionColor = nil;
         
         _hasCallback = NO;
         _hit = NO;
+        
     }
     return self;
 }
+
 
 #pragma mark - Drawing
 
@@ -285,7 +326,7 @@ static UIColor *descriptionColor = nil;
         CGContextFillRect(context, rect);
     }
     CGContextRestoreGState(context);
-
+    
     // bottom stroke
     CGContextSaveGState(context);
     {
@@ -297,7 +338,7 @@ static UIColor *descriptionColor = nil;
         CGContextStrokePath(context);
     }
     CGContextRestoreGState(context);
-
+    
     CGFloat xOffset = kMessageBarPadding;
     CGFloat yOffset = kMessageBarPadding;
     
@@ -318,7 +359,7 @@ static UIColor *descriptionColor = nil;
     }
     [titleColor set];
 	[self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
-
+    
     yOffset += titleLabelSize.height;
     
     CGSize descriptionLabelSize = [self descriptionSize];

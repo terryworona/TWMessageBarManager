@@ -70,6 +70,8 @@ typedef enum {
  */
 - (void)hideAll;
 
+@property (nonatomic, assign) BOOL allowsSwiping; // allows user to swipe to dismiss notifications 
+
 @end
 
 @interface MessageBarStyleSheet : NSObject
