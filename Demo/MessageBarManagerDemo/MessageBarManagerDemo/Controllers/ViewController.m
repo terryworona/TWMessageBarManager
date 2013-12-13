@@ -12,7 +12,7 @@
 #import "StringConstants.h"
 
 // Messages
-#import "MessageBarManager.h"
+#import "TWMessageBarManager.h"
 
 #define kViewControllerButtonPadding 10
 #define kViewControllerButtonHeight 50
@@ -102,28 +102,28 @@
 
 - (void)errorButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarErrorTitle
-                                                 description:kStringMessageBarErrorMessage
-                                                        type:MessageBarMessageTypeError];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarErrorTitle
+                                                   description:kStringMessageBarErrorMessage
+                                                          type:TWMessageBarMessageTypeError];
 }
 
 - (void)successButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarSuccessTitle
-                                                 description:kStringMessageBarSuccessMessage
-                                                        type:MessageBarMessageTypeSuccess];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarSuccessTitle
+                                                   description:kStringMessageBarSuccessMessage
+                                                          type:TWMessageBarMessageTypeSuccess];
 }
 
 - (void)infoButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
-                                                 description:kStringMessageBarInfoMessage
-                                                        type:MessageBarMessageTypeInfo];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
+                                                   description:kStringMessageBarInfoMessage
+                                                          type:TWMessageBarMessageTypeInfo];
 }
 
 - (void)hideAllButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] hideAll];
+    [[TWMessageBarManager sharedInstance] hideAll];
 }
 
 #pragma mark - Generators
