@@ -206,7 +206,7 @@
             finalX = CGRectGetWidth(view.frame)/2.f;// return back to middle, not gone far enough
         }
         if (!returnsToMiddle){
-            [NSObject cancelPreviousPerformRequestsWithTarget:self]; // cancel itemSelected
+            [NSObject cancelPreviousPerformRequestsWithTarget:self]; // cancel itemSelected call
         }
         CGFloat animationDuration = (ABS(velocityX)*.0002)+.2; // duration
         [UIView animateWithDuration:animationDuration delay:0.0 options:(UIViewAnimationOptionCurveEaseOut) animations:^{ //
