@@ -28,8 +28,8 @@
 
 @interface MessageView : UIView
 
-@property (nonatomic, strong) NSString *titleString;
-@property (nonatomic, strong) NSString *descriptionString;
+@property (nonatomic, copy) NSString *titleString;
+@property (nonatomic, copy) NSString *descriptionString;
 @property (nonatomic, assign) MessageBarMessageType messageType;
 
 @property (nonatomic, assign) BOOL hasCallback;
@@ -276,8 +276,6 @@ static UIColor *descriptionColor = nil;
 
 - (void)drawRect:(CGRect)rect
 {
-    [super drawRect:rect];
-    
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
     // background fill
