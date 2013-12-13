@@ -172,7 +172,7 @@
         
         UITapGestureRecognizer *gest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(itemSelected:)];
         [messageView addGestureRecognizer:gest];
-        if (self.allowsSwiping){
+        if (self.allowsSwiping){ // add pan
             UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
             [panRecognizer setMinimumNumberOfTouches:1];
             [panRecognizer setMaximumNumberOfTouches:1];
