@@ -18,7 +18,6 @@ NSString * const kTWMessageBarStyleSheetImageIconError = @"icon-error.png";
 NSString * const kTWMessageBarStyleSheetImageIconSuccess = @"icon-success.png";
 NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
-
 // Numeric Constants
 #define kMessageBarPadding 10
 #define kMessageBarIconSize 36
@@ -27,9 +26,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 #define kMessageBarAnimationDuration 0.25
 #define kMessageBariOS7Identifier 7
 
-@class MessageView;
-
-@interface MessageView : UIView
+@interface TWMessageView : UIView
 
 @property (nonatomic, strong) NSString *titleString;
 @property (nonatomic, strong) NSString *descriptionString;
@@ -45,7 +42,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 @property (nonatomic, assign) CGFloat duration;
 
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type;
+- (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type;
 
 // Getters
 - (CGFloat)height;
@@ -68,7 +65,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
 
 - (void)showNextMessage;
-- (void)itemSelected:(UITapGestureRecognizer*)recognizer;
+- (void)itemSelected:(UITapGestureRecognizer *)recognizer;
 
 @end
 
@@ -108,24 +105,24 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 #pragma mark - Public
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type
 {
     [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type callback:(void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration
 {
     [self showMessageWithTitle:title description:description type:type duration:duration callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
 {
-    MessageView *messageView = [[MessageView alloc] initWithTitle:title description:description type:type];
+    TWMessageView *messageView = [[TWMessageView alloc] initWithTitle:title description:description type:type];
 
     messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
     messageView.hasCallback = callback ? YES : NO;
@@ -144,13 +141,13 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 - (void)hideAll
 {
-    MessageView *currentMessageView = nil;
+    TWMessageView *currentMessageView = nil;
     
     for (UIView *subview in [[[UIApplication sharedApplication] keyWindow] subviews])
     {
-        if ([subview isKindOfClass:[MessageView class]])
+        if ([subview isKindOfClass:[TWMessageView class]])
         {
-            currentMessageView = (MessageView*)subview;
+            currentMessageView = (TWMessageView *)subview;
             [currentMessageView removeFromSuperview];
         }
     }
@@ -168,7 +165,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
     {
         self.messageVisible = YES;
         
-        MessageView *messageView = [self.messageBarQueue objectAtIndex:0];
+        TWMessageView *messageView = [self.messageBarQueue objectAtIndex:0];
         messageView.frame = CGRectMake(0, -[messageView height], [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
@@ -193,16 +190,16 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 - (void)itemSelected:(id)sender
 {
-    MessageView *messageView = nil;
+    TWMessageView *messageView = nil;
     BOOL itemHit = NO;
     if ([sender isKindOfClass:[UIGestureRecognizer class]])
     {
-        messageView = (MessageView*)((UIGestureRecognizer*)sender).view;
+        messageView = (TWMessageView *)((UIGestureRecognizer *)sender).view;
         itemHit = YES;
     }
-    else if ([sender isKindOfClass:[MessageView class]])
+    else if ([sender isKindOfClass:[TWMessageView class]])
     {
-        messageView = (MessageView*)sender;
+        messageView = (TWMessageView *)sender;
     }
     
     if (messageView && ![messageView isHit])
@@ -243,11 +240,11 @@ static UIColor *titleColor = nil;
 static UIFont *descriptionFont = nil;
 static UIColor *descriptionColor = nil;
 
-@implementation MessageView
+@implementation TWMessageView
 
 #pragma mark - Alloc/Init
 
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type
+- (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type
 {
     self = [super initWithFrame:CGRectZero];
     if (self)

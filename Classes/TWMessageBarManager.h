@@ -32,7 +32,7 @@ typedef enum {
  *  @param description  Description text in the message view.
  *  @param type         Type dictates color, stroke and icon shown in the message view.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type;
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type;
 
 /**
  *  Shows a message with the supplied title, description, type (dictates color, stroke and icon) & callback block.
@@ -42,7 +42,7 @@ typedef enum {
  *  @param type         Type dictates color, stroke and icon shown in the message view.
  *  @param callback     Callback block to be executed if a message is tapped.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type callback:(void (^)())callback;
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type callback:(void (^)())callback;
 
 /**
  *  Shows a message with the supplied title, description, type (dictates color, stroke and icon) & duration.
@@ -52,7 +52,7 @@ typedef enum {
  *  @param type         Type dictates color, stroke and icon shown in the message view.
  *  @param duration     Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration;
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration;
 
 /**
  *  Shows a message with the supplied title, description, type (dictates color, stroke and icon), callback block & duration.
@@ -63,7 +63,7 @@ typedef enum {
  *  @param duration     Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
  *  @param callback     Callback block to be executed if a message is tapped.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback;
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback;
 
 /**
  *  Hides the topmost message from view and removes all remaining messages in the queue (not animated).
