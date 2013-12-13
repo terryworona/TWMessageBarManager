@@ -23,7 +23,7 @@
 		CEFA8182185B605C00B7AD23 /* icon-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEFA8179185B605C00B7AD23 /* icon-info@2x.png */; };
 		CEFA8183185B605C00B7AD23 /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = CEFA817A185B605C00B7AD23 /* icon-success.png */; };
 		CEFA8184185B605C00B7AD23 /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEFA817B185B605C00B7AD23 /* icon-success@2x.png */; };
-		CEFA8185185B605C00B7AD23 /* MessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFA817D185B605C00B7AD23 /* MessageBarManager.m */; };
+		CEFA8185185B605C00B7AD23 /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFA817D185B605C00B7AD23 /* TWMessageBarManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,8 +49,8 @@
 		CEFA8179185B605C00B7AD23 /* icon-info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-info@2x.png"; sourceTree = "<group>"; };
 		CEFA817A185B605C00B7AD23 /* icon-success.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success.png"; sourceTree = "<group>"; };
 		CEFA817B185B605C00B7AD23 /* icon-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success@2x.png"; sourceTree = "<group>"; };
-		CEFA817C185B605C00B7AD23 /* MessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBarManager.h; sourceTree = "<group>"; };
-		CEFA817D185B605C00B7AD23 /* MessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBarManager.m; sourceTree = "<group>"; };
+		CEFA817C185B605C00B7AD23 /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarManager.h; sourceTree = "<group>"; };
+		CEFA817D185B605C00B7AD23 /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMessageBarManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,8 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				CEFA8175185B605C00B7AD23 /* Icons */,
-				CEFA817C185B605C00B7AD23 /* MessageBarManager.h */,
-				CEFA817D185B605C00B7AD23 /* MessageBarManager.m */,
+				CEFA817C185B605C00B7AD23 /* TWMessageBarManager.h */,
+				CEFA817D185B605C00B7AD23 /* TWMessageBarManager.m */,
 			);
 			name = TWMessageBarManager;
 			path = ../../../TWMessageBarManager;
@@ -259,7 +259,7 @@
 			files = (
 				5649826A1741BF7A00077B8C /* main.m in Sources */,
 				569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */,
-				CEFA8185185B605C00B7AD23 /* MessageBarManager.m in Sources */,
+				CEFA8185185B605C00B7AD23 /* TWMessageBarManager.m in Sources */,
 				569FCDF91741C09300F2B74C /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
