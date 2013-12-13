@@ -28,6 +28,14 @@ NSString * const kTWMessageBarStyleSheetImageIconError = @"icon-error.png";
 NSString * const kTWMessageBarStyleSheetImageIconSuccess = @"icon-success.png";
 NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
+// Fonts (TWMessageView)
+static UIFont *kTWMessageViewTitleFont = nil;
+static UIFont *TWMessageViewDescriptionFont = nil;
+
+// Colors (TWMessageView)
+static UIColor *kTWMessageViewTitleColor = nil;
+static UIColor *kTWMessageViewDescriptionColor = nil;
+
 @interface TWMessageView : UIView
 
 @property (nonatomic, strong) NSString *titleString;
@@ -44,6 +52,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 @property (nonatomic, assign) CGFloat duration;
 
+// Initializers
 - (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type;
 
 // Getters
@@ -64,9 +73,13 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, assign) CGFloat messageBarOffset;
 
+// Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
 
+// Helpers
 - (void)showNextMessage;
+
+// Gestures
 - (void)itemSelected:(UITapGestureRecognizer *)recognizer;
 
 @end
@@ -159,7 +172,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
-#pragma mark - Private
+#pragma mark - Helpers
 
 - (void)showNextMessage
 {
@@ -236,15 +249,23 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 @end
 
-static UIFont *titleFont = nil;
-static UIColor *titleColor = nil;
-
-static UIFont *descriptionFont = nil;
-static UIColor *descriptionColor = nil;
-
 @implementation TWMessageView
 
 #pragma mark - Alloc/Init
+
++ (void)initialize
+{
+	if (self == [TWMessageView class])
+	{
+        // Fonts
+        kTWMessageViewTitleFont = [UIFont boldSystemFontOfSize:16.0];
+        TWMessageViewDescriptionFont = [UIFont systemFontOfSize:14.0];
+        
+        // Colors
+        kTWMessageViewTitleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        kTWMessageViewDescriptionColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+	}
+}
 
 - (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type
 {
@@ -258,12 +279,6 @@ static UIColor *descriptionColor = nil;
         _titleString = title;
         _descriptionString = description;
         _messageType = type;
-        
-        titleFont = [UIFont boldSystemFontOfSize:16.0];
-        titleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
-        
-        descriptionFont = [UIFont systemFontOfSize:14.0];
-        descriptionColor = [UIColor colorWithWhite:1.0 alpha:1.0];
         
         _height = 0.0;
         _width = 0.0;
@@ -320,14 +335,14 @@ static UIColor *descriptionColor = nil;
     {
         yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
     }
-    [titleColor set];
-	[self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:titleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+    [kTWMessageViewTitleColor set];
+	[self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:kTWMessageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 
     yOffset += titleLabelSize.height;
     
     CGSize descriptionLabelSize = [self descriptionSize];
-    [descriptionColor set];
-	[self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:descriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+    [kTWMessageViewDescriptionColor set];
+	[self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:TWMessageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 }
 
 #pragma mark - Getters
@@ -365,7 +380,7 @@ static UIColor *descriptionColor = nil;
     
     if ([self isRunningiOS7OrLater])
     {
-        NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:titleFont forKey: NSFontAttributeName];
+        NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewTitleFont forKey: NSFontAttributeName];
         titleLabelSize = [self.titleString boundingRectWithSize:boundedSize
                                                         options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
                                                      attributes:titleStringAttributes
@@ -373,7 +388,7 @@ static UIColor *descriptionColor = nil;
     }
     else
     {
-        titleLabelSize = [_titleString sizeWithFont:titleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
+        titleLabelSize = [_titleString sizeWithFont:kTWMessageViewTitleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
     
     return titleLabelSize;
@@ -386,7 +401,7 @@ static UIColor *descriptionColor = nil;
     
     if ([self isRunningiOS7OrLater])
     {
-        NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:descriptionFont forKey: NSFontAttributeName];
+        NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:TWMessageViewDescriptionFont forKey: NSFontAttributeName];
         descriptionLabelSize = [self.descriptionString boundingRectWithSize:boundedSize
                                                                     options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
                                                                  attributes:descriptionStringAttributes
@@ -394,7 +409,7 @@ static UIColor *descriptionColor = nil;
     }
     else
     {
-        descriptionLabelSize = [_descriptionString sizeWithFont:descriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
+        descriptionLabelSize = [_descriptionString sizeWithFont:TWMessageViewDescriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
     
     return descriptionLabelSize;

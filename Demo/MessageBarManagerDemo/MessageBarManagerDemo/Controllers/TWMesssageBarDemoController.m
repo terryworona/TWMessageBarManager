@@ -18,6 +18,9 @@
 CGFloat const kTWMesssageBarDemoControllerButtonPadding = 10.0f;
 CGFloat const kTWMesssageBarDemoControllerButtonHeight = 50.0f;
 
+// Colors
+static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
+
 @interface TWMesssageBarDemoController ()
 
 @property (nonatomic, strong) UIButton *errorButton;
@@ -37,6 +40,16 @@ CGFloat const kTWMesssageBarDemoControllerButtonHeight = 50.0f;
 @end
 
 @implementation TWMesssageBarDemoController
+
+#pragma mark - Alloc/Init
+
++ (void)initialize
+{
+	if (self == [TWMesssageBarDemoController class])
+	{
+        kTWMesssageBarDemoControllerButtonColor = [UIColor colorWithWhite:0.0 alpha:0.25];
+	}
+}
 
 #pragma mark - View Lifecycle
 
@@ -134,7 +147,7 @@ CGFloat const kTWMesssageBarDemoControllerButtonHeight = 50.0f;
     UIButton *button = [[UIButton alloc] init];
 
     // Background color
-    button.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
+    button.backgroundColor = kTWMesssageBarDemoControllerButtonColor;
     
     // Title text
     [button setTitle:title forState:UIControlStateNormal];
