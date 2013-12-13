@@ -1,11 +1,11 @@
 //
-//  MessageBarManager.m
+//  TWMessageBarManager.m
 //
 //  Created by Terry Worona on 5/13/13.
 //  Copyright (c) 2013 Terry Worona. All rights reserved.
 //
 
-#import "MessageBarManager.h"
+#import "TWMessageBarManager.h"
 
 // Quartz
 #import <QuartzCore/QuartzCore.h>
@@ -30,7 +30,7 @@
 
 @property (nonatomic, strong) NSString *titleString;
 @property (nonatomic, strong) NSString *descriptionString;
-@property (nonatomic, assign) MessageBarMessageType messageType;
+@property (nonatomic, assign) TWMessageBarMessageType messageType;
 
 @property (nonatomic, assign) BOOL hasCallback;
 @property (nonatomic, strong) NSArray *callbacks;
@@ -42,7 +42,7 @@
 
 @property (nonatomic, assign) CGFloat duration;
 
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type;
+- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type;
 
 // Getters
 - (CGFloat)height;
@@ -56,27 +56,27 @@
 
 @end
 
-@interface MessageBarManager ()
+@interface TWMessageBarManager ()
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, assign) CGFloat messageBarOffset;
 
-+ (CGFloat)durationForMessageType:(MessageBarMessageType)messageType;
++ (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
 
 - (void)showNextMessage;
 - (void)itemSelected:(UITapGestureRecognizer*)recognizer;
 
 @end
 
-@implementation MessageBarManager
+@implementation TWMessageBarManager
 
 #pragma mark - Singleton
 
-+ (MessageBarManager *)sharedInstance
++ (TWMessageBarManager *)sharedInstance
 {
     static dispatch_once_t pred;
-    static MessageBarManager *instance = nil;
+    static TWMessageBarManager *instance = nil;
     dispatch_once(&pred, ^{
         instance = [[self alloc] init];
     });
@@ -85,7 +85,7 @@
 
 #pragma mark - Static
 
-+ (CGFloat)durationForMessageType:(MessageBarMessageType)messageType
++ (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType
 {
     return kMessageBarDisplayDelay;
 }
@@ -105,22 +105,22 @@
 
 #pragma mark - Public
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type
 {
-    [self showMessageWithTitle:title description:description type:type duration:[MessageBarManager durationForMessageType:type] callback:nil];
+    [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type callback:(void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type duration:[MessageBarManager durationForMessageType:type] callback:callback];
+    [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type duration:(CGFloat)duration
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration
 {
     [self showMessageWithTitle:title description:description type:type duration:duration callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
 {
     MessageView *messageView = [[MessageView alloc] initWithTitle:title description:description type:type];
 
@@ -244,7 +244,7 @@ static UIColor *descriptionColor = nil;
 
 #pragma mark - Alloc/Init
 
-- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type 
+- (id)initWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type
 {
     self = [super initWithFrame:CGRectZero];
     if (self)
@@ -413,18 +413,18 @@ static UIColor *descriptionColor = nil;
 
 #pragma mark - Colors
 
-+ (UIColor *)backgroundColorForMessageType:(MessageBarMessageType)type
++ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
 {
     UIColor *backgroundColor = nil;
     switch (type)
     {
-        case MessageBarMessageTypeError:
+        case TWMessageBarMessageTypeError:
             backgroundColor = [UIColor colorWithRed:1.0 green:0.611 blue:0.0 alpha:kMessageBarAlpha]; // orange
             break;
-        case MessageBarMessageTypeSuccess:
+        case TWMessageBarMessageTypeSuccess:
             backgroundColor = [UIColor colorWithRed:0.0f green:0.831f blue:0.176f alpha:kMessageBarAlpha]; // green
             break;
-        case MessageBarMessageTypeInfo:
+        case TWMessageBarMessageTypeInfo:
             backgroundColor = [UIColor colorWithRed:0.0 green:0.482 blue:1.0 alpha:kMessageBarAlpha]; // blue
             break;
         default:
@@ -433,18 +433,18 @@ static UIColor *descriptionColor = nil;
     return backgroundColor;
 }
 
-+ (UIColor *)strokeColorForMessageType:(MessageBarMessageType)type
++ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
 {
     UIColor *strokeColor = nil;
     switch (type)
     {
-        case MessageBarMessageTypeError:
+        case TWMessageBarMessageTypeError:
             strokeColor = [UIColor colorWithRed:0.949f green:0.580f blue:0.0f alpha:1.0f]; // orange
             break;
-        case MessageBarMessageTypeSuccess:
+        case TWMessageBarMessageTypeSuccess:
             strokeColor = [UIColor colorWithRed:0.0f green:0.772f blue:0.164f alpha:1.0f]; // green
             break;
-        case MessageBarMessageTypeInfo:
+        case TWMessageBarMessageTypeInfo:
             strokeColor = [UIColor colorWithRed:0.0f green:0.415f blue:0.803f alpha:1.0f]; // blue
             break;
         default:
@@ -453,18 +453,18 @@ static UIColor *descriptionColor = nil;
     return strokeColor;
 }
 
-+ (UIImage *)iconImageForMessageType:(MessageBarMessageType)type
++ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
 {
     UIImage *iconImage = nil;
     switch (type)
     {
-        case MessageBarMessageTypeError:
+        case TWMessageBarMessageTypeError:
             iconImage = [UIImage imageNamed:kMessageBarImageIconError];
             break;
-        case MessageBarMessageTypeSuccess:
+        case TWMessageBarMessageTypeSuccess:
             iconImage = [UIImage imageNamed:kMessageBarImageIconSuccess];
             break;
-        case MessageBarMessageTypeInfo:
+        case TWMessageBarMessageTypeInfo:
             iconImage = [UIImage imageNamed:kMessageBarImageIconInfo];
             break;
         default:

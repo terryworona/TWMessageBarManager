@@ -1,23 +1,24 @@
 //
-//  ViewController.m
+//  TWMesssageBarDemoController.m
 //  MessageBarManagerDemo
 //
 //  Created by Terry Worona on 5/13/13.
 //  Copyright (c) 2013 Terry Worona. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "TWMesssageBarDemoController.h"
 
 // Constants
 #import "StringConstants.h"
 
 // Messages
-#import "MessageBarManager.h"
+#import "TWMessageBarManager.h"
 
-#define kViewControllerButtonPadding 10
-#define kViewControllerButtonHeight 50
+// Numerics
+CGFloat const kTWMesssageBarDemoControllerButtonPadding = 10.0f;
+CGFloat const kTWMesssageBarDemoControllerButtonHeight = 50.0f;
 
-@interface ViewController ()
+@interface TWMesssageBarDemoController ()
 
 @property (nonatomic, strong) UIButton *errorButton;
 @property (nonatomic, strong) UIButton *successButton;
@@ -35,7 +36,7 @@
 
 @end
 
-@implementation ViewController
+@implementation TWMesssageBarDemoController
 
 #pragma mark - View Lifecycle
 
@@ -45,33 +46,33 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    CGFloat xOffset = kViewControllerButtonPadding;
-    CGFloat totalheight = (kViewControllerButtonHeight * 4) + (kViewControllerButtonPadding * 3);
+    CGFloat xOffset = kTWMesssageBarDemoControllerButtonPadding;
+    CGFloat totalheight = (kTWMesssageBarDemoControllerButtonHeight * 4) + (kTWMesssageBarDemoControllerButtonPadding * 3);
     CGFloat yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(totalheight * 0.5);
     
     self.errorButton = [self buttonWithTitle:kStringButtonLabelErrorMessage];
-    self.errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    self.errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.errorButton addTarget:self action:@selector(errorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.errorButton];
 
-    yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
+    yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
     
     self.successButton = [self buttonWithTitle:kStringButtonLabelSuccessMessage];
-    self.successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    self.successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.successButton addTarget:self action:@selector(successButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.successButton];
 
-    yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
+    yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
 
     self.infoButton = [self buttonWithTitle:kStringButtonLabelInfoMessage];
-    self.infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    self.infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.infoButton];
     
-    yOffset += kViewControllerButtonHeight + kViewControllerButtonPadding;
+    yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
 
     self.hideAllButton = [self buttonWithTitle:kStringButtonLabelHideAll];
-    self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kViewControllerButtonHeight);
+    self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.hideAllButton];
 }
@@ -102,28 +103,28 @@
 
 - (void)errorButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarErrorTitle
-                                                 description:kStringMessageBarErrorMessage
-                                                        type:MessageBarMessageTypeError];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarErrorTitle
+                                                   description:kStringMessageBarErrorMessage
+                                                          type:TWMessageBarMessageTypeError];
 }
 
 - (void)successButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarSuccessTitle
-                                                 description:kStringMessageBarSuccessMessage
-                                                        type:MessageBarMessageTypeSuccess];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarSuccessTitle
+                                                   description:kStringMessageBarSuccessMessage
+                                                          type:TWMessageBarMessageTypeSuccess];
 }
 
 - (void)infoButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
-                                                 description:kStringMessageBarInfoMessage
-                                                        type:MessageBarMessageTypeInfo];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
+                                                   description:kStringMessageBarInfoMessage
+                                                          type:TWMessageBarMessageTypeInfo];
 }
 
 - (void)hideAllButtonPressed:(id)sender
 {
-    [[MessageBarManager sharedInstance] hideAll];
+    [[TWMessageBarManager sharedInstance] hideAll];
 }
 
 #pragma mark - Generators

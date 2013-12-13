@@ -1,5 +1,5 @@
 //
-//  MessageBarManager.h
+//  TWMessageBarManager.h
 //
 //  Created by Terry Worona on 5/13/13.
 //  Copyright (c) 2013 Terry Worona. All rights reserved.
@@ -11,19 +11,19 @@
  *  Three base message bar types. Their look & feel is defined within the MessageBarStyleSheet.
  */
 typedef enum {
-    MessageBarMessageTypeError,
-    MessageBarMessageTypeSuccess,
-    MessageBarMessageTypeInfo
-} MessageBarMessageType;
+    TWMessageBarMessageTypeError,
+    TWMessageBarMessageTypeSuccess,
+    TWMessageBarMessageTypeInfo
+} TWMessageBarMessageType;
 
-@interface MessageBarManager : NSObject
+@interface TWMessageBarManager : NSObject
 
 /**
  *  Singleton instance through which all presentation is managed.
  *
  *  @return MessageBarManager instance (singleton).
  */
-+ (MessageBarManager *)sharedInstance;
++ (TWMessageBarManager *)sharedInstance;
 
 /**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).
@@ -32,7 +32,7 @@ typedef enum {
  *  @param description  Description text in the message view.
  *  @param type         Type dictates color, stroke and icon shown in the message view.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type;
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type;
 
 /**
  *  Shows a message with the supplied title, description, type (dictates color, stroke and icon) & callback block.
@@ -42,7 +42,7 @@ typedef enum {
  *  @param type         Type dictates color, stroke and icon shown in the message view.
  *  @param callback     Callback block to be executed if a message is tapped.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type callback:(void (^)())callback;
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type callback:(void (^)())callback;
 
 /**
  *  Shows a message with the supplied title, description, type (dictates color, stroke and icon) & duration.
@@ -52,7 +52,7 @@ typedef enum {
  *  @param type         Type dictates color, stroke and icon shown in the message view.
  *  @param duration     Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type duration:(CGFloat)duration;
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration;
 
 /**
  *  Shows a message with the supplied title, description, type (dictates color, stroke and icon), callback block & duration.
@@ -63,7 +63,7 @@ typedef enum {
  *  @param duration     Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
  *  @param callback     Callback block to be executed if a message is tapped.
  */
-- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(MessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback;
+- (void)showMessageWithTitle:(NSString*)title description:(NSString*)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback;
 
 /**
  *  Hides the topmost message from view and removes all remaining messages in the queue (not animated).
@@ -81,7 +81,7 @@ typedef enum {
  *
  *  @return UIColor istance representing the message view's background color.
  */
-+ (UIColor *)backgroundColorForMessageType:(MessageBarMessageType)type;
++ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type;
 
 /**
  *  Bottom stroke color of message view.
@@ -90,7 +90,7 @@ typedef enum {
  *
  *  @return UIColor istance representing the message view's bottom stroke color.
  */
-+ (UIColor *)strokeColorForMessageType:(MessageBarMessageType)type;
++ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type;
 
 /**
  *  Icon image of the message view.
@@ -99,6 +99,6 @@ typedef enum {
  *
  *  @return UIImage istance representing the message view's icon.
  */
-+ (UIImage *)iconImageForMessageType:(MessageBarMessageType)type;
++ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
 
 @end
