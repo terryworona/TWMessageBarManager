@@ -19,6 +19,11 @@ typedef enum {
 @interface TWMessageBarManager : NSObject
 
 /**
+ * Allows user to swipe (left or right) to dismiss the message view
+ */
+@property (nonatomic, assign) BOOL allowsSwiping;
+
+/**
  *  Singleton instance through which all presentation is managed.
  *
  *  @return MessageBarManager instance (singleton).
@@ -69,8 +74,6 @@ typedef enum {
  *  Hides the topmost message from view and removes all remaining messages in the queue (not animated).
  */
 - (void)hideAll;
-
-@property (nonatomic, assign) BOOL allowsSwiping; // allows user to swipe to dismiss notifications 
 
 @end
 

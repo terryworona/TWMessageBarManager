@@ -21,7 +21,9 @@ NSUInteger const kTWMessageViewiOS7Identifier = 7;
 
 // Numerics (TWMessageBarManager)
 CGFloat const kTWMessageBarManagerDisplayDelay = 3.0f;
-CGFloat const kTWMessageBarManagerAnimationDuration = 0.25f;
+CGFloat const kTWMessageBarManagerDismissAnimationDuration = 0.25f;
+CGFloat const kTWMessageBarManagerPanVelocity = 0.2f;
+CGFloat const kTWMessageBarManagerPanAnimationDuration = 0.0002f;
 
 // Strings (TWMessageBarStyleSheet)
 NSString * const kTWMessageBarStyleSheetImageIconError = @"icon-error.png";
@@ -30,7 +32,7 @@ NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 // Fonts (TWMessageView)
 static UIFont *kTWMessageViewTitleFont = nil;
-static UIFont *TWMessageViewDescriptionFont = nil;
+static UIFont *kTWMessageViewDescriptionFont = nil;
 
 // Colors (TWMessageView)
 static UIColor *kTWMessageViewTitleColor = nil;
@@ -82,6 +84,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 // Gestures
 - (void)itemSelected:(UITapGestureRecognizer *)recognizer;
+- (void)messageViewPanned:(UIPanGestureRecognizer *)recognizer;
 
 @end
 
@@ -110,7 +113,8 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 - (id)init
 {
-    if(self = [super init])
+    self = [super init];
+    if (self)
     {
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
@@ -187,8 +191,11 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
         
         UITapGestureRecognizer *gest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(itemSelected:)];
         [messageView addGestureRecognizer:gest];
-        if (self.allowsSwiping){ // add pan
-            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+
+        // Pan gesture
+        if (self.allowsSwiping)
+        {
+            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(messageViewPanned:)];
             [panRecognizer setMinimumNumberOfTouches:1];
             [panRecognizer setMaximumNumberOfTouches:1];
             [messageView addGestureRecognizer:panRecognizer];
@@ -198,48 +205,14 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
         {
             [self.messageBarQueue removeObject:messageView];
             
-            [UIView animateWithDuration:kTWMessageBarManagerAnimationDuration animations:^{
+            [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, self.messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
-            
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
         }
     }
 }
--(void)pan:(id)sender { // on pan
-    __block UIView *view = [(UIPanGestureRecognizer*)sender view];
-    CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:view.superview];
-    [view setCenter:CGPointMake([sender view].center.x+translatedPoint.x, [sender view].center.y)];
-    if ([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
-        CGFloat velocityX = (0.2*[(UIPanGestureRecognizer*)sender velocityInView:view].x); // calculate velocity
-        
-        CGFloat finalX = 0 - CGRectGetWidth(view.frame)/2; // off screen
-        CGFloat finalY = view.center.y;
-        
-        BOOL returnsToMiddle = (view.center.x > CGRectGetWidth(view.frame) * 0.2); // is it over far enough to conisder it that the user wants it offscreen?
-        if (returnsToMiddle){
-            finalX = CGRectGetWidth(view.frame)/2.f;// return back to middle, not gone far enough
-        }
-        if (!returnsToMiddle){
-            [NSObject cancelPreviousPerformRequestsWithTarget:self]; // cancel itemSelected
-        }
-        CGFloat animationDuration = (ABS(velocityX)*.0002)+.2; // duration
-        [UIView animateWithDuration:animationDuration delay:0.0 options:(UIViewAnimationOptionCurveEaseOut) animations:^{ //
-            [[sender view] setCenter:CGPointMake(finalX, finalY)];
 
-        } completion:^(BOOL finished) {
-            if (finished && !returnsToMiddle){
-                if (view.superview){ // just make sure it has a superview
-                    self.messageVisible = NO; // no message visible
-                    [view removeFromSuperview]; // remove
-                    [self showNextMessage]; // show next message
-                }
-            }
-        }];
-    }
-    [(UIPanGestureRecognizer*)sender setTranslation:CGPointMake(0, 0) inView:view];
-    
-}
 #pragma mark - Gestures
 
 - (void)itemSelected:(id)sender
@@ -260,7 +233,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     {
         messageView.hit = YES;
         
-        [UIView animateWithDuration:kTWMessageBarManagerAnimationDuration animations:^{
+        [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
             [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - self.messageBarOffset, [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             self.messageVisible = NO;
@@ -286,6 +259,56 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     }
 }
 
+- (void)messageViewPanned:(UIPanGestureRecognizer *)recognizer
+{
+    if ([recognizer isKindOfClass:[UIPanGestureRecognizer class]])
+    {
+        __block UIView *messageView = [recognizer view];
+        CGPoint translatedPoint = [recognizer translationInView:messageView.superview];
+        [messageView setCenter:CGPointMake([recognizer view].center.x + translatedPoint.x, [recognizer view].center.y)];
+        
+        if ([messageView isKindOfClass:[TWMessageView class]])
+        {
+            if ([(UIPanGestureRecognizer*)recognizer state] == UIGestureRecognizerStateEnded)
+            {
+                CGFloat velocityX = (kTWMessageBarManagerPanVelocity * [recognizer velocityInView:messageView].x); // calculate velocity
+                
+                CGFloat finalX = 0 - ceil(CGRectGetWidth(messageView.frame) * 0.5); // off screen
+                CGFloat finalY = messageView.center.y;
+                
+                BOOL returnsToMiddle = (messageView.center.x > CGRectGetWidth(messageView.frame) * kTWMessageBarManagerPanVelocity);
+                
+                if (returnsToMiddle) // return back to middle
+                {
+                    finalX = CGRectGetWidth(messageView.frame) * 0.5;
+                }
+                
+                if (!returnsToMiddle)  // cancel
+                {
+                    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+                }
+                
+                CGFloat animationDuration = (ABS(velocityX) * kTWMessageBarManagerPanAnimationDuration) + kTWMessageBarManagerPanVelocity;
+                [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                    [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
+                    
+                } completion:^(BOOL finished) {
+                    if (finished && !returnsToMiddle)
+                    {
+                        if (messageView.superview)
+                        {
+                            self.messageVisible = NO;
+                            [messageView removeFromSuperview];
+                            [self showNextMessage];
+                        }
+                    }
+                }];
+            }
+            [recognizer setTranslation:CGPointMake(0, 0) inView:messageView];
+        }
+    }
+}
+
 @end
 
 @implementation TWMessageView
@@ -298,7 +321,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 	{
         // Fonts
         kTWMessageViewTitleFont = [UIFont boldSystemFontOfSize:16.0];
-        TWMessageViewDescriptionFont = [UIFont systemFontOfSize:14.0];
+        kTWMessageViewDescriptionFont = [UIFont systemFontOfSize:14.0];
         
         // Colors
         kTWMessageViewTitleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -328,7 +351,6 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     }
     return self;
 }
-
 
 #pragma mark - Drawing
 
@@ -381,7 +403,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     
     CGSize descriptionLabelSize = [self descriptionSize];
     [kTWMessageViewDescriptionColor set];
-	[self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:TWMessageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+	[self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:kTWMessageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 }
 
 #pragma mark - Getters
@@ -440,7 +462,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     
     if ([self isRunningiOS7OrLater])
     {
-        NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:TWMessageViewDescriptionFont forKey: NSFontAttributeName];
+        NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewDescriptionFont forKey: NSFontAttributeName];
         descriptionLabelSize = [self.descriptionString boundingRectWithSize:boundedSize
                                                                     options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
                                                                  attributes:descriptionStringAttributes
@@ -448,7 +470,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     }
     else
     {
-        descriptionLabelSize = [_descriptionString sizeWithFont:TWMessageViewDescriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
+        descriptionLabelSize = [_descriptionString sizeWithFont:kTWMessageViewDescriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
     
     return descriptionLabelSize;

@@ -56,7 +56,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 - (void)loadView
 {
     [super loadView];
-   // [[MessageBarManager sharedInstance] setAllowsSwiping:YES]; // set YES to allow user to swipe the views off screen. 
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     CGFloat xOffset = kTWMesssageBarDemoControllerButtonPadding;
@@ -88,6 +88,8 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.hideAllButton];
+    
+    [[TWMessageBarManager sharedInstance] setAllowsSwiping:YES]; // allow swiping
 }
 
 #pragma mark - Orientation
@@ -102,7 +104,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     return YES;
 }
 
--(NSUInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
