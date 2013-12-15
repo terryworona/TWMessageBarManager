@@ -6,7 +6,7 @@ An iOS manager for presenting system-wide notifications via a dropdown message b
 
 ## Requirements
 
-- Requires iOS 6.1 or later
+- Requires iOS 6.0 or later
 - Requires Automatic Reference Counting (ARC)
 
 ## Author
@@ -35,8 +35,8 @@ Simply add the following line to your <code>Podfile</code>:
 	
 Your podfile should look something like:
 
-	platform :ios, '6.1'
-	pod 'TWMessageBarManager', '~> 1.2.0'
+	platform :ios, '6.0'
+	pod 'TWMessageBarManager', '~> 1.2.1'
 	
 ### The Old School Way
 
