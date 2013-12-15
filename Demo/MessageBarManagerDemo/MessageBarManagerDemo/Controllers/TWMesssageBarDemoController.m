@@ -87,9 +87,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     self.hideAllButton = [self buttonWithTitle:kStringButtonLabelHideAll];
     self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.hideAllButton];
-    
-    [[TWMessageBarManager sharedInstance] setAllowsSwiping:YES]; // allow swiping
+    [self.view addSubview:self.hideAllButton];    
 }
 
 #pragma mark - Orientation

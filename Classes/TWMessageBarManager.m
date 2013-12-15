@@ -84,7 +84,6 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 // Gestures
 - (void)itemSelected:(UITapGestureRecognizer *)recognizer;
-- (void)messageViewPanned:(UIPanGestureRecognizer *)recognizer;
 
 @end
 
@@ -191,15 +190,6 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
         
         UITapGestureRecognizer *gest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(itemSelected:)];
         [messageView addGestureRecognizer:gest];
-
-        // Pan gesture
-        if (self.allowsSwiping)
-        {
-            UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(messageViewPanned:)];
-            [panRecognizer setMinimumNumberOfTouches:1];
-            [panRecognizer setMaximumNumberOfTouches:1];
-            [messageView addGestureRecognizer:panRecognizer];
-        }
         
         if (messageView)
         {
@@ -256,56 +246,6 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
                 [self showNextMessage];
             }
         }];
-    }
-}
-
-- (void)messageViewPanned:(UIPanGestureRecognizer *)recognizer
-{
-    if ([recognizer isKindOfClass:[UIPanGestureRecognizer class]])
-    {
-        __block UIView *messageView = [recognizer view];
-        CGPoint translatedPoint = [recognizer translationInView:messageView.superview];
-        [messageView setCenter:CGPointMake([recognizer view].center.x + translatedPoint.x, [recognizer view].center.y)];
-        
-        if ([messageView isKindOfClass:[TWMessageView class]])
-        {
-            if ([(UIPanGestureRecognizer*)recognizer state] == UIGestureRecognizerStateEnded)
-            {
-                CGFloat velocityX = (kTWMessageBarManagerPanVelocity * [recognizer velocityInView:messageView].x); // calculate velocity
-                
-                CGFloat finalX = 0 - ceil(CGRectGetWidth(messageView.frame) * 0.5); // off screen
-                CGFloat finalY = messageView.center.y;
-                
-                BOOL returnsToMiddle = (messageView.center.x > CGRectGetWidth(messageView.frame) * kTWMessageBarManagerPanVelocity);
-                
-                if (returnsToMiddle) // return back to middle
-                {
-                    finalX = CGRectGetWidth(messageView.frame) * 0.5;
-                }
-                
-                if (!returnsToMiddle)  // cancel
-                {
-                    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-                }
-                
-                CGFloat animationDuration = (ABS(velocityX) * kTWMessageBarManagerPanAnimationDuration) + kTWMessageBarManagerPanVelocity;
-                [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                    [[recognizer view] setCenter:CGPointMake(finalX, finalY)];
-                    
-                } completion:^(BOOL finished) {
-                    if (finished && !returnsToMiddle)
-                    {
-                        if (messageView.superview)
-                        {
-                            self.messageVisible = NO;
-                            [messageView removeFromSuperview];
-                            [self showNextMessage];
-                        }
-                    }
-                }];
-            }
-            [recognizer setTranslation:CGPointMake(0, 0) inView:messageView];
-        }
     }
 }
 
