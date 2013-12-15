@@ -1,8 +1,8 @@
-# MessageBarManager
+# TWMessageBarManager
 
 An iOS manager for presenting system-wide notifications via a dropdown message bar. 
 
-<img src="https://raw.github.com/terryworona/MessageBarManager/master/Screenshots/main.png">
+<img src="https://raw.github.com/terryworona/TWMessageBarManager/master/Screenshots/main.png">
 
 ## Requirements
 
@@ -25,25 +25,25 @@ An iOS manager for presenting system-wide notifications via a dropdown message b
 
 ## Installation
 
-<a href="http://cocoapods.org/" target="_blank">CocoaPods</a> is the recommended method of installing the MessageBarManager.
+<a href="http://cocoapods.org/" target="_blank">CocoaPods</a> is the recommended method of installing the TWMessageBarManager.
 
 ### The Pod Way
 
 Simply add the following line to your <code>Podfile</code>:
 
-	pod 'MessageBarManager'
+	pod 'TWMessageBarManager'
 	
 Your podfile should look something like:
 
 	platform :ios, '6.1'
-	pod 'JBChartView', '~> 1.1.0'
+	pod 'TWMessageBarManager', '~> 1.2.0'
 	
 ### The Old School Way
 
-The simpliest way to use MessageBarManager with your application is to drag and drop the <i>/Classes</i> folder into you're Xcode 5 project. It's also recommended you rename the <i>/Classes</i> folder to something more descriptive (ie. "<i>MessageBarManager</i>").
+The simpliest way to use TWMessageBarManager with your application is to drag and drop the <i>/Classes</i> folder into you're Xcode 5 project. It's also recommended you rename the <i>/Classes</i> folder to something more descriptive (ie. "<i>TWMessageBarManager</i>").
 
 <center>
-	<img src="https://raw.github.com/terryworona/MessageBarManager/master/Screenshots/installation.png">
+	<img src="https://raw.github.com/terryworona/TWMessageBarManager/master/Screenshots/installation.png">
 </center>
 
 ## Usage
@@ -52,7 +52,7 @@ The simpliest way to use MessageBarManager with your application is to drag and 
 
 As a singleton class, the manager can be accessed from anywhere within your app via the ***+ sharedInstance*** function:
 
-	[MessageBarManager sharedInstance]
+	[TWMessageBarManager sharedInstance]
 	
 ### Presenting a basic message
 
@@ -60,74 +60,74 @@ All messages can be preseted via ***showMessageWithTitle:description:type:***. A
 
 Basic message:
 
-    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
-                                                 description:@"Your account was successfully updated."
-                                                        type:MessageBarMessageTypeSuccess];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
+                                                   description:@"Your account was successfully updated."
+                                                          type:TWMessageBarMessageTypeSuccess];
 
 
 The default display duration is ***3 seconds***. You can override this value by supplying an additional argument:
 
-    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
-                                                 description:@"Your account was successfully updated."
-                                                        type:MessageBarMessageTypeSuccess
-                                                 forDuration:6.0];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
+                                                   description:@"Your account was successfully updated."
+                                                          type:TWMessageBarMessageTypeSuccess
+                                                   forDuration:6.0];
 
 ### Callbacks
 
 By default, if a user ***taps*** on a message while it is presented, it will automatically dismiss. To be notified of the touch, simply supply a callback block:
 
 
-    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
-                                                 description:@"Your account was successfully updated."
-                                                        type:MessageBarMessageTypeSuccess callback:^{
-                                                            NSLog(@"Message bar tapped!");
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
+                                                   description:@"Your account was successfully updated."
+                                                          type:TWMessageBarMessageTypeSuccess callback:^{
+                                                              NSLog(@"Message bar tapped!");
     }];
 	
 ### Queue
 
 The manager is backed by a queue that can handle an infinite number of sequential requests. You can stack as many messages you want on the stack and they will be presetented one after another:
 
-    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Message 1"
-                                                 description:@"Description 1"
-                                                        type:MessageBarMessageTypeSuccess];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Message 1"
+                                                   description:@"Description 1"
+                                                          type:TWMessageBarMessageTypeSuccess];
 
-    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Message 2"
-                                                 description:@"Description 2"
-                                                        type:MessageBarMessageTypeError];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Message 2"
+                                                   description:@"Description 2"
+                                                          type:TWMessageBarMessageTypeError];
 
-    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Message 3"
-                                                 description:@"Description 3"
-                                                        type:MessageBarMessageTypeInfo];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Message 3"
+                                                   description:@"Description 3"
+                                                          type:TWMessageBarMessageTypeInfo];
 
 ### Customization
 
-The ***MessageBarStyleSheet*** has functions pertaining to background and stroke color as well as icon images. All of these functions may be subclassed and/or directly modified to customize the look and feel of the message bar. 
+The ***TWMessageBarStyleSheet*** has functions pertaining to background and stroke color as well as icon images. All of these functions may be subclassed and/or directly modified to customize the look and feel of the message bar. 
 
-	+ (UIColor*)backgroundColorForMessageType:(MessageBarMessageType)type;
-	+ (UIColor*)strokeColorForMessageType:(MessageBarMessageType)type;
-	+ (UIImage*)iconImageForMessageType:(MessageBarMessageType)type;
+	+ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type;
+	+ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type;
+	+ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
 
 ### New Types
 	
-Add the new type to the typedef found in ***MessageBarManager.h***. 
+Add the new type to the typedef found in ***TWMessageBarManager.h***. 
 
 	typedef enum {
-    	MessageBarMessageTypeError,
-	    MessageBarMessageTypeSuccess,
-    	MessageBarMessageTypeInfo,
-	    MessageBarMessageTypeWarning // new type for warnings
-	} MessageBarMessageType;
+    	TWMessageBarMessageTypeError,
+	    TWMessageBarMessageTypeSuccess,
+    	TWMessageBarMessageTypeInfo,
+	    TWMessageBarMessageTypeWarning // new type for warnings
+	} TWMessageBarMessageType;
 	
 Add new colors and icons to the stylesheet:
 
-	+ (UIColor*)backgroundColorForMessageType:(MessageBarMessageType)type
+	+ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
 	{
     	UIColor *backgroundColor = nil;
 	    switch (type) {
         
     	    …
 		
-			case MessageBarMessageTypeWarning:
+			case TWMessageBarMessageTypeWarning:
             	backgroundColor = [UIColor grayColor]; // warnings to be gray background
 	            break;
     	    default:
@@ -136,14 +136,14 @@ Add new colors and icons to the stylesheet:
 	    return backgroundColor;
 	}
 	
-	+ (UIColor*)strokeColorForMessageType:(MessageBarMessageType)type
+	+ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
 	{
     	UIColor *strokeColor = nil;
 	    switch (type) {
         
     	    …
 		
-			case MessageBarMessageTypeWarning:
+			case TWMessageBarMessageTypeWarning:
             	strokeColor = [UIColor darkGrayColor];
 	            break;
     	    default:
@@ -152,14 +152,14 @@ Add new colors and icons to the stylesheet:
 	    return strokeColor;
 	}
 	
-	+ (UIImage*)iconImageForMessageType:(MessageBarMessageType)type
+	+ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
 	{
 	    UIImage *iconImage = nil;
     	switch (type) {
     	
     		…
     	
-	        case MessageBarMessageTypeWarning:
+	        case TWMessageBarMessageTypeWarning:
     	        iconImage = [UIImage imageNamed:@"icon-warning.png"]; // warning icon
         	    break;
 	        default:
@@ -170,10 +170,10 @@ Add new colors and icons to the stylesheet:
 
 Displaying a new message with the message type:
 
-    [[MessageBarManager sharedInstance] showMessageWithTitle:@"Account Warning!"
-                                                 description:@"Your account has expired!"
-                                                        type:MessageBarMessageTypeWarning];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Account Warning!"
+                                                   description:@"Your account has expired!"
+                                                          type:TWMessageBarMessageTypeWarning];
 
 ## License
 
-Usage is provided under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT</a> License. See <a href="https://github.com/terryworona/MessageBarManager/blob/master/LICENSE">LICENSE</a> for full details.
+Usage is provided under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT</a> License. See <a href="https://github.com/terryworona/TWMessageBarManager/blob/master/LICENSE">LICENSE</a> for full details.

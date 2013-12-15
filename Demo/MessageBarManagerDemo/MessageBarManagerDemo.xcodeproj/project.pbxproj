@@ -22,8 +22,8 @@
 		5669FE461766C47700B8630B /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE401766C47700B8630B /* icon-success.png */; };
 		5669FE471766C47700B8630B /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE411766C47700B8630B /* icon-success@2x.png */; };
 		569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF41741C09300F2B74C /* AppDelegate.m */; };
-		569FCDF91741C09300F2B74C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF71741C09300F2B74C /* ViewController.m */; };
-		56E8B354175A78A2003E2E48 /* MessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CD5A26175A777B00E9B94E /* MessageBarManager.m */; };
+		569FCDF91741C09300F2B74C /* TWMesssageBarDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF71741C09300F2B74C /* TWMesssageBarDemoController.m */; };
+		9B903012185BA74B005BCFF5 /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B903011185BA74B005BCFF5 /* TWMessageBarManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,11 +46,11 @@
 		5669FE411766C47700B8630B /* icon-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success@2x.png"; sourceTree = "<group>"; };
 		569FCDF31741C09300F2B74C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		569FCDF41741C09300F2B74C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		569FCDF61741C09300F2B74C /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		569FCDF71741C09300F2B74C /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		56CD5A25175A777B00E9B94E /* MessageBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MessageBarManager.h; path = ../../../Classes/MessageBarManager.h; sourceTree = "<group>"; };
-		56CD5A26175A777B00E9B94E /* MessageBarManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MessageBarManager.m; path = ../../../Classes/MessageBarManager.m; sourceTree = "<group>"; };
+		569FCDF61741C09300F2B74C /* TWMesssageBarDemoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMesssageBarDemoController.h; sourceTree = "<group>"; };
+		569FCDF71741C09300F2B74C /* TWMesssageBarDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMesssageBarDemoController.m; sourceTree = "<group>"; };
 		56DE553917458AB20026B7D2 /* StringConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringConstants.h; sourceTree = "<group>"; };
+		9B903010185BA74B005BCFF5 /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TWMessageBarManager.h; path = ../../../Classes/TWMessageBarManager.h; sourceTree = "<group>"; };
+		9B903011185BA74B005BCFF5 /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWMessageBarManager.m; path = ../../../Classes/TWMessageBarManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,8 +154,8 @@
 		569FCDF51741C09300F2B74C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				569FCDF61741C09300F2B74C /* ViewController.h */,
-				569FCDF71741C09300F2B74C /* ViewController.m */,
+				569FCDF61741C09300F2B74C /* TWMesssageBarDemoController.h */,
+				569FCDF71741C09300F2B74C /* TWMesssageBarDemoController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -163,8 +163,8 @@
 		569FCDFA1741C33700F2B74C /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				56CD5A25175A777B00E9B94E /* MessageBarManager.h */,
-				56CD5A26175A777B00E9B94E /* MessageBarManager.m */,
+				9B903010185BA74B005BCFF5 /* TWMessageBarManager.h */,
+				9B903011185BA74B005BCFF5 /* TWMessageBarManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -257,10 +257,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B903012185BA74B005BCFF5 /* TWMessageBarManager.m in Sources */,
 				5649826A1741BF7A00077B8C /* main.m in Sources */,
 				569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */,
-				569FCDF91741C09300F2B74C /* ViewController.m in Sources */,
-				56E8B354175A78A2003E2E48 /* MessageBarManager.m in Sources */,
+				569FCDF91741C09300F2B74C /* TWMesssageBarDemoController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,7 +303,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -327,7 +327,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  TWMesssageBarDemoController.h
 //  MessageBarManagerDemo
 //
 //  Created by Terry Worona on 5/13/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface TWMesssageBarDemoController : UIViewController
 
 @end
