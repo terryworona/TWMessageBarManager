@@ -38,8 +38,9 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 @interface TWMessageView : UIView
 
-@property (nonatomic, strong) NSString *titleString;
-@property (nonatomic, strong) NSString *descriptionString;
+@property (nonatomic, copy) NSString *titleString;
+@property (nonatomic, copy) NSString *descriptionString;
+
 @property (nonatomic, assign) TWMessageBarMessageType messageType;
 
 @property (nonatomic, assign) BOOL hasCallback;
@@ -292,9 +293,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 #pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
     // background fill
