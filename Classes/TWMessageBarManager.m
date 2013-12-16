@@ -55,8 +55,10 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 @property (nonatomic, assign) CGFloat duration;
 
+@property (nonatomic, strong) id <TWMessageBarStyleSheet> styleSheet;
+
 // Initializers
-- (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type;
+- (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type styleSheet:(id<TWMessageBarStyleSheet>)styleSheet;
 
 // Getters
 - (CGFloat)height;
@@ -75,6 +77,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, assign) CGFloat messageBarOffset;
+@property (nonatomic, strong) id <TWMessageBarStyleSheet> styleSheet;
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -118,11 +121,17 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _messageBarOffset = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        _styleSheet = [[TWMessageBarStyleSheet alloc] init];
     }
     return self;
 }
 
 #pragma mark - Public
+
+- (void)registerMessageBarStyleSheet:(id<TWMessageBarStyleSheet>)styleSheet
+{
+    self.styleSheet = styleSheet;
+}
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type
 {
@@ -141,7 +150,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
 {
-    TWMessageView *messageView = [[TWMessageView alloc] initWithTitle:title description:description type:type];
+    TWMessageView *messageView = [[TWMessageView alloc] initWithTitle:title description:description type:type styleSheet:self.styleSheet];
     messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
     messageView.hasCallback = callback ? YES : NO;
     
@@ -269,7 +278,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 	}
 }
 
-- (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type
+- (id)initWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type styleSheet:(id<TWMessageBarStyleSheet>)styleSheet
 {
     self = [super initWithFrame:CGRectZero];
     if (self)
@@ -277,6 +286,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
         self.backgroundColor = [UIColor clearColor];
         self.clipsToBounds = NO;
         self.userInteractionEnabled = YES;
+        self.styleSheet = styleSheet;
         
         _titleString = title;
         _descriptionString = description;
@@ -301,7 +311,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     // background fill
     CGContextSaveGState(context);
     {
-        [[TWMessageBarStyleSheet backgroundColorForMessageType:self.messageType] set];
+        [[self.styleSheet backgroundColorForMessageType:self.messageType] set];
         CGContextFillRect(context, rect);
     }
     CGContextRestoreGState(context);
@@ -311,7 +321,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     {
         CGContextBeginPath(context);
         CGContextMoveToPoint(context, 0, rect.size.height);
-        CGContextSetStrokeColorWithColor(context, [TWMessageBarStyleSheet strokeColorForMessageType:self.messageType].CGColor);
+        CGContextSetStrokeColorWithColor(context, [self.styleSheet strokeColorForMessageType:self.messageType].CGColor);
         CGContextSetLineWidth(context, 1.0);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
         CGContextStrokePath(context);
@@ -324,7 +334,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     // icon
     CGContextSaveGState(context);
     {
-        [[TWMessageBarStyleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
+        [[self.styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
     }
     CGContextRestoreGState(context);
     
@@ -431,7 +441,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 #pragma mark - Colors
 
-+ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
+- (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
 {
     UIColor *backgroundColor = nil;
     switch (type)
@@ -451,7 +461,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     return backgroundColor;
 }
 
-+ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
+- (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
 {
     UIColor *strokeColor = nil;
     switch (type)
@@ -471,7 +481,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
     return strokeColor;
 }
 
-+ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
+- (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
 {
     UIImage *iconImage = nil;
     switch (type)
