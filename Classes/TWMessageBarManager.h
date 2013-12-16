@@ -16,6 +16,38 @@ typedef enum {
     TWMessageBarMessageTypeInfo
 } TWMessageBarMessageType;
 
+@protocol TWMessageBarStyleSheet <NSObject>
+
+/**
+ *  Background color of message view.
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc).
+ *
+ *  @return UIColor istance representing the message view's background color.
+ */
+- (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type;
+
+/**
+ *  Bottom stroke color of message view.
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc).
+ *
+ *  @return UIColor istance representing the message view's bottom stroke color.
+ */
+- (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type;
+
+/**
+ *  Icon image of the message view.
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc)
+ *
+ *  @return UIImage istance representing the message view's icon.
+ */
+- (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
+
+@end
+
+
 @interface TWMessageBarManager : NSObject
 
 /**
@@ -24,6 +56,15 @@ typedef enum {
  *  @return MessageBarManager instance (singleton).
  */
 + (TWMessageBarManager *)sharedInstance;
+
+
+/**
+ *  Registers a custom stylesheet subclass on the manager.
+ *  A default class is provided when intialized.
+ *
+ *  @param styleSheet   A custom stylesheet that adheres the TWMessageBarStyleSheet protocol
+ */
+- (void)registerMessageBarStyleSheet:(id<TWMessageBarStyleSheet>)styleSheet;
 
 /**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).
@@ -72,33 +113,5 @@ typedef enum {
 
 @end
 
-@interface TWMessageBarStyleSheet : NSObject
-
-/**
- *  Background color of message view.
- *
- *  @param type A MessageBarMessageType (error, information, success, etc).
- *
- *  @return UIColor istance representing the message view's background color.
- */
-+ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type;
-
-/**
- *  Bottom stroke color of message view.
- *
- *  @param type A MessageBarMessageType (error, information, success, etc).
- *
- *  @return UIColor istance representing the message view's bottom stroke color.
- */
-+ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type;
-
-/**
- *  Icon image of the message view.
- *
- *  @param type A MessageBarMessageType (error, information, success, etc)
- *
- *  @return UIImage istance representing the message view's icon.
- */
-+ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
-
+@interface TWMessageBarStyleSheet : NSObject <TWMessageBarStyleSheet>
 @end
