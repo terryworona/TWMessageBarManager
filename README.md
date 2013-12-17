@@ -110,6 +110,8 @@ An object conforming to the ***TWMessageBarStyleSheet*** protocol defines the me
 If no style sheet is supplied, a default class is provided on initialization. To customize the look and feel of your message bars, simply supply an object conforming to the ***TWMessageBarStyleSheet*** protocol via:
 
 	@property (nonatomic, weak) id<TWMessageBarStyleSheet> styleSheet;
+	
+See ***TWMessageBarDemoStyleSheet*** within the demo project for an example on how to do this. 
 
 ## License
 
