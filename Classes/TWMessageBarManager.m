@@ -168,6 +168,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
 {
     TWMessageView *messageView = [[TWMessageView alloc] initWithTitle:title description:description type:type];
+    messageView.delegate = self;
+    
     messageView.callbacks = callback ? [NSArray arrayWithObject:callback] : [NSArray array];
     messageView.hasCallback = callback ? YES : NO;
     
