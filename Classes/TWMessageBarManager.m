@@ -50,7 +50,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @interface TWDefaultMessageBarStyleSheet : NSObject <TWMessageBarStyleSheet>
 
-// Default stylesheet
++ (TWDefaultMessageBarStyleSheet *)styleSheet;
 
 @end
 
@@ -99,7 +99,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, assign) CGFloat messageBarOffset;
-@property (nonatomic, strong) TWDefaultMessageBarStyleSheet *defaultStyleSheet;
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -143,7 +142,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _messageBarOffset = [[UIApplication sharedApplication] statusBarFrame].size.height;
-        _defaultStyleSheet = [[TWDefaultMessageBarStyleSheet alloc] init];
+        _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
     }
     return self;
 }
@@ -277,15 +276,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-#pragma mark - Getters
+#pragma mark - Setters
 
-- (id<TWMessageBarStyleSheet>)styleSheet
+- (void)setStyleSheet:(NSObject<TWMessageBarStyleSheet> *)styleSheet
 {
-    if (_styleSheet != nil)
+    if (styleSheet != nil)
     {
-        return _styleSheet;
+        _styleSheet = styleSheet;
     }
-    return self.defaultStyleSheet;
 }
 
 #pragma mark - TWMessageViewDelegate
@@ -506,7 +504,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-#pragma mark - Colors
++ (TWDefaultMessageBarStyleSheet *)styleSheet
+{
+    return [[TWDefaultMessageBarStyleSheet alloc] init];
+}
+
+#pragma mark - TWMessageBarStyleSheet
 
 - (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
 {

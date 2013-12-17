@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+// Managers
+#import "TWMessageBarManager.h"
+
 @interface TWMesssageBarDemoController : UIViewController
+
+- (id)initWithStyleSheet:(NSObject<TWMessageBarStyleSheet> *)stylesheet;
 
 @end
