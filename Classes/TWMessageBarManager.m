@@ -306,7 +306,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.backgroundColor = [UIColor clearColor];
         self.clipsToBounds = NO;
         self.userInteractionEnabled = YES;
-        self.styleSheet = styleSheet;
+        
+        _styleSheet = styleSheet;
         
         _titleString = title;
         _descriptionString = description;
@@ -317,7 +318,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         _hasCallback = NO;
         _hit = NO;
-        
     }
     return self;
 }
@@ -331,20 +331,26 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     // background fill
     CGContextSaveGState(context);
     {
-        [[self.styleSheet backgroundColorForMessageType:self.messageType] set];
-        CGContextFillRect(context, rect);
+        if ([self.styleSheet respondsToSelector:@selector(backgroundColorForMessageType:)])
+        {
+            [[self.styleSheet backgroundColorForMessageType:self.messageType] set];
+            CGContextFillRect(context, rect);
+        }
     }
     CGContextRestoreGState(context);
     
     // bottom stroke
     CGContextSaveGState(context);
     {
-        CGContextBeginPath(context);
-        CGContextMoveToPoint(context, 0, rect.size.height);
-        CGContextSetStrokeColorWithColor(context, [self.styleSheet strokeColorForMessageType:self.messageType].CGColor);
-        CGContextSetLineWidth(context, 1.0);
-        CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
-        CGContextStrokePath(context);
+        if ([self.styleSheet respondsToSelector:@selector(strokeColorForMessageType:)])
+        {
+            CGContextBeginPath(context);
+            CGContextMoveToPoint(context, 0, rect.size.height);
+            CGContextSetStrokeColorWithColor(context, [self.styleSheet strokeColorForMessageType:self.messageType].CGColor);
+            CGContextSetLineWidth(context, 1.0);
+            CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+            CGContextStrokePath(context);
+        }
     }
     CGContextRestoreGState(context);
     
@@ -354,7 +360,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     // icon
     CGContextSaveGState(context);
     {
-        [[self.styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
+        if ([self.styleSheet respondsToSelector:@selector(iconImageForMessageType:)])
+        {
+            [[self.styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
+        }
     }
     CGContextRestoreGState(context);
     

@@ -57,8 +57,8 @@ typedef enum {
 + (TWMessageBarManager *)sharedInstance;
 
 /**
- *  An object confirming to the TWMessageBarStyleSheet protocol defines the message bar's look and feel. 
- *  If no property is fupplied, a defautl class is provided on initialization.
+ *  An object conforming to the TWMessageBarStyleSheet protocol defines the message bar's look and feel.
+ *  If no style sheet is supplied, a default class is provided on initialization (see implementation for details).
  */
 @property (nonatomic, weak) id<TWMessageBarStyleSheet> styleSheet;
 
