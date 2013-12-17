@@ -60,7 +60,7 @@ typedef enum {
  *  An object conforming to the TWMessageBarStyleSheet protocol defines the message bar's look and feel.
  *  If no style sheet is supplied, a default class is provided on initialization (see implementation for details).
  */
-@property (nonatomic, weak) id<TWMessageBarStyleSheet> styleSheet;
+@property (nonatomic, strong) NSObject<TWMessageBarStyleSheet> *styleSheet;
 
 /**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).

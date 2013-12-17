@@ -90,7 +90,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @protocol TWMessageViewDelegate <NSObject>
 
-- (id<TWMessageBarStyleSheet>)styleSheetForMessageView:(TWMessageView *)messageView;
+- (NSObject<TWMessageBarStyleSheet> *)styleSheetForMessageView:(TWMessageView *)messageView;
 
 @end
 
@@ -290,7 +290,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - TWMessageViewDelegate
 
-- (id<TWMessageBarStyleSheet>)styleSheetForMessageView:(TWMessageView *)messageView
+- (NSObject<TWMessageBarStyleSheet> *)styleSheetForMessageView:(TWMessageView *)messageView
 {
     return self.styleSheet;
 }

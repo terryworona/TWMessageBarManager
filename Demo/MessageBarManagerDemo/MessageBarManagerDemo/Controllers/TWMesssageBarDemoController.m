@@ -21,6 +21,17 @@ CGFloat const kTWMesssageBarDemoControllerButtonHeight = 50.0f;
 // Colors
 static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 
+// Strings
+NSString * const kTWMessageBarDemoStyleSheetImageIconError = @"icon-error.png";
+NSString * const kTWMessageBarDemoStyleSheetImageIconSuccess = @"icon-success.png";
+NSString * const kTWMessageBarDemoStyleSheetImageIconInfo = @"icon-info.png";
+
+@interface TWMessageBarDemoStyleSheet : NSObject <TWMessageBarStyleSheet>
+
+// Demo style sheet
+
+@end
+
 @interface TWMesssageBarDemoController ()
 
 @property (nonatomic, strong) UIButton *errorButton;
@@ -58,6 +69,8 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     [super loadView];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    [TWMessageBarManager sharedInstance].styleSheet = [[TWMessageBarDemoStyleSheet alloc] init];
     
     CGFloat xOffset = kTWMesssageBarDemoControllerButtonPadding;
     CGFloat totalheight = (kTWMesssageBarDemoControllerButtonHeight * 4) + (kTWMesssageBarDemoControllerButtonPadding * 3);
@@ -164,6 +177,70 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted | UIControlStateSelected];
     
     return button;
+}
+
+@end
+
+@implementation TWMessageBarDemoStyleSheet
+
+- (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
+{
+    UIColor *backgroundColor = nil;
+    switch (type)
+    {
+        case TWMessageBarMessageTypeError:
+            backgroundColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.75];
+            break;
+        case TWMessageBarMessageTypeSuccess:
+            backgroundColor = [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:0.75];
+            break;
+        case TWMessageBarMessageTypeInfo:
+            backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:0.75];
+            break;
+        default:
+            break;
+    }
+    return backgroundColor;
+}
+
+- (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
+{
+    UIColor *strokeColor = nil;
+    switch (type)
+    {
+        case TWMessageBarMessageTypeError:
+            strokeColor = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
+            break;
+        case TWMessageBarMessageTypeSuccess:
+            strokeColor = [UIColor colorWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
+            break;
+        case TWMessageBarMessageTypeInfo:
+            strokeColor = [UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
+            break;
+        default:
+            break;
+    }
+    return strokeColor;
+}
+
+- (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
+{
+    UIImage *iconImage = nil;
+    switch (type)
+    {
+        case TWMessageBarMessageTypeError:
+            iconImage = [UIImage imageNamed:kTWMessageBarDemoStyleSheetImageIconError];
+            break;
+        case TWMessageBarMessageTypeSuccess:
+            iconImage = [UIImage imageNamed:kTWMessageBarDemoStyleSheetImageIconSuccess];
+            break;
+        case TWMessageBarMessageTypeInfo:
+            iconImage = [UIImage imageNamed:kTWMessageBarDemoStyleSheetImageIconInfo];
+            break;
+        default:
+            break;
+    }
+    return iconImage;
 }
 
 @end
