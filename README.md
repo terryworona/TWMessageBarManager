@@ -101,78 +101,15 @@ The manager is backed by a queue that can handle an infinite number of sequentia
 
 ### Customization
 
-The ***TWMessageBarStyleSheet*** has functions pertaining to background and stroke color as well as icon images. All of these functions may be subclassed and/or directly modified to customize the look and feel of the message bar. 
+An object conforming to the ***TWMessageBarStyleSheet*** protocol defines the message bar's look and feel:  
 
 	+ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type;
 	+ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type;
 	+ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
-
-### New Types
 	
-Add the new type to the typedef found in ***TWMessageBarManager.h***. 
+If no style sheet is supplied, a default class is provided on initialization. To customize the look and feel of your message bars, simply supply an object conforming to the ***TWMessageBarStyleSheet*** protocol via:
 
-	typedef enum {
-    	TWMessageBarMessageTypeError,
-	    TWMessageBarMessageTypeSuccess,
-    	TWMessageBarMessageTypeInfo,
-	    TWMessageBarMessageTypeWarning // new type for warnings
-	} TWMessageBarMessageType;
-	
-Add new colors and icons to the stylesheet:
-
-	+ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
-	{
-    	UIColor *backgroundColor = nil;
-	    switch (type) {
-        
-    	    …
-		
-			case TWMessageBarMessageTypeWarning:
-            	backgroundColor = [UIColor grayColor]; // warnings to be gray background
-	            break;
-    	    default:
-        	    break;
-	    }
-	    return backgroundColor;
-	}
-	
-	+ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
-	{
-    	UIColor *strokeColor = nil;
-	    switch (type) {
-        
-    	    …
-		
-			case TWMessageBarMessageTypeWarning:
-            	strokeColor = [UIColor darkGrayColor];
-	            break;
-    	    default:
-        	    break;
-	    }
-	    return strokeColor;
-	}
-	
-	+ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
-	{
-	    UIImage *iconImage = nil;
-    	switch (type) {
-    	
-    		…
-    	
-	        case TWMessageBarMessageTypeWarning:
-    	        iconImage = [UIImage imageNamed:@"icon-warning.png"]; // warning icon
-        	    break;
-	        default:
-    	        break;
-    	}
-    	return iconImage;
-	}
-
-Displaying a new message with the message type:
-
-    [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Account Warning!"
-                                                   description:@"Your account has expired!"
-                                                          type:TWMessageBarMessageTypeWarning];
+	@property (nonatomic, weak) id<TWMessageBarStyleSheet> styleSheet;
 
 ## License
 
