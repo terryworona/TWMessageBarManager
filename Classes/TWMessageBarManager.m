@@ -42,6 +42,9 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 static UIColor *kTWDefaultMessageBarStyleSheetErrorBackgroundColor = nil;
 static UIColor *kTWDefaultMessageBarStyleSheetSuccessBackgroundColor = nil;
 static UIColor *kTWDefaultMessageBarStyleSheetInfoBackgroundColor = nil;
+static UIColor *kTWDefaultMessageBarStyleSheetErrorStrokeColor = nil;
+static UIColor *kTWDefaultMessageBarStyleSheetSuccessStrokeColor = nil;
+static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @interface TWDefaultMessageBarStyleSheet : NSObject <TWMessageBarStyleSheet>
 
@@ -344,10 +347,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoBackgroundColor = nil;
         CGContextStrokePath(context);
     }
     CGContextRestoreGState(context);
-
+    
     CGFloat xOffset = kTWMessageViewBarPadding;
     CGFloat yOffset = kTWMessageViewBarPadding;
-
+    
     // icon
     CGContextSaveGState(context);
     {
@@ -365,7 +368,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoBackgroundColor = nil;
     }
     [kTWMessageViewTitleColor set];
 	[self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:kTWMessageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
-
+    
     yOffset += titleLabelSize.height;
     
     CGSize descriptionLabelSize = [self descriptionSize];
@@ -462,14 +465,16 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoBackgroundColor = nil;
 {
 	if (self == [TWDefaultMessageBarStyleSheet class])
 	{
-        // Fonts
-        kTWMessageViewTitleFont = [UIFont boldSystemFontOfSize:16.0];
-        kTWMessageViewDescriptionFont = [UIFont systemFontOfSize:14.0];
+        // Colors (background)
+        kTWDefaultMessageBarStyleSheetErrorBackgroundColor = [UIColor colorWithRed:1.0 green:0.611 blue:0.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // orange
+        kTWDefaultMessageBarStyleSheetSuccessBackgroundColor = [UIColor colorWithRed:0.0f green:0.831f blue:0.176f alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // green
+        kTWDefaultMessageBarStyleSheetInfoBackgroundColor = [UIColor colorWithRed:0.0 green:0.482 blue:1.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // blue
         
-        // Colors
-        kTWMessageViewTitleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
-        kTWMessageViewDescriptionColor = [UIColor colorWithWhite:1.0 alpha:1.0];
-	}
+        // Colors (stroke)
+        kTWDefaultMessageBarStyleSheetErrorStrokeColor = [UIColor colorWithRed:0.949f green:0.580f blue:0.0f alpha:1.0f]; // orange
+        kTWDefaultMessageBarStyleSheetSuccessStrokeColor = [UIColor colorWithRed:0.0f green:0.772f blue:0.164f alpha:1.0f]; // green
+        kTWDefaultMessageBarStyleSheetInfoStrokeColor = [UIColor colorWithRed:0.0f green:0.415f blue:0.803f alpha:1.0f]; // blue
+    }
 }
 
 #pragma mark - Colors
@@ -480,13 +485,13 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoBackgroundColor = nil;
     switch (type)
     {
         case TWMessageBarMessageTypeError:
-            backgroundColor = [UIColor colorWithRed:1.0 green:0.611 blue:0.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // orange
+            backgroundColor = kTWDefaultMessageBarStyleSheetErrorBackgroundColor;
             break;
         case TWMessageBarMessageTypeSuccess:
-            backgroundColor = [UIColor colorWithRed:0.0f green:0.831f blue:0.176f alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // green
+            backgroundColor = kTWDefaultMessageBarStyleSheetSuccessBackgroundColor;
             break;
         case TWMessageBarMessageTypeInfo:
-            backgroundColor = [UIColor colorWithRed:0.0 green:0.482 blue:1.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // blue
+            backgroundColor = kTWDefaultMessageBarStyleSheetInfoBackgroundColor;
             break;
         default:
             break;
@@ -500,13 +505,13 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoBackgroundColor = nil;
     switch (type)
     {
         case TWMessageBarMessageTypeError:
-            strokeColor = [UIColor colorWithRed:0.949f green:0.580f blue:0.0f alpha:1.0f]; // orange
+            strokeColor = kTWDefaultMessageBarStyleSheetErrorStrokeColor;
             break;
         case TWMessageBarMessageTypeSuccess:
-            strokeColor = [UIColor colorWithRed:0.0f green:0.772f blue:0.164f alpha:1.0f]; // green
+            strokeColor = kTWDefaultMessageBarStyleSheetSuccessStrokeColor;
             break;
         case TWMessageBarMessageTypeInfo:
-            strokeColor = [UIColor colorWithRed:0.0f green:0.415f blue:0.803f alpha:1.0f]; // blue
+            strokeColor = kTWDefaultMessageBarStyleSheetInfoStrokeColor;
             break;
         default:
             break;
