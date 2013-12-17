@@ -38,6 +38,17 @@ static UIFont *kTWMessageViewDescriptionFont = nil;
 static UIColor *kTWMessageViewTitleColor = nil;
 static UIColor *kTWMessageViewDescriptionColor = nil;
 
+// Colors (TWDefaultMessageBarStyleSheet)
+static UIColor *kTWDefaultMessageBarStyleSheetErrorBackgroundColor = nil;
+static UIColor *kTWDefaultMessageBarStyleSheetSuccessBackgroundColor = nil;
+static UIColor *kTWDefaultMessageBarStyleSheetInfoBackgroundColor = nil;
+
+@interface TWDefaultMessageBarStyleSheet : NSObject <TWMessageBarStyleSheet>
+
+// Default stylesheet
+
+@end
+
 @interface TWMessageView : UIView
 
 @property (nonatomic, copy) NSString *titleString;
@@ -77,7 +88,7 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, assign) CGFloat messageBarOffset;
-@property (nonatomic, strong) id <TWMessageBarStyleSheet> styleSheet;
+@property (nonatomic, strong) TWDefaultMessageBarStyleSheet *defaultStyleSheet;
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -121,17 +132,12 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _messageBarOffset = [[UIApplication sharedApplication] statusBarFrame].size.height;
-        _styleSheet = [[TWMessageBarStyleSheet alloc] init];
+        _defaultStyleSheet = [[TWDefaultMessageBarStyleSheet alloc] init];
     }
     return self;
 }
 
 #pragma mark - Public
-
-- (void)registerMessageBarStyleSheet:(id<TWMessageBarStyleSheet>)styleSheet
-{
-    self.styleSheet = styleSheet;
-}
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type
 {
@@ -256,6 +262,17 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
             }
         }];
     }
+}
+
+#pragma mark - Getters
+
+- (id<TWMessageBarStyleSheet>)styleSheet
+{
+    if (_styleSheet != nil)
+    {
+        return _styleSheet;
+    }
+    return self.defaultStyleSheet;
 }
 
 @end
@@ -437,7 +454,23 @@ static UIColor *kTWMessageViewDescriptionColor = nil;
 
 @end
 
-@implementation TWMessageBarStyleSheet
+@implementation TWDefaultMessageBarStyleSheet
+
+#pragma mark - Alloc/Init
+
++ (void)initialize
+{
+	if (self == [TWDefaultMessageBarStyleSheet class])
+	{
+        // Fonts
+        kTWMessageViewTitleFont = [UIFont boldSystemFontOfSize:16.0];
+        kTWMessageViewDescriptionFont = [UIFont systemFontOfSize:14.0];
+        
+        // Colors
+        kTWMessageViewTitleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        kTWMessageViewDescriptionColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+	}
+}
 
 #pragma mark - Colors
 

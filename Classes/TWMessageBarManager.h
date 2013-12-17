@@ -47,7 +47,6 @@ typedef enum {
 
 @end
 
-
 @interface TWMessageBarManager : NSObject
 
 /**
@@ -57,14 +56,11 @@ typedef enum {
  */
 + (TWMessageBarManager *)sharedInstance;
 
-
 /**
- *  Registers a custom stylesheet subclass on the manager.
- *  A default class is provided when intialized.
- *
- *  @param styleSheet   A custom stylesheet that adheres the TWMessageBarStyleSheet protocol
+ *  An object confirming to the TWMessageBarStyleSheet protocol defines the message bar's look and feel. 
+ *  If no property is fupplied, a defautl class is provided on initialization.
  */
-- (void)registerMessageBarStyleSheet:(id<TWMessageBarStyleSheet>)styleSheet;
+@property (nonatomic, weak) id<TWMessageBarStyleSheet> styleSheet;
 
 /**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).
@@ -111,7 +107,4 @@ typedef enum {
  */
 - (void)hideAll;
 
-@end
-
-@interface TWMessageBarStyleSheet : NSObject <TWMessageBarStyleSheet>
 @end
