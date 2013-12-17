@@ -111,7 +111,7 @@ If no style sheet is supplied, a default class is provided on initialization. To
 
 	@property (nonatomic, weak) id<TWMessageBarStyleSheet> styleSheet;
 	
-See ***TWMessageBarDemoStyleSheet*** within the demo project for an example on how to do this. 
+See ***TWAppDelegateDemoStyleSheet*** for an example on how to create a custom stylesheet. 
 
 ## License
 
