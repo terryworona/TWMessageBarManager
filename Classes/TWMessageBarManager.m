@@ -141,7 +141,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
-        _messageBarOffset = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        _messageBarOffset = 0;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
     }
     return self;
@@ -199,6 +199,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     self.messageVisible = NO;
     [self.messageBarQueue removeAllObjects];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
@@ -223,6 +224,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [self.messageBarQueue removeObject:messageView];
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
+                [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, self.messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
@@ -251,6 +253,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         messageView.hit = YES;
         
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
+            [[UIApplication sharedApplication] setStatusBarHidden:!(self.messageBarQueue.count == 0)
+                                                    withAnimation:UIStatusBarAnimationSlide];
             [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - self.messageBarOffset, [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             self.messageVisible = NO;
@@ -344,7 +348,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-
+        
         // background fill
         CGContextSaveGState(context);
         {
