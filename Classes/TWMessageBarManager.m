@@ -84,7 +84,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGSize)descriptionSize;
 
 // Helpers
-- (BOOL)isRunningiOS7OrLater;
++ (BOOL)isRunningiOS7OrLater;
 
 @end
 
@@ -293,6 +293,19 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return self.styleSheet;
 }
 
+#pragma mark - Setters
+
+- (void)setCoversStatusBar:(BOOL)coversStatusBar
+{
+    _coversStatusBar = coversStatusBar;
+    
+    if ([TWMessageView isRunningiOS7OrLater])
+    {
+        [TWMessageBarManager sharedInstance].messageBarOffset = coversStatusBar ? 0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
+        NSLog(@"%f", [TWMessageBarManager sharedInstance].messageBarOffset);
+    }
+}
+
 @end
 
 @implementation TWMessageView
@@ -436,7 +449,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize titleLabelSize;
     
-    if ([self isRunningiOS7OrLater])
+    if ([TWMessageView isRunningiOS7OrLater])
     {
         NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewTitleFont forKey: NSFontAttributeName];
         titleLabelSize = [self.titleString boundingRectWithSize:boundedSize
@@ -457,7 +470,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize descriptionLabelSize;
     
-    if ([self isRunningiOS7OrLater])
+    if ([TWMessageView isRunningiOS7OrLater])
     {
         NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewDescriptionFont forKey: NSFontAttributeName];
         descriptionLabelSize = [self.descriptionString boundingRectWithSize:boundedSize
@@ -475,7 +488,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Helpers
 
-- (BOOL)isRunningiOS7OrLater
++ (BOOL)isRunningiOS7OrLater
 {
 	NSString *systemVersion = [UIDevice currentDevice].systemVersion;
     NSUInteger systemInt = [systemVersion intValue];
