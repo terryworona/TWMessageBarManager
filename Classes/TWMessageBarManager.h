@@ -108,3 +108,14 @@ typedef enum {
 - (void)hideAll;
 
 @end
+
+@interface UIDevice (Additions)
+
+/**
+ *  Determines if the device instance is running iOS 7 or later.
+ *
+ *  @return YES if the device instance is running an OS >= 7, otherwise NO.
+ */
+- (BOOL)isRunningiOS7OrLater;
+
+@end

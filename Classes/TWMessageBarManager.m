@@ -83,9 +83,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGSize)titleSize;
 - (CGSize)descriptionSize;
 
-// Helpers
-- (BOOL)isRunningiOS7OrLater;
-
 @end
 
 @protocol TWMessageViewDelegate <NSObject>
@@ -98,7 +95,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
-@property (nonatomic, assign) CGFloat messageBarOffset;
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -108,6 +104,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 // Gestures
 - (void)itemSelected:(UITapGestureRecognizer *)recognizer;
+
+// Getters
+- (CGFloat)messageBarOffset;
 
 @end
 
@@ -141,7 +140,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
-        _messageBarOffset = [[UIApplication sharedApplication] statusBarFrame].size.height;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
     }
     return self;
@@ -223,7 +221,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [self.messageBarQueue removeObject:messageView];
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, self.messageBarOffset + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+                [messageView setFrame:CGRectMake(messageView.frame.origin.x, [self messageBarOffset] + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
         }
@@ -251,7 +249,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         messageView.hit = YES;
         
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - self.messageBarOffset, [messageView width], [messageView height])]; // slide back up
+            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - [self messageBarOffset], [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             self.messageVisible = NO;
             [messageView removeFromSuperview];
@@ -274,6 +272,13 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             }
         }];
     }
+}
+
+#pragma mark - Getters
+
+- (CGFloat)messageBarOffset
+{
+    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
 }
 
 #pragma mark - Setters
@@ -436,7 +441,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize titleLabelSize;
     
-    if ([self isRunningiOS7OrLater])
+    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
     {
         NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewTitleFont forKey: NSFontAttributeName];
         titleLabelSize = [self.titleString boundingRectWithSize:boundedSize
@@ -457,7 +462,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize descriptionLabelSize;
     
-    if ([self isRunningiOS7OrLater])
+    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
     {
         NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewDescriptionFont forKey: NSFontAttributeName];
         descriptionLabelSize = [self.descriptionString boundingRectWithSize:boundedSize
@@ -471,15 +476,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
     
     return descriptionLabelSize;
-}
-
-#pragma mark - Helpers
-
-- (BOOL)isRunningiOS7OrLater
-{
-	NSString *systemVersion = [UIDevice currentDevice].systemVersion;
-    NSUInteger systemInt = [systemVersion intValue];
-    return systemInt >= kTWMessageViewiOS7Identifier;
 }
 
 @end
@@ -569,6 +565,19 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             break;
     }
     return iconImage;
+}
+
+@end
+
+@implementation UIDevice (Additions)
+
+#pragma mark - OS Helpers
+
+- (BOOL)isRunningiOS7OrLater
+{
+    NSString *systemVersion = self.systemVersion;
+    NSUInteger systemInt = [systemVersion intValue];
+    return systemInt >= kTWMessageViewiOS7Identifier;
 }
 
 @end
