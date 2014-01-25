@@ -200,6 +200,32 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
+- (void)updateMessageFrames {
+    TWMessageView *currentMessageView = nil;
+    
+    for (UIView *subview in [[[UIApplication sharedApplication] keyWindow] subviews])
+    {
+        if ([subview isKindOfClass:[TWMessageView class]])
+        {
+            currentMessageView = (TWMessageView *)subview;
+            CGRect rect = currentMessageView.frame;
+            if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+                rect.origin.y = -20;
+            } else {
+                rect.origin.y = 0;
+            }
+            
+            [UIView animateWithDuration:0.45
+                                  delay:0
+                                options:0 animations:^{
+                currentMessageView.frame = rect;
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+    }
+}
+
 #pragma mark - Helpers
 
 - (void)showNextMessage
@@ -278,8 +304,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)messageBarOffset
 {
-    //return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
-    return [[UIApplication sharedApplication] statusBarFrame].size.height;
+    if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+        return -20;
+    }
+    return 0;
 }
 
 #pragma mark - Setters
@@ -378,7 +406,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         CGContextRestoreGState(context);
         
         CGFloat xOffset = kTWMessageViewBarPadding;
-        CGFloat yOffset = kTWMessageViewBarPadding;
+        CGFloat yOffset = kTWMessageViewBarPadding + 20;
         
         // icon
         CGContextSaveGState(context);
@@ -418,6 +446,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
         _height = MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize);
+        _height += 20;
     }
     return _height;
 }
