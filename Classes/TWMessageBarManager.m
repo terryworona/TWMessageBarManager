@@ -200,6 +200,32 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
+- (void)updateMessageFrames {
+    TWMessageView *currentMessageView = nil;
+    
+    for (UIView *subview in [[[UIApplication sharedApplication] keyWindow] subviews])
+    {
+        if ([subview isKindOfClass:[TWMessageView class]])
+        {
+            currentMessageView = (TWMessageView *)subview;
+            CGRect rect = currentMessageView.frame;
+            if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+                rect.origin.y = -20;
+            } else {
+                rect.origin.y = 0;
+            }
+            
+            [UIView animateWithDuration:0.45
+                                  delay:0
+                                options:0 animations:^{
+                currentMessageView.frame = rect;
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+    }
+}
+
 #pragma mark - Helpers
 
 - (void)showNextMessage
@@ -278,15 +304,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)messageBarOffset
 {
-    //return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
-    if ([[UIDevice currentDevice] isRunningiOS7OrLater]) {
-        if ([[UIApplication sharedApplication] isStatusBarHidden]) {
-            return -20;
-        }
-        return 0;
+    if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+        return -20;
     }
-    
-    return -20;
+    return 0;
 }
 
 #pragma mark - Setters

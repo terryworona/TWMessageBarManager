@@ -165,9 +165,24 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 }
 
 - (void)toggleStatusbarButtonPressed:(id)sender {
-    [UIView animateWithDuration:0.5 animations:^{
-        [self setNeedsStatusBarAppearanceUpdate];
-    }];
+    if ([[UIDevice currentDevice] isRunningiOS7OrLater]) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [self setNeedsStatusBarAppearanceUpdate];
+        }];
+    } else {
+        [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
+        
+        // Just a proof of concept
+        CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+        [UIView animateWithDuration:0.25 animations:^{
+            self.view.frame = appFrame;
+        }];
+
+    }
+    
+    // Tell the TWMessageBarManager to update the frame of any currendly displaying
+    // message view. Check note for -updateMessageFrames for more information.
+    [[TWMessageBarManager sharedInstance] updateMessageFrames];
 }
 
 #pragma mark - Generators

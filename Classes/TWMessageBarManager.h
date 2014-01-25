@@ -107,6 +107,16 @@ typedef enum {
  */
 - (void)hideAll;
 
+/**
+ Updates the frame for the current displaying message view to acommodate for the statusbar
+ 
+ @note In a perfect world we don't want to have to do this manually. But in the world of iOS
+ we have to play by the rules. The statusbar appearance is not KVO-compliant, nor do
+ we get any notifications except for when we're in a phonecall. So, without swizzling we have to do
+ it manually
+ */
+- (void)updateMessageFrames;
+
 @end
 
 @interface UIDevice (Additions)
