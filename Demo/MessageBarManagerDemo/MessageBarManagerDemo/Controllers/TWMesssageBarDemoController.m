@@ -108,7 +108,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     
     yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
     
-    self.toggleStatusBarButton = [self buttonWithTitle:kStringButtonLabelToggleStatusbar];
+    self.toggleStatusBarButton = [self buttonWithTitle:kStringButtonLabelToggleStatusBar];
     self.toggleStatusBarButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.toggleStatusBarButton addTarget:self action:@selector(toggleStatusbarButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.toggleStatusBarButton];

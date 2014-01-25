@@ -23,3 +23,4 @@
 #define kStringButtonLabelErrorMessage localize(@"button.label.error.message", @"Error Message")
 #define kStringButtonLabelInfoMessage localize(@"button.label.info.message", @"Information Message")
 #define kStringButtonLabelHideAll localize(@"button.label.hide.all", @"Hide All")
+#define kStringButtonLabelToggleStatusBar localize(@"button.label.toggle.statusbar", @"Toggle StatusBar")
