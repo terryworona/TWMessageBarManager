@@ -27,12 +27,14 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 @property (nonatomic, strong) UIButton *successButton;
 @property (nonatomic, strong) UIButton *infoButton;
 @property (nonatomic, strong) UIButton *hideAllButton;
+@property (nonatomic, strong) UIButton *toggleStatusBarButton;
 
 // Button presses
 - (void)errorButtonPressed:(id)sender;
 - (void)successButtonPressed:(id)sender;
 - (void)infoButtonPressed:(id)sender;
 - (void)hideAllButtonPressed:(id)sender;
+- (void)toggleStatusBarButton:(id)sender;
 
 // Generators
 - (UIButton *)buttonWithTitle:(NSString *)title;
@@ -103,6 +105,13 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
     [self.hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.hideAllButton];
+    
+    yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
+    
+    self.toggleStatusBarButton = [self buttonWithTitle:kStringButtonLabelToggleStatusbar];
+    self.toggleStatusBarButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
+    [self.toggleStatusBarButton addTarget:self action:@selector(toggleStatusbarButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.toggleStatusBarButton];
 }
 
 #pragma mark - Orientation
@@ -155,6 +164,12 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     [[TWMessageBarManager sharedInstance] hideAll];
 }
 
+- (void)toggleStatusbarButtonPressed:(id)sender {
+    [UIView animateWithDuration:0.5 animations:^{
+        [self setNeedsStatusBarAppearanceUpdate];
+    }];
+}
+
 #pragma mark - Generators
 
 - (UIButton *)buttonWithTitle:(NSString *)title
@@ -179,6 +194,14 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     [button setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted | UIControlStateSelected];
     
     return button;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation {
+    return UIStatusBarAnimationSlide;
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return ![[UIApplication sharedApplication] isStatusBarHidden];
 }
 
 @end

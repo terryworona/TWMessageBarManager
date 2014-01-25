@@ -279,7 +279,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGFloat)messageBarOffset
 {
     //return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
-    return [[UIApplication sharedApplication] statusBarFrame].size.height;
+    if ([[UIDevice currentDevice] isRunningiOS7OrLater]) {
+        if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+            return -20;
+        }
+        return 0;
+    }
+    
+    return -20;
 }
 
 #pragma mark - Setters
@@ -378,7 +385,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         CGContextRestoreGState(context);
         
         CGFloat xOffset = kTWMessageViewBarPadding;
-        CGFloat yOffset = kTWMessageViewBarPadding;
+        CGFloat yOffset = kTWMessageViewBarPadding + 20;
         
         // icon
         CGContextSaveGState(context);
@@ -418,6 +425,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
         _height = MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize);
+        _height += 20;
     }
     return _height;
 }
