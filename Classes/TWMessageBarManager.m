@@ -79,6 +79,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 // Getters
 - (CGFloat)height;
 - (CGFloat)width;
+- (CGFloat)statusBarOffset;
 - (CGFloat)availableWidth;
 - (CGSize)titleSize;
 - (CGSize)descriptionSize;
@@ -278,8 +279,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)messageBarOffset
 {
-    //return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
-    return [[UIApplication sharedApplication] statusBarFrame].size.height;
+    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
 }
 
 #pragma mark - Setters
@@ -378,7 +378,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         CGContextRestoreGState(context);
         
         CGFloat xOffset = kTWMessageViewBarPadding;
-        CGFloat yOffset = kTWMessageViewBarPadding;
+        CGFloat yOffset = kTWMessageViewBarPadding + [self statusBarOffset];
         
         // icon
         CGContextSaveGState(context);
@@ -417,7 +417,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
-        _height = MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height, (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize);
+        _height = MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize + [self statusBarOffset]);
     }
     return _height;
 }
@@ -429,6 +429,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _width = [UIScreen mainScreen].bounds.size.width;
     }
     return _width;
+}
+
+- (CGFloat)statusBarOffset
+{
+    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [[UIApplication sharedApplication] statusBarFrame].size.height : 0.0;
 }
 
 - (CGFloat)availableWidth
