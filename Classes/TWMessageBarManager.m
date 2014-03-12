@@ -478,7 +478,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         titleLabelSize = [_titleString sizeWithFont:kTWMessageViewTitleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
     
-    return titleLabelSize;
+    return CGSizeMake(ceilf(titleLabelSize.width), ceilf(titleLabelSize.height));
 }
 
 - (CGSize)descriptionSize
@@ -499,7 +499,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         descriptionLabelSize = [_descriptionString sizeWithFont:kTWMessageViewDescriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
     
-    return descriptionLabelSize;
+    return CGSizeMake(ceilf(descriptionLabelSize.width), ceilf(descriptionLabelSize.height));
 }
 
 @end
