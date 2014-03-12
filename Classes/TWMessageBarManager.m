@@ -398,14 +398,32 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
         }
-        [kTWMessageViewTitleColor set];
-        [self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:kTWMessageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
-        
-        yOffset += titleLabelSize.height;
-        
-        CGSize descriptionLabelSize = [self descriptionSize];
-        [kTWMessageViewDescriptionColor set];
-        [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:kTWMessageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+        if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+        {
+            NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+            paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+            paragraphStyle.alignment = NSTextAlignmentLeft;
+
+            [kTWMessageViewTitleColor set];
+            [self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height)
+                          withAttributes:@{NSFontAttributeName:kTWMessageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewTitleColor, NSParagraphStyleAttributeName:paragraphStyle}];
+
+            yOffset += titleLabelSize.height;
+
+            CGSize descriptionLabelSize = [self descriptionSize];
+            [kTWMessageViewDescriptionColor set];
+            [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height)
+                                withAttributes:@{NSFontAttributeName:kTWMessageViewDescriptionFont, NSForegroundColorAttributeName:kTWMessageViewDescriptionColor, NSParagraphStyleAttributeName:paragraphStyle}];
+        } else {
+            [kTWMessageViewTitleColor set];
+            [self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:kTWMessageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+
+            yOffset += titleLabelSize.height;
+
+            CGSize descriptionLabelSize = [self descriptionSize];
+            [kTWMessageViewDescriptionColor set];
+            [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:kTWMessageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+        }
     }
 }
 
