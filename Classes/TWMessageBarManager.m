@@ -142,8 +142,37 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(statusBarFrameOrOrientationChanged:)
+                                                     name:UIApplicationDidChangeStatusBarOrientationNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(statusBarFrameOrOrientationChanged:)
+                                                     name:UIApplicationDidChangeStatusBarFrameNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Observers
+- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification
+{
+    TWMessageView *messageView = [self findMessageViewIn:[self findWindow]];
+
+    if (messageView)
+    {
+        [messageView setHeight:0.0]; // Resets height so that it can check orientation and get the new height
+        [messageView setWidth:0.0]; // Resets width so that it can check orientation and get the new width
+        [messageView setFrame:(CGRect){{0, 0}, {[messageView width], [messageView height]}}];
+        [messageView setNeedsDisplay];
+    }
 }
 
 #pragma mark - Public
@@ -173,8 +202,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     messageView.duration = duration;
     messageView.hidden = YES;
-    
-    [[[UIApplication sharedApplication] keyWindow] insertSubview:messageView atIndex:1];
+
+    UIWindow *window = [self findWindow];
+    [[[window subviews] firstObject] addSubview:messageView];
     [self.messageBarQueue addObject:messageView];
     
     if (!self.messageVisible)
@@ -186,22 +216,63 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (void)hideAll
 {
     TWMessageView *currentMessageView = nil;
-    
-    for (UIView *subview in [[[UIApplication sharedApplication] keyWindow] subviews])
+
+    UIWindow *window = [self findWindow];
+    TWMessageView *messageView = [self findMessageViewIn:[self findWindow]];
+
+    if (messageView)
     {
-        if ([subview isKindOfClass:[TWMessageView class]])
-        {
-            currentMessageView = (TWMessageView *)subview;
-            [currentMessageView removeFromSuperview];
-        }
+        [messageView removeFromSuperview];
     }
-    
+
     self.messageVisible = NO;
     [self.messageBarQueue removeAllObjects];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
 #pragma mark - Helpers
+
+- (UIWindow *)findWindow
+{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+
+    if (!window)
+        window = [[UIApplication sharedApplication].windows firstObject];
+
+    return window;
+}
+
+- (TWMessageView *)findMessageViewIn:(UIWindow *)window
+{
+    TWMessageView *messageView = nil;
+
+    if (window)
+    {
+        NSArray *viewsL1 = [window subviews];
+        for (UIView *subviewL1 in viewsL1)
+        {
+            NSArray *viewsL2 = [subviewL1 subviews];
+            for (UIView *subviewL2 in viewsL2)
+            {
+                if ([subviewL2 isKindOfClass:[TWMessageView class]])
+                {
+                    messageView = (TWMessageView *)subviewL2;
+                    break;
+                }
+            }
+        }
+
+        if (messageView)
+        {
+            [messageView setHeight:0.0]; // Resets height so that it can check orientation and get the new height
+            [messageView setWidth:0.0]; // Resets width so that it can check orientation and get the new width
+            [messageView setFrame:(CGRect){{0, 0}, {[messageView width], [messageView height]}}];
+            [messageView setNeedsDisplay];
+        }
+    }
+
+    return messageView;
+}
 
 - (void)showNextMessage
 {
@@ -279,7 +350,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)messageBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
+    if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+    {
+        return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.width;
+    }
+    else
+    {
+        return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
+    }
 }
 
 #pragma mark - Setters
@@ -346,7 +424,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
@@ -398,6 +476,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
         }
+
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
         {
             NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
@@ -444,14 +523,29 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 {
     if (_width == 0)
     {
-        _width = [UIScreen mainScreen].bounds.size.width;
+        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+        {
+            _width = self.superview.bounds.size.height;
+        }
+        else
+        {
+            _width = self.superview.bounds.size.width;
+        }
     }
+
     return _width;
 }
 
 - (CGFloat)statusBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [[UIApplication sharedApplication] statusBarFrame].size.height : 0.0;
+    if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+    {
+        return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [[UIApplication sharedApplication] statusBarFrame].size.width : 0.0;
+    }
+    else
+    {
+        return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [[UIApplication sharedApplication] statusBarFrame].size.height : 0.0;
+    }
 }
 
 - (CGFloat)availableWidth
@@ -477,8 +571,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
         titleLabelSize = [_titleString sizeWithFont:kTWMessageViewTitleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
-    
-    return CGSizeMake(ceilf(titleLabelSize.width), ceilf(titleLabelSize.height));
+
+    return CGSizeMake(ceilf(titleLabelSize.width), ceilf(titleLabelSize.height));;
 }
 
 - (CGSize)descriptionSize
