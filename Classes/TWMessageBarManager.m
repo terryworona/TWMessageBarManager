@@ -215,9 +215,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)hideAll
 {
-    TWMessageView *currentMessageView = nil;
-
-    UIWindow *window = [self findWindow];
     TWMessageView *messageView = [self findMessageViewIn:[self findWindow]];
 
     if (messageView)
@@ -261,14 +258,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                 }
             }
         }
-
-        if (messageView)
-        {
-            [messageView setHeight:0.0]; // Resets height so that it can check orientation and get the new height
-            [messageView setWidth:0.0]; // Resets width so that it can check orientation and get the new width
-            [messageView setFrame:(CGRect){{0, 0}, {[messageView width], [messageView height]}}];
-            [messageView setNeedsDisplay];
-        }
     }
 
     return messageView;
@@ -295,7 +284,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, [self messageBarOffset] + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
-            [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
+            [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration]; // trigger dissmisal/continuation
         }
     }
 }
