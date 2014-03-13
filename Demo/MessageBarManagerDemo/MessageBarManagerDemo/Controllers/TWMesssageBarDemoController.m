@@ -105,27 +105,27 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     [self.view addSubview:self.hideAllButton];
 }
 
-#pragma mark - Orientation
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    return (toInterfaceOrientation == UIInterfaceOrientationPortrait); // pre-iOS 6 support
-}
-
-- (BOOL)automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers
-{
-    return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
-}
+//#pragma mark - Orientation
+//
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+//{
+//    return (toInterfaceOrientation == UIInterfaceOrientationPortrait); // pre-iOS 6 support
+//}
+//
+//- (BOOL)automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers
+//{
+//    return YES;
+//}
+//
+//- (NSUInteger)supportedInterfaceOrientations
+//{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
+//
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+//{
+//    return UIInterfaceOrientationPortrait;
+//}
 
 #pragma mark - Button Presses
 
