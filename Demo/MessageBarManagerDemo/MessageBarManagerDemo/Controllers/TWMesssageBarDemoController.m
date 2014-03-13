@@ -152,7 +152,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 
 - (void)hideAllButtonPressed:(id)sender
 {
-    [[TWMessageBarManager sharedInstance] hideAll];
+    [[TWMessageBarManager sharedInstance] hideAllAnimated:YES];
 }
 
 #pragma mark - Generators

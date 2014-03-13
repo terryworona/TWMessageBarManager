@@ -180,22 +180,36 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-- (void)hideAll
+- (void)hideAllAnimated:(BOOL)animated
 {
-    TWMessageView *currentMessageView = nil;
-    
     for (UIView *subview in [[[UIApplication sharedApplication] keyWindow] subviews])
     {
         if ([subview isKindOfClass:[TWMessageView class]])
         {
-            currentMessageView = (TWMessageView *)subview;
-            [currentMessageView removeFromSuperview];
+            TWMessageView *currentMessageView = (TWMessageView *)subview;
+            if (animated)
+            {
+                [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
+                    currentMessageView.frame = CGRectMake(currentMessageView.frame.origin.x, -currentMessageView.frame.size.height, currentMessageView.frame.size.width, currentMessageView.frame.size.height);
+                } completion:^(BOOL finished) {
+                    [currentMessageView removeFromSuperview];
+                }];
+            }
+            else
+            {
+                [currentMessageView removeFromSuperview];
+            }
         }
     }
     
     self.messageVisible = NO;
     [self.messageBarQueue removeAllObjects];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (void)hideAll
+{
+    [self hideAllAnimated:NO];
 }
 
 #pragma mark - Helpers

@@ -103,9 +103,12 @@ typedef enum {
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback;
 
 /**
- *  Hides the topmost message from view and removes all remaining messages in the queue (not animated).
+ *  Hides the topmost message and removes all remaining messages in the queue.
+ *
+ *  @param animated     Animates the current message view off the screen.
  */
-- (void)hideAll;
+- (void)hideAllAnimated:(BOOL)animated;
+- (void)hideAll; // non-animated
 
 @end
 
