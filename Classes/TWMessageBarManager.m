@@ -66,9 +66,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @property (nonatomic, assign, getter = isHit) BOOL hit;
 
-@property (nonatomic, assign) CGFloat height;
-@property (nonatomic, assign) CGFloat width;
-
 @property (nonatomic, assign) CGFloat duration;
 
 @property (nonatomic, weak) id <TWMessageViewDelegate> delegate;
@@ -105,9 +102,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 // Gestures
 - (void)itemSelected:(UITapGestureRecognizer *)recognizer;
-
-// Getters
-- (CGFloat)messageBarOffset;
 
 @end
 
@@ -168,9 +162,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
     if (messageView)
     {
-        [messageView setHeight:0.0]; // Resets height so that it can check orientation and get the new height
-        [messageView setWidth:0.0]; // Resets width so that it can check orientation and get the new width
-        [messageView setFrame:(CGRect){{0, 0}, {[messageView width], [messageView height]}}];
+        messageView.frame = CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y, [messageView width], [messageView height]);
+        [messageView setContentMode:UIViewContentModeTopLeft];
         [messageView setNeedsDisplay];
     }
 }
@@ -213,18 +206,45 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-- (void)hideAll
+- (void)hideAllAnimated:(BOOL)animated
 {
-    TWMessageView *messageView = [self findMessageViewIn:[self findWindow]];
-
-    if (messageView)
+    UIWindow *window = [self findWindow];
+    if (window)
     {
-        [messageView removeFromSuperview];
+        NSArray *viewsL1 = [window subviews];
+        for (UIView *subviewL1 in viewsL1)
+        {
+            NSArray *viewsL2 = [subviewL1 subviews];
+            for (UIView *subviewL2 in viewsL2)
+            {
+                if ([subviewL2 isKindOfClass:[TWMessageView class]])
+                {
+                    TWMessageView *currentMessageView = (TWMessageView *)subviewL2;
+                    if (animated)
+                    {
+                        [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
+                            currentMessageView.frame = CGRectMake(currentMessageView.frame.origin.x, -currentMessageView.frame.size.height, currentMessageView.frame.size.width, currentMessageView.frame.size.height);
+                        } completion:^(BOOL finished) {
+                            [currentMessageView removeFromSuperview];
+                        }];
+                    }
+                    else
+                    {
+                        [currentMessageView removeFromSuperview];
+                    }
+                }
+            }
+        }
     }
 
     self.messageVisible = NO;
     [self.messageBarQueue removeAllObjects];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
+
+- (void)hideAll
+{
+    [self hideAllAnimated:NO];
 }
 
 #pragma mark - Helpers
@@ -282,7 +302,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [self.messageBarQueue removeObject:messageView];
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, [self messageBarOffset] + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+                [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration]; // trigger dissmisal/continuation
         }
@@ -310,7 +330,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         messageView.hit = YES;
         
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - [self messageBarOffset], [messageView width], [messageView height])]; // slide back up
+            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height], [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             self.messageVisible = NO;
             [messageView removeFromSuperview];
@@ -332,20 +352,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                 [self showNextMessage];
             }
         }];
-    }
-}
-
-#pragma mark - Getters
-
-- (CGFloat)messageBarOffset
-{
-    if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-    {
-        return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.width;
-    }
-    else
-    {
-        return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
 }
 
@@ -398,9 +404,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _titleString = title;
         _descriptionString = description;
         _messageType = type;
-        
-        _height = 0.0;
-        _width = 0.0;
         
         _hasCallback = NO;
         _hit = NO;
@@ -461,6 +464,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         xOffset += kTWMessageViewIconSize + kTWMessageViewBarPadding;
         
         CGSize titleLabelSize = [self titleSize];
+        CGSize descriptionLabelSize = [self descriptionSize];
+        
         if (self.titleString && !self.descriptionString)
         {
             yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
@@ -478,17 +483,17 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
             yOffset += titleLabelSize.height;
 
-            CGSize descriptionLabelSize = [self descriptionSize];
             [kTWMessageViewDescriptionColor set];
             [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height)
                                 withAttributes:@{NSFontAttributeName:kTWMessageViewDescriptionFont, NSForegroundColorAttributeName:kTWMessageViewDescriptionColor, NSParagraphStyleAttributeName:paragraphStyle}];
-        } else {
+        }
+        else
+        {
             [kTWMessageViewTitleColor set];
             [self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:kTWMessageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 
             yOffset += titleLabelSize.height;
 
-            CGSize descriptionLabelSize = [self descriptionSize];
             [kTWMessageViewDescriptionColor set];
             [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:kTWMessageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
         }
@@ -499,30 +504,19 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)height
 {
-    if (_height == 0)
-    {
-        CGSize titleLabelSize = [self titleSize];
-        CGSize descriptionLabelSize = [self descriptionSize];
-        _height = MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize + [self statusBarOffset]);
-    }
-    return _height;
+    CGSize titleLabelSize = [self titleSize];
+    CGSize descriptionLabelSize = [self descriptionSize];
+    return MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize + [self statusBarOffset]);
 }
 
 - (CGFloat)width
 {
-    if (_width == 0)
+    if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
     {
-        if(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
-        {
-            _width = self.superview.bounds.size.height;
-        }
-        else
-        {
-            _width = self.superview.bounds.size.width;
-        }
+        return [UIScreen mainScreen].bounds.size.height;
     }
 
-    return _width;
+    return [UIScreen mainScreen].bounds.size.width;
 }
 
 - (CGFloat)statusBarOffset
@@ -539,8 +533,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)availableWidth
 {
-    CGFloat maxWidth = ([self width] - (kTWMessageViewBarPadding * 3) - kTWMessageViewIconSize);
-    return maxWidth;
+    return ([self width] - (kTWMessageViewBarPadding * 3) - kTWMessageViewIconSize);
 }
 
 - (CGSize)titleSize
@@ -561,7 +554,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         titleLabelSize = [_titleString sizeWithFont:kTWMessageViewTitleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
     }
 
-    return CGSizeMake(ceilf(titleLabelSize.width), ceilf(titleLabelSize.height));;
+    return CGSizeMake(ceilf(titleLabelSize.width), ceilf(titleLabelSize.height));
 }
 
 - (CGSize)descriptionSize

@@ -36,7 +36,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your podfile should look something like:
 
 	platform :ios, '6.0'
-	pod 'TWMessageBarManager', '~> 1.3.2'
+	pod 'TWMessageBarManager', '~> 1.3.3'
 	
 ### The Old School Way
 
@@ -71,6 +71,15 @@ The default display duration is ***3 seconds***. You can override this value by 
                                                    description:@"Your account was successfully updated."
                                                           type:TWMessageBarMessageTypeSuccess
                                                    forDuration:6.0];
+
+
+### Hiding messages
+
+It's not currently possible to hide or cancel a message on a per-instance basis. Instead, all messages must be canceled at once. This action may or may not be animated:
+
+	[[TWMessageBarManager sharedInstance] hideAllAnimated:YES]; // animated
+	
+	[[TWMessageBarManager sharedInstance] hideAll]; // non-animated
 
 ### Callbacks
 
