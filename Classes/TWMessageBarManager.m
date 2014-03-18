@@ -105,6 +105,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 // Getters
 - (CGFloat)messageBarOffset;
+- (UIWindow *)keyWindow;
 
 @end
 
@@ -171,8 +172,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     messageView.duration = duration;
     messageView.hidden = YES;
     
-    [[[UIApplication sharedApplication] keyWindow] addSubview:messageView];
-    [messageView.superview bringSubviewToFront:messageView];
+    [[self keyWindow] addSubview:messageView];
+    [[self keyWindow] bringSubviewToFront:messageView];
 
     [self.messageBarQueue addObject:messageView];
     
@@ -184,7 +185,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)hideAllAnimated:(BOOL)animated
 {
-    for (UIView *subview in [[[UIApplication sharedApplication] keyWindow] subviews])
+    for (UIView *subview in [[self keyWindow] subviews])
     {
         if ([subview isKindOfClass:[TWMessageView class]])
         {
@@ -293,6 +294,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGFloat)messageBarOffset
 {
     return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
+}
+
+- (UIWindow *)keyWindow
+{
+    return [[UIApplication sharedApplication] keyWindow];
 }
 
 #pragma mark - Setters
