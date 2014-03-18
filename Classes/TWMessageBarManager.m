@@ -171,7 +171,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     messageView.duration = duration;
     messageView.hidden = YES;
     
-    [[[UIApplication sharedApplication] keyWindow] insertSubview:messageView atIndex:1];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:messageView];
+    [messageView.superview bringSubviewToFront:messageView];
+
     [self.messageBarQueue addObject:messageView];
     
     if (!self.messageVisible)
