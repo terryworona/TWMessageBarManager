@@ -144,13 +144,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
-        
-        _messageWindow = [[TWTouchForwardingWindow alloc] init];
-        _messageWindow.frame = [UIApplication sharedApplication].keyWindow.frame;
-        _messageWindow.hidden = NO;
-        _messageWindow.windowLevel = UIWindowLevelNormal;
-        _messageWindow.backgroundColor = [UIColor clearColor];
-        _messageWindow.rootViewController = [[UIViewController alloc] init];
     }
     return self;
 }
@@ -309,6 +302,16 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (UIView *)keyWindow
 {
+    if (!_messageWindow)
+    {
+        _messageWindow = [[TWTouchForwardingWindow alloc] init];
+        _messageWindow.frame = [UIApplication sharedApplication].keyWindow.frame;
+        _messageWindow.hidden = NO;
+        _messageWindow.windowLevel = UIWindowLevelNormal;
+        _messageWindow.backgroundColor = [UIColor clearColor];
+        _messageWindow.rootViewController = [[UIViewController alloc] init];
+    }
+    
     return _messageWindow.rootViewController.view;
 }
 
