@@ -9,6 +9,14 @@ An iOS manager for presenting system-wide notifications via a dropdown message b
 - Requires iOS 6.0 or later
 - Requires Automatic Reference Counting (ARC)
 
+## Features
+
+- Drop-in singleton manager supported across all devices.
+- Simple to use protocols and callbacks.
+- Highly customizable.
+
+Refer to the <a href="https://github.com/terryworona/TWMessageBarManager/blob/master/CHANGELOG.md"">changelog</a> for an overview of TWMessagBarManager's feature history.
+
 ## Author
 
 <p>
