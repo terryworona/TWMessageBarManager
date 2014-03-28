@@ -93,6 +93,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
+@property (nonatomic, strong) UIWindow *messageWindow;;
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -107,6 +108,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGFloat)messageBarOffset;
 - (UIWindow *)keyWindow;
 
+@end
+
+@interface TWTouchForwardingWindow : UIWindow
 @end
 
 @implementation TWMessageBarManager
@@ -293,12 +297,22 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)messageBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? 0.0 : [[UIApplication sharedApplication] statusBarFrame].size.height;
+    return 0.0;
 }
 
-- (UIWindow *)keyWindow
+- (UIView *)keyWindow
 {
-    return [[UIApplication sharedApplication] keyWindow];
+    if (!_messageWindow)
+    {
+        _messageWindow = [[TWTouchForwardingWindow alloc] init];
+        _messageWindow.frame = [UIApplication sharedApplication].keyWindow.frame;
+        _messageWindow.hidden = NO;
+        _messageWindow.windowLevel = UIWindowLevelNormal;
+        _messageWindow.backgroundColor = [UIColor clearColor];
+        _messageWindow.rootViewController = [[UIViewController alloc] init];
+    }
+    
+    return _messageWindow.rootViewController.view;
 }
 
 #pragma mark - Setters
@@ -353,8 +367,15 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         _hasCallback = NO;
         _hit = NO;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
 }
 
 #pragma mark - Drawing
@@ -449,6 +470,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
+#pragma mark - Notifications
+
+- (void)didChangeStatusBarFrame:(NSNotification *)notification
+{
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [[self class] statusBarFrame].size.width, self.frame.size.height);
+    [self setNeedsDisplay];
+}
+
 #pragma mark - Getters
 
 - (CGFloat)height
@@ -460,12 +489,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)width
 {
-    return [UIScreen mainScreen].bounds.size.width;
+    return [[self class] statusBarFrame].size.width;
 }
 
 - (CGFloat)statusBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [[UIApplication sharedApplication] statusBarFrame].size.height : 0.0;
+    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [[self class] statusBarFrame].size.height : 0.0;
 }
 
 - (CGFloat)availableWidth
@@ -513,6 +542,21 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
     
     return CGSizeMake(ceilf(descriptionLabelSize.width), ceilf(descriptionLabelSize.height));
+}
+
++ (CGRect)statusBarFrame
+{
+    return [self orientFrame:[UIApplication sharedApplication].statusBarFrame];
+}
+
++ (CGRect)orientFrame:(CGRect)frame
+{
+    if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    {
+        frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
+    }
+    
+    return frame;
 }
 
 @end
@@ -615,6 +659,22 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     NSString *systemVersion = self.systemVersion;
     NSUInteger systemInt = [systemVersion intValue];
     return systemInt >= kTWMessageViewiOS7Identifier;
+}
+
+@end
+
+@implementation TWTouchForwardingWindow
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *hitView = [super hitTest:point withEvent:event];
+    
+    // Pass touches through if they land on the rootViewController's view. Allows notification interaction without blocking the window below.
+    if ([hitView isEqual: self.rootViewController.view]) {
+        hitView = nil;
+    }
+    
+    return hitView;
 }
 
 @end
