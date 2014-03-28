@@ -89,11 +89,15 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @end
 
+@interface TWMessageWindow : UIWindow
+
+@end
+
 @interface TWMessageBarManager () <TWMessageViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
-@property (nonatomic, strong) UIWindow *messageWindow;;
+@property (nonatomic, strong) TWMessageWindow *messageWindow;
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -105,12 +109,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (void)itemSelected:(UITapGestureRecognizer *)recognizer;
 
 // Getters
-- (CGFloat)messageBarOffset;
-- (UIWindow *)keyWindow;
+- (UIView *)messageWindowView;
 
-@end
-
-@interface TWTouchForwardingWindow : UIWindow
 @end
 
 @implementation TWMessageBarManager
@@ -176,8 +176,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     messageView.duration = duration;
     messageView.hidden = YES;
     
-    [[self keyWindow] addSubview:messageView];
-    [[self keyWindow] bringSubviewToFront:messageView];
+    [[self messageWindowView] addSubview:messageView];
+    [[self messageWindowView] bringSubviewToFront:messageView];
 
     [self.messageBarQueue addObject:messageView];
     
@@ -189,7 +189,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)hideAllAnimated:(BOOL)animated
 {
-    for (UIView *subview in [[self keyWindow] subviews])
+    for (UIView *subview in [[self messageWindowView] subviews])
     {
         if ([subview isKindOfClass:[TWMessageView class]])
         {
@@ -240,7 +240,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [self.messageBarQueue removeObject:messageView];
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, [self messageBarOffset] + messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+                [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
         }
@@ -268,7 +268,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         messageView.hit = YES;
         
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height] - [self messageBarOffset], [messageView width], [messageView height])]; // slide back up
+            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height], [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             self.messageVisible = NO;
             [messageView removeFromSuperview];
@@ -295,23 +295,17 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Getters
 
-- (CGFloat)messageBarOffset
-{
-    return 0.0;
-}
-
-- (UIView *)keyWindow
+- (UIView *)messageWindowView
 {
     if (!_messageWindow)
     {
-        _messageWindow = [[TWTouchForwardingWindow alloc] init];
+        _messageWindow = [[TWMessageWindow alloc] init];
         _messageWindow.frame = [UIApplication sharedApplication].keyWindow.frame;
         _messageWindow.hidden = NO;
         _messageWindow.windowLevel = UIWindowLevelNormal;
         _messageWindow.backgroundColor = [UIColor clearColor];
         _messageWindow.rootViewController = [[UIViewController alloc] init];
     }
-    
     return _messageWindow.rootViewController.view;
 }
 
@@ -663,14 +657,20 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @end
 
-@implementation TWTouchForwardingWindow
+@implementation TWMessageWindow
+
+#pragma mark - Touches
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     UIView *hitView = [super hitTest:point withEvent:event];
     
-    // Pass touches through if they land on the rootViewController's view. Allows notification interaction without blocking the window below.
-    if ([hitView isEqual: self.rootViewController.view]) {
+    /*
+     * Pass touches through if they land on the rootViewController's view. 
+     * Allows notification interaction without blocking the window below.
+     */
+    if ([hitView isEqual: self.rootViewController.view])
+    {
         hitView = nil;
     }
     
