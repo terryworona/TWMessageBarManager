@@ -48,12 +48,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @protocol TWMessageViewDelegate;
 
-@interface TWDefaultMessageBarStyleSheet : NSObject <TWMessageBarStyleSheet>
-
-+ (TWDefaultMessageBarStyleSheet *)styleSheet;
-
-@end
-
 @interface TWMessageView : UIView
 
 @property (nonatomic, copy) NSString *titleString;
@@ -80,12 +74,25 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGFloat)availableWidth;
 - (CGSize)titleSize;
 - (CGSize)descriptionSize;
+- (CGRect)statusBarFrame;
+
+// Helpers
+- (CGRect)orientFrame:(CGRect)frame;
+
+// Notifications;
+- (void)didChangeStatusBarFrame:(NSNotification *)notification;
 
 @end
 
 @protocol TWMessageViewDelegate <NSObject>
 
 - (NSObject<TWMessageBarStyleSheet> *)styleSheetForMessageView:(TWMessageView *)messageView;
+
+@end
+
+@interface TWDefaultMessageBarStyleSheet : NSObject <TWMessageBarStyleSheet>
+
++ (TWDefaultMessageBarStyleSheet *)styleSheet;
 
 @end
 
@@ -367,6 +374,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return self;
 }
 
+#pragma mark - Memory Management
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
@@ -464,14 +473,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-#pragma mark - Notifications
-
-- (void)didChangeStatusBarFrame:(NSNotification *)notification
-{
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [[self class] statusBarFrame].size.width, self.frame.size.height);
-    [self setNeedsDisplay];
-}
-
 #pragma mark - Getters
 
 - (CGFloat)height
@@ -483,12 +484,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)width
 {
-    return [[self class] statusBarFrame].size.width;
+    return [self statusBarFrame].size.width;
 }
 
 - (CGFloat)statusBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [[self class] statusBarFrame].size.height : 0.0;
+    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
 }
 
 - (CGFloat)availableWidth
@@ -538,19 +539,28 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return CGSizeMake(ceilf(descriptionLabelSize.width), ceilf(descriptionLabelSize.height));
 }
 
-+ (CGRect)statusBarFrame
+- (CGRect)statusBarFrame
 {
     return [self orientFrame:[UIApplication sharedApplication].statusBarFrame];
 }
 
-+ (CGRect)orientFrame:(CGRect)frame
+#pragma mark - Helpers
+
+- (CGRect)orientFrame:(CGRect)frame
 {
     if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
         frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
     }
-    
     return frame;
+}
+
+#pragma mark - Notifications
+
+- (void)didChangeStatusBarFrame:(NSNotification *)notification
+{
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [self statusBarFrame].size.width, self.frame.size.height);
+    [self setNeedsDisplay];
 }
 
 @end
@@ -644,19 +654,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @end
 
-@implementation UIDevice (Additions)
-
-#pragma mark - OS Helpers
-
-- (BOOL)isRunningiOS7OrLater
-{
-    NSString *systemVersion = self.systemVersion;
-    NSUInteger systemInt = [systemVersion intValue];
-    return systemInt >= kTWMessageViewiOS7Identifier;
-}
-
-@end
-
 @implementation TWMessageWindow
 
 #pragma mark - Touches
@@ -666,7 +663,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     UIView *hitView = [super hitTest:point withEvent:event];
     
     /*
-     * Pass touches through if they land on the rootViewController's view. 
+     * Pass touches through if they land on the rootViewController's view.
      * Allows notification interaction without blocking the window below.
      */
     if ([hitView isEqual: self.rootViewController.view])
@@ -675,6 +672,19 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
     
     return hitView;
+}
+
+@end
+
+@implementation UIDevice (Additions)
+
+#pragma mark - OS Helpers
+
+- (BOOL)isRunningiOS7OrLater
+{
+    NSString *systemVersion = self.systemVersion;
+    NSUInteger systemInt = [systemVersion intValue];
+    return systemInt >= kTWMessageViewiOS7Identifier;
 }
 
 @end
