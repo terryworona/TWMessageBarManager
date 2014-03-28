@@ -63,6 +63,12 @@ typedef enum {
 @property (nonatomic, strong) NSObject<TWMessageBarStyleSheet> *styleSheet;
 
 /**
+ *  A boolean to determine if the message view bounce into place using dynamics.
+ *  Default: NO
+ */
+@property (nonatomic, assign) BOOL shouldBounceMessage;
+
+/**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).
  *
  *  @param title        Header text in the message view.

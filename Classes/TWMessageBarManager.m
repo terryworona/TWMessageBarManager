@@ -105,6 +105,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, strong) TWMessageWindow *messageWindow;
+@property (nonatomic, strong) UIDynamicAnimator *animator;
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -245,10 +246,40 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         if (messageView)
         {
             [self.messageBarQueue removeObject:messageView];
+
+            if (self.shouldBounceMessage) {
+                NSArray *items = @[messageView];
+                
+                // gravity
+                UIGravityBehavior *grav = [[UIGravityBehavior alloc] initWithItems:items];
+                grav.magnitude = 5.0;
+                
+                // collision
+                CGPoint fromPoint = CGPointMake(0, [messageView height]);
+                CGPoint toPoint = CGPointMake(CGRectGetMaxX(self.messageWindowView.bounds), fromPoint.y);
+                
+                UICollisionBehavior *coll = [[UICollisionBehavior alloc] initWithItems:items];
+                coll.collisionMode = UICollisionBehaviorModeBoundaries;
+                [coll addBoundaryWithIdentifier:@"BoundaryIdent" fromPoint:fromPoint toPoint:toPoint];
+                
+                // item behavior
+                UIDynamicItemBehavior *itemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:items];
+                itemBehavior.elasticity = 0.6;
+                
+                // master behavoir
+                UIDynamicBehavior *beh = [[UIDynamicBehavior alloc] init];
+                [beh addChildBehavior:grav];
+                [beh addChildBehavior:coll];
+                [beh addChildBehavior:itemBehavior];
+                
+                [self.animator removeAllBehaviors];
+                [self.animator addBehavior:beh];
+            } else {
+                [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
+                    [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+                }];
+            }
             
-            [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
-            }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
         }
     }
@@ -273,6 +304,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     if (messageView && ![messageView isHit])
     {
         messageView.hit = YES;
+        
+        if (self.shouldBounceMessage) {
+            [self.animator removeAllBehaviors];
+        }
         
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
             [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height], [messageView width], [messageView height])]; // slide back up
@@ -314,6 +349,17 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageWindow.rootViewController = [[UIViewController alloc] init];
     }
     return self.messageWindow.rootViewController.view;
+}
+
+- (UIDynamicAnimator *)animator
+{
+    if (_animator) {
+        return _animator;
+    }
+    
+    _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.messageWindowView];
+    
+    return _animator;
 }
 
 #pragma mark - Setters
