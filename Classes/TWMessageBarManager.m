@@ -304,16 +304,16 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (UIView *)messageWindowView
 {
-    if (!_messageWindow)
+    if (!self.messageWindow)
     {
-        _messageWindow = [[TWMessageWindow alloc] init];
-        _messageWindow.frame = [UIApplication sharedApplication].keyWindow.frame;
-        _messageWindow.hidden = NO;
-        _messageWindow.windowLevel = UIWindowLevelNormal;
-        _messageWindow.backgroundColor = [UIColor clearColor];
-        _messageWindow.rootViewController = [[UIViewController alloc] init];
+        self.messageWindow = [[TWMessageWindow alloc] init];
+        self.messageWindow.frame = [UIApplication sharedApplication].keyWindow.frame;
+        self.messageWindow.hidden = NO;
+        self.messageWindow.windowLevel = UIWindowLevelNormal;
+        self.messageWindow.backgroundColor = [UIColor clearColor];
+        self.messageWindow.rootViewController = [[UIViewController alloc] init];
     }
-    return _messageWindow.rootViewController.view;
+    return self.messageWindow.rootViewController.view;
 }
 
 #pragma mark - Setters
