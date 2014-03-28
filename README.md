@@ -13,6 +13,7 @@ An iOS manager for presenting system-wide notifications via a dropdown message b
 
 - Drop-in singleton manager supported across all devices.
 - Simple to use protocols and callbacks.
+- Landscape and portrait orientation support.
 - Highly customizable.
 
 Refer to the <a href="https://github.com/terryworona/TWMessageBarManager/blob/master/CHANGELOG.md"">changelog</a> for an overview of TWMessagBarManager's feature history.
@@ -44,7 +45,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your podfile should look something like:
 
 	platform :ios, '6.0'
-	pod 'TWMessageBarManager', '~> 1.3.5'
+	pod 'TWMessageBarManager', '~> 1.4.0'
 	
 ### The Old School Way
 
