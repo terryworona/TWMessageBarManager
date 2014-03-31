@@ -106,6 +106,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, strong) TWMessageWindow *messageWindow;
 
+@property (nonatomic, readwrite) NSArray *accessibleElements;
+
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
 
@@ -185,7 +187,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
-
+    
     [self.messageBarQueue addObject:messageView];
     
     if (!self.messageVisible)
@@ -245,7 +247,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         if (messageView)
         {
             [self.messageBarQueue removeObject:messageView];
-            [self.accessibleElements removeAllObjects];
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
@@ -258,7 +259,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             textElement.accessibilityFrame = [self.messageWindowView convertRect:textFrame toView:nil];
             textElement.accessibilityLabel = [NSString stringWithFormat:@"%@\n%@", messageView.titleString, messageView.descriptionString];
             textElement.accessibilityTraits = UIAccessibilityTraitStaticText;
-            [self.accessibleElements addObject:textElement];
+            self.accessibleElements = @[ textElement ];
             
             // notify the accessibility framework to read the message
             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self);
@@ -433,7 +434,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-
+        
         // background fill
         CGContextSaveGState(context);
         {
@@ -494,7 +495,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                                    options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine
                                 attributes:@{NSFontAttributeName:kTWMessageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewTitleColor, NSParagraphStyleAttributeName:paragraphStyle}
                                    context:nil];
-
+            
             yOffset += titleLabelSize.height;
             
             [kTWMessageViewDescriptionColor set];
