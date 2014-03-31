@@ -108,6 +108,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @end
 
+@interface TWMessageWindowViewController : UIViewController
+
+@end
+
 @interface TWMessageBarManager () <TWMessageViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
@@ -194,7 +198,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
-
+    
     [self.messageBarQueue addObject:messageView];
     
     if (!self.messageVisible)
@@ -254,7 +258,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         if (messageView)
         {
             [self.messageBarQueue removeObject:messageView];
-
+            
             if (self.shouldBounceMessage) {
                 NSArray *items = @[messageView];
                 
@@ -354,7 +358,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageWindow.hidden = NO;
         self.messageWindow.windowLevel = UIWindowLevelNormal;
         self.messageWindow.backgroundColor = [UIColor clearColor];
-        self.messageWindow.rootViewController = [[UIViewController alloc] init];
+        
+        TWMessageWindowViewController *controller = [[TWMessageWindowViewController alloc] init];
+        
+        self.messageWindow.rootViewController = controller;
     }
     return self.messageWindow.rootViewController.view;
 }
@@ -444,7 +451,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-
+        
         // background fill
         CGContextSaveGState(context);
         {
@@ -505,7 +512,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                                    options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine
                                 attributes:@{NSFontAttributeName:kTWMessageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewTitleColor, NSParagraphStyleAttributeName:paragraphStyle}
                                    context:nil];
-
+            
             yOffset += titleLabelSize.height;
             
             [kTWMessageViewDescriptionColor set];
@@ -572,7 +579,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         TW_SURPRESS_DEPRECATED_WARNINGS
         (
          titleLabelSize = [_titleString sizeWithFont:kTWMessageViewTitleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
-        );
+         );
     }
     
     return CGSizeMake(ceilf(titleLabelSize.width), ceilf(titleLabelSize.height));
@@ -596,7 +603,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         TW_SURPRESS_DEPRECATED_WARNINGS
         (
          descriptionLabelSize = [_descriptionString sizeWithFont:kTWMessageViewDescriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
-        );
+         );
     }
     
     return CGSizeMake(ceilf(descriptionLabelSize.width), ceilf(descriptionLabelSize.height));
@@ -735,6 +742,17 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
     
     return hitView;
+}
+
+@end
+
+@implementation TWMessageWindowViewController
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    UIViewController *controller = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    return controller.preferredStatusBarStyle;
 }
 
 @end
