@@ -245,13 +245,56 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         if (messageView)
         {
             [self.messageBarQueue removeObject:messageView];
+            [self.accessibleElements removeAllObjects];
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
+            
+            // create an accessibility element for the message
+            UIAccessibilityElement *textElement = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:self];
+            CGRect textFrame = messageView.frame;
+            textElement.accessibilityFrame = [self.messageWindowView convertRect:textFrame toView:nil];
+            textElement.accessibilityLabel = [NSString stringWithFormat:@"%@\n%@", messageView.titleString, messageView.descriptionString];
+            textElement.accessibilityTraits = UIAccessibilityTraitStaticText;
+            [self.accessibleElements addObject:textElement];
+            
+            // notify the accessibility framework to read the message
+            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self);
         }
     }
+}
+
+#pragma mark - UIAccessibilityContainer protocol
+
+- (NSInteger)accessibilityElementCount
+{
+    return (NSInteger)[self.accessibleElements count];
+}
+
+- (id)accessibilityElementAtIndex:(NSInteger)index
+{
+    return [self.accessibleElements objectAtIndex:(NSUInteger)index];
+}
+
+- (NSInteger)indexOfAccessibilityElement:(id)element
+{
+    return (NSInteger)[self.accessibleElements indexOfObject:element];
+}
+
+- (BOOL)isAccessibilityElement
+{
+    return NO;
+}
+
+- (NSArray *)accessibleElements
+{
+    if (_accessibleElements != nil) {
+        return _accessibleElements;
+    }
+    _accessibleElements = [[NSMutableArray alloc] init];
+    return _accessibleElements;
 }
 
 #pragma mark - Gestures

@@ -110,6 +110,11 @@ typedef enum {
 - (void)hideAllAnimated:(BOOL)animated;
 - (void)hideAll; // non-animated
 
+/**
+ * Enable Accessibility
+ */
+@property (nonatomic, strong) NSMutableArray *accessibleElements;
+
 @end
 
 @interface UIDevice (Additions)
