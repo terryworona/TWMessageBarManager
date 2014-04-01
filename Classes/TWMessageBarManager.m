@@ -105,14 +105,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, strong) TWMessageWindow *messageWindow;
-
-@property (nonatomic, readwrite) NSArray *accessibleElements;
+@property (nonatomic, readwrite) NSArray *accessibleElements; // accessibility
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
 
 // Helpers
 - (void)showNextMessage;
+- (void)generateAccessibleElementWithTitle:(NSString *)title description:(NSString *)description;
 
 // Gestures
 - (void)itemSelected:(UITapGestureRecognizer *)recognizer;
@@ -253,49 +253,18 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
             
-            // create an accessibility element for the message
-            UIAccessibilityElement *textElement = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:self];
-            CGRect textFrame = messageView.frame;
-            textElement.accessibilityFrame = [self.messageWindowView convertRect:textFrame toView:nil];
-            textElement.accessibilityLabel = [NSString stringWithFormat:@"%@\n%@", messageView.titleString, messageView.descriptionString];
-            textElement.accessibilityTraits = UIAccessibilityTraitStaticText;
-            self.accessibleElements = @[ textElement ];
-            
-            // notify the accessibility framework to read the message
-            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self);
+            [self generateAccessibleElementWithTitle:messageView.titleString description:messageView.descriptionString];
         }
     }
 }
 
-#pragma mark - UIAccessibilityContainer protocol
-
-- (NSInteger)accessibilityElementCount
+- (void)generateAccessibleElementWithTitle:(NSString *)title description:(NSString *)description
 {
-    return (NSInteger)[self.accessibleElements count];
-}
-
-- (id)accessibilityElementAtIndex:(NSInteger)index
-{
-    return [self.accessibleElements objectAtIndex:(NSUInteger)index];
-}
-
-- (NSInteger)indexOfAccessibilityElement:(id)element
-{
-    return (NSInteger)[self.accessibleElements indexOfObject:element];
-}
-
-- (BOOL)isAccessibilityElement
-{
-    return NO;
-}
-
-- (NSArray *)accessibleElements
-{
-    if (_accessibleElements != nil) {
-        return _accessibleElements;
-    }
-    _accessibleElements = [[NSMutableArray alloc] init];
-    return _accessibleElements;
+    UIAccessibilityElement *textElement = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:self];
+    textElement.accessibilityLabel = [NSString stringWithFormat:@"%@\n%@", title, description];
+    textElement.accessibilityTraits = UIAccessibilityTraitStaticText;
+    self.accessibleElements = @[textElement];
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self); // notify the accessibility framework to read the message
 }
 
 #pragma mark - Gestures
@@ -360,6 +329,16 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return self.messageWindow.rootViewController.view;
 }
 
+- (NSArray *)accessibleElements
+{
+    if (_accessibleElements != nil)
+    {
+        return _accessibleElements;
+    }
+    _accessibleElements = [NSArray array];
+    return _accessibleElements;
+}
+
 #pragma mark - Setters
 
 - (void)setStyleSheet:(NSObject<TWMessageBarStyleSheet> *)styleSheet
@@ -375,6 +354,28 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (NSObject<TWMessageBarStyleSheet> *)styleSheetForMessageView:(TWMessageView *)messageView
 {
     return self.styleSheet;
+}
+
+#pragma mark - UIAccessibilityContainer
+
+- (NSInteger)accessibilityElementCount
+{
+    return (NSInteger)[self.accessibleElements count];
+}
+
+- (id)accessibilityElementAtIndex:(NSInteger)index
+{
+    return [self.accessibleElements objectAtIndex:(NSUInteger)index];
+}
+
+- (NSInteger)indexOfAccessibilityElement:(id)element
+{
+    return (NSInteger)[self.accessibleElements indexOfObject:element];
+}
+
+- (BOOL)isAccessibilityElement
+{
+    return NO;
 }
 
 @end
