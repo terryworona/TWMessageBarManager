@@ -106,6 +106,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, strong) TWMessageWindow *messageWindow;
 
+@property (nonatomic, readwrite) NSArray *accessibleElements;
+
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
 
@@ -185,7 +187,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
-
+    
     [self.messageBarQueue addObject:messageView];
     
     if (!self.messageVisible)
@@ -250,8 +252,50 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
+            
+            // create an accessibility element for the message
+            UIAccessibilityElement *textElement = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:self];
+            CGRect textFrame = messageView.frame;
+            textElement.accessibilityFrame = [self.messageWindowView convertRect:textFrame toView:nil];
+            textElement.accessibilityLabel = [NSString stringWithFormat:@"%@\n%@", messageView.titleString, messageView.descriptionString];
+            textElement.accessibilityTraits = UIAccessibilityTraitStaticText;
+            self.accessibleElements = @[ textElement ];
+            
+            // notify the accessibility framework to read the message
+            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self);
         }
     }
+}
+
+#pragma mark - UIAccessibilityContainer protocol
+
+- (NSInteger)accessibilityElementCount
+{
+    return (NSInteger)[self.accessibleElements count];
+}
+
+- (id)accessibilityElementAtIndex:(NSInteger)index
+{
+    return [self.accessibleElements objectAtIndex:(NSUInteger)index];
+}
+
+- (NSInteger)indexOfAccessibilityElement:(id)element
+{
+    return (NSInteger)[self.accessibleElements indexOfObject:element];
+}
+
+- (BOOL)isAccessibilityElement
+{
+    return NO;
+}
+
+- (NSArray *)accessibleElements
+{
+    if (_accessibleElements != nil) {
+        return _accessibleElements;
+    }
+    _accessibleElements = [[NSMutableArray alloc] init];
+    return _accessibleElements;
 }
 
 #pragma mark - Gestures
@@ -390,7 +434,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-
+        
         // background fill
         CGContextSaveGState(context);
         {
@@ -451,7 +495,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                                    options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine
                                 attributes:@{NSFontAttributeName:kTWMessageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewTitleColor, NSParagraphStyleAttributeName:paragraphStyle}
                                    context:nil];
-
+            
             yOffset += titleLabelSize.height;
             
             [kTWMessageViewDescriptionColor set];
