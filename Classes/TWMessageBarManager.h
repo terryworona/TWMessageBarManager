@@ -45,6 +45,24 @@ typedef enum {
  */
 - (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
 
+/**
+ *  Font type for title of message view
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc)
+ *
+ *  @return UIImage istance representing the message's title text.
+ */
+- (UIFont *)titleFontForMessageType:(TWMessageBarMessageType)type;
+
+/**
+ *  Font type for description of message view
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc)
+ *
+ *  @return UIFont istance representing the message's description text.
+ */
+- (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type;
+
 @end
 
 @interface TWMessageBarManager : NSObject

@@ -111,4 +111,14 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     return iconImage;
 }
 
+- (UIFont *)titleFontForMessageType:(TWMessageBarMessageType)type
+{
+    return [UIFont systemFontOfSize:16.0];
+}
+
+- (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type
+{
+    return [UIFont systemFontOfSize:14.0];
+}
+
 @end
