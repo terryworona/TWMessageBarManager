@@ -27,6 +27,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 @property (nonatomic, strong) UIButton *successButton;
 @property (nonatomic, strong) UIButton *infoButton;
 @property (nonatomic, strong) UIButton *hideAllButton;
+@property (nonatomic, strong) UISwitch *bounceToggleSwitch;
 
 // Button presses
 - (void)errorButtonPressed:(id)sender;
@@ -77,32 +78,51 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     CGFloat xOffset = kTWMesssageBarDemoControllerButtonPadding;
     CGFloat totalheight = (kTWMesssageBarDemoControllerButtonHeight * 4) + (kTWMesssageBarDemoControllerButtonPadding * 3);
     CGFloat yOffset = ceil(self.view.bounds.size.height * 0.5) - ceil(totalheight * 0.5);
+    CGFloat buttonWidth = self.view.bounds.size.width - (xOffset * 2);
     
     self.errorButton = [self buttonWithTitle:kStringButtonLabelErrorMessage];
-    self.errorButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
+    self.errorButton.frame = CGRectMake(xOffset, yOffset, buttonWidth, kTWMesssageBarDemoControllerButtonHeight);
     [self.errorButton addTarget:self action:@selector(errorButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.errorButton];
 
     yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
     
     self.successButton = [self buttonWithTitle:kStringButtonLabelSuccessMessage];
-    self.successButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
+    self.successButton.frame = CGRectMake(xOffset, yOffset, buttonWidth, kTWMesssageBarDemoControllerButtonHeight);
     [self.successButton addTarget:self action:@selector(successButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.successButton];
 
     yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
 
     self.infoButton = [self buttonWithTitle:kStringButtonLabelInfoMessage];
-    self.infoButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
+    self.infoButton.frame = CGRectMake(xOffset, yOffset, buttonWidth, kTWMesssageBarDemoControllerButtonHeight);
     [self.infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.infoButton];
     
     yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
 
     self.hideAllButton = [self buttonWithTitle:kStringButtonLabelHideAll];
-    self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
+    self.hideAllButton.frame = CGRectMake(xOffset, yOffset, buttonWidth, kTWMesssageBarDemoControllerButtonHeight);
     [self.hideAllButton addTarget:self action:@selector(hideAllButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.hideAllButton];
+    
+    yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
+    
+    UIView *bounceToggleView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, buttonWidth, kTWMesssageBarDemoControllerButtonHeight)];
+    bounceToggleView.backgroundColor = kTWMesssageBarDemoControllerButtonColor;
+    [self.view addSubview:bounceToggleView];
+    
+    UILabel *bounceLabel = [[UILabel alloc] init];
+    bounceLabel.text = @"Should Bounce";
+    bounceLabel.textColor = [UIColor whiteColor];
+    [bounceLabel sizeToFit];
+    bounceLabel.center = CGPointMake((CGRectGetWidth(bounceLabel.bounds)/2) + xOffset, CGRectGetMidY(bounceToggleView.bounds));
+    [bounceToggleView addSubview:bounceLabel];
+    
+    self.bounceToggleSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+    self.bounceToggleSwitch.center = CGPointMake(CGRectGetMaxX(bounceToggleView.bounds) - CGRectGetMidX(self.bounceToggleSwitch.bounds) - 9, CGRectGetMidY(bounceToggleView.bounds));
+    [self.bounceToggleSwitch addTarget:self action:@selector(toggleBounce:) forControlEvents:UIControlEventValueChanged];
+    [bounceToggleView addSubview:self.bounceToggleSwitch];
 }
 
 #pragma mark - Orientation
@@ -153,6 +173,11 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 - (void)hideAllButtonPressed:(id)sender
 {
     [[TWMessageBarManager sharedInstance] hideAllAnimated:YES];
+}
+
+- (void)toggleBounce:(UISwitch *)sender
+{
+    [TWMessageBarManager sharedInstance].shouldBounceMessage = sender.isOn;
 }
 
 #pragma mark - Generators

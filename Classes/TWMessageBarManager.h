@@ -45,6 +45,24 @@ typedef enum {
  */
 - (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
 
+/**
+ *  Font type for title of message view
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc)
+ *
+ *  @return UIImage istance representing the message's title text.
+ */
+- (UIFont *)titleFontForMessageType:(TWMessageBarMessageType)type;
+
+/**
+ *  Font type for description of message view
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc)
+ *
+ *  @return UIFont istance representing the message's description text.
+ */
+- (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type;
+
 @end
 
 @interface TWMessageBarManager : NSObject
@@ -61,6 +79,12 @@ typedef enum {
  *  If no style sheet is supplied, a default class is provided on initialization (see implementation for details).
  */
 @property (nonatomic, strong) NSObject<TWMessageBarStyleSheet> *styleSheet;
+
+/**
+ *  A boolean to determine if the message view bounce into place using dynamics.
+ *  Default: NO
+ */
+@property (nonatomic, assign) BOOL shouldBounceMessage;
 
 /**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).
