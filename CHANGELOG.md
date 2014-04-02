@@ -1,8 +1,12 @@
 # Changelog
 
+## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.4.1">1.4.1</a>
+#### 04/01/14
+- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/32">#32</a> (accessibility support).
+
 ## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.4.0">1.4.0</a>
 #### 03/28/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/28">#29</a> (orientation support).
+- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/29">#29</a> (orientation support).
 
 ## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.3.5">1.3.5</a>
 #### 03/18/14
