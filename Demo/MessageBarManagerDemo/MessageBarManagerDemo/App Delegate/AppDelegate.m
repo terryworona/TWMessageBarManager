@@ -31,8 +31,15 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     // default style sheet
     self.window.rootViewController = [[TWMesssageBarDemoController alloc] init];
     
-    // custom style sheet (disabled)
+    /*
+     * Uncomment for custom style sheet (disabled)
+     */
     // self.window.rootViewController = [[TWMesssageBarDemoController alloc] initWithStyleSheet:[TWAppDelegateDemoStyleSheet styleSheet]];
+    
+    /*
+     * Uncomment for hidden status bar (testing purposes)
+     */
+    // [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     [self.window makeKeyAndVisible];
     return YES;

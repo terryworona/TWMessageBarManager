@@ -79,7 +79,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 // Helpers
 - (CGRect)orientFrame:(CGRect)frame;
 
-// Notifications;
+// Notifications
 - (void)didChangeDeviceOrientation:(NSNotification *)notification;
 
 @end
@@ -586,9 +586,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGRect)statusBarFrame
 {
-    CGRect windowFrame = [self orientFrame: [UIApplication sharedApplication].keyWindow.frame];
-    CGRect statusFrame = [self orientFrame: [UIApplication sharedApplication].statusBarFrame];
-    
+    CGRect windowFrame = [self orientFrame:[UIApplication sharedApplication].keyWindow.frame];
+    CGRect statusFrame = [self orientFrame:[UIApplication sharedApplication].statusBarFrame];
     return CGRectMake(windowFrame.origin.x, windowFrame.origin.y, windowFrame.size.width, statusFrame.size.height);
 }
 
