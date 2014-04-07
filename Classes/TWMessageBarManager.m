@@ -80,7 +80,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGRect)orientFrame:(CGRect)frame;
 
 // Notifications;
-- (void)didChangeStatusBarFrame:(NSNotification *)notification;
+- (void)didChangeDeviceOrientation:(NSNotification *)notification;
 
 @end
 
@@ -414,7 +414,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _hasCallback = NO;
         _hit = NO;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeStatusBarFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeDeviceOrientation:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
 }
@@ -423,7 +423,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 #pragma mark - Drawing
@@ -586,14 +586,17 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGRect)statusBarFrame
 {
-    return [self orientFrame:[UIApplication sharedApplication].statusBarFrame];
+    CGRect windowFrame = [self orientFrame: [UIApplication sharedApplication].keyWindow.frame];
+    CGRect statusFrame = [self orientFrame: [UIApplication sharedApplication].statusBarFrame];
+    
+    return CGRectMake(windowFrame.origin.x, windowFrame.origin.y, windowFrame.size.width, statusFrame.size.height);
 }
 
 #pragma mark - Helpers
 
 - (CGRect)orientFrame:(CGRect)frame
 {
-    if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) || UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
         frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
     }
@@ -602,7 +605,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Notifications
 
-- (void)didChangeStatusBarFrame:(NSNotification *)notification
+- (void)didChangeDeviceOrientation:(NSNotification *)notification
 {
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [self statusBarFrame].size.width, self.frame.size.height);
     [self setNeedsDisplay];
