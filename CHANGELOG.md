@@ -1,5 +1,9 @@
 # Changelog
 
+## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.4.2">1.4.2</a>
+#### 04/06/14
+- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/35">#35</a>.
+
 ## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.4.1">1.4.1</a>
 #### 04/01/14
 - Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/32">#32</a> (accessibility support).
