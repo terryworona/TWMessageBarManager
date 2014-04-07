@@ -100,6 +100,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @end
 
+@interface TWMessageViewController : UIViewController
+
+@end
+
 @interface TWMessageBarManager () <TWMessageViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
@@ -324,7 +328,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageWindow.hidden = NO;
         self.messageWindow.windowLevel = UIWindowLevelNormal;
         self.messageWindow.backgroundColor = [UIColor clearColor];
-        self.messageWindow.rootViewController = [[UIViewController alloc] init];
+        self.messageWindow.rootViewController = [[TWMessageViewController alloc] init];
     }
     return self.messageWindow.rootViewController.view;
 }
@@ -621,7 +625,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 	if (self == [TWDefaultMessageBarStyleSheet class])
 	{
         // Colors (background)
-        kTWDefaultMessageBarStyleSheetErrorBackgroundColor = [UIColor colorWithRed:1.0 green:0.611 blue:0.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // orange
+        kTWDefaultMessageBarStyleSheetErrorBackgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // orange
         kTWDefaultMessageBarStyleSheetSuccessBackgroundColor = [UIColor colorWithRed:0.0f green:0.831f blue:0.176f alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // green
         kTWDefaultMessageBarStyleSheetInfoBackgroundColor = [UIColor colorWithRed:0.0 green:0.482 blue:1.0 alpha:kTWMessageBarStyleSheetMessageBarAlpha]; // blue
         
@@ -734,4 +738,33 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return systemInt >= kTWMessageViewiOS7Identifier;
 }
 
+@end
+
+@implementation TWMessageViewController
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    
+    return [self barBrightness] > 0.5 ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;;
+}
+
+-(CGFloat)barBrightness {
+    CGFloat red, blue, green, alpha;
+    UIView *view = [[TWMessageBarManager sharedInstance] messageWindowView];
+    NSArray *views = [view subviews];
+    if ([views count] != 0) { // if we have not configured the views yet, return the default
+        TWMessageView *messageView  = views[0]; // the TMMessageView should be on top
+        TWMessageBarMessageType messageType = messageView.messageType;
+        id<TWMessageBarStyleSheet> styleSheet =nil;
+      
+        if ([messageView.delegate respondsToSelector:@selector(styleSheetForMessageView:)]) {
+            styleSheet = [messageView.delegate styleSheetForMessageView:messageView];
+            UIColor *color = [styleSheet backgroundColorForMessageType:messageType];
+            [color getRed:&red green:&green blue:&blue alpha:&alpha];
+            float avgGray = (red + green + blue) / 3.0;
+            return avgGray;
+        }
+    }
+    return 1.f; // default of light content
+
+}
 @end
