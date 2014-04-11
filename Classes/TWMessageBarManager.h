@@ -110,6 +110,13 @@ typedef enum {
 - (void)hideAllAnimated:(BOOL)animated;
 - (void)hideAll; // non-animated
 
+/**
+ * This method is for IOS 7 or greater. It passes the preferred status
+ * bar style so that TWMessageBarManager will honor it. It is not
+ * required to call this, unless you want to control the statusBarStyle.
+ */
+- (void)setPreferredStatusBarStyle:(UIStatusBarStyle)statusBarStyle;
+
 @end
 
 @interface UIDevice (Additions)
