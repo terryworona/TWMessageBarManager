@@ -62,6 +62,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @property (nonatomic, assign) CGFloat duration;
 
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+
 @property (nonatomic, weak) id <TWMessageViewDelegate> delegate;
 
 // Initializers
@@ -100,6 +102,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @end
 
+@interface TWMessageBarViewController : UIViewController
+
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+
+@end
+
 @interface TWMessageBarManager () <TWMessageViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
@@ -119,6 +127,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 // Getters
 - (UIView *)messageWindowView;
+- (TWMessageBarViewController *)messageBarViewController;
 
 @end
 
@@ -176,6 +185,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
 {
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarStyle:self.preferredStatusBarStyle callback:callback];
+}
+
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
+{
     TWMessageView *messageView = [[TWMessageView alloc] initWithTitle:title description:description type:type];
     messageView.delegate = self;
     
@@ -184,6 +198,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     messageView.duration = duration;
     messageView.hidden = YES;
+    
+    messageView.statusBarStyle = statusBarStyle;
     
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
@@ -248,6 +264,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             [self.messageBarQueue removeObject:messageView];
             
+            [self messageBarViewController].statusBarStyle = messageView.statusBarStyle;
+            
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
@@ -309,6 +327,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             {
                 [self showNextMessage];
             }
+            else
+            {
+                [self messageBarViewController].statusBarStyle = self.preferredStatusBarStyle;
+            }
         }];
     }
 }
@@ -317,6 +339,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (UIView *)messageWindowView
 {
+    return [self messageBarViewController].view;
+}
+
+- (TWMessageBarViewController *)messageBarViewController
+{
     if (!self.messageWindow)
     {
         self.messageWindow = [[TWMessageWindow alloc] init];
@@ -324,9 +351,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageWindow.hidden = NO;
         self.messageWindow.windowLevel = UIWindowLevelNormal;
         self.messageWindow.backgroundColor = [UIColor clearColor];
-        self.messageWindow.rootViewController = [[UIViewController alloc] init];
+        self.messageWindow.rootViewController = [[TWMessageBarViewController alloc] init];
     }
-    return self.messageWindow.rootViewController.view;
+    return (TWMessageBarViewController *)self.messageWindow.rootViewController;
 }
 
 - (NSArray *)accessibleElements
@@ -732,6 +759,25 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     NSString *systemVersion = self.systemVersion;
     NSUInteger systemInt = [systemVersion intValue];
     return systemInt >= kTWMessageViewiOS7Identifier;
+}
+
+@end
+
+@implementation TWMessageBarViewController
+
+#pragma mark - Setters
+
+- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle
+{
+    _statusBarStyle = statusBarStyle;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+#pragma mark - Status Bar
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return _statusBarStyle;
 }
 
 @end
