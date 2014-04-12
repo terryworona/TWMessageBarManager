@@ -57,6 +57,14 @@ typedef enum {
 + (TWMessageBarManager *)sharedInstance;
 
 /**
+ *  Default display duration for each message.
+ *  This can be customized on a per-message basis (see presentation functions below).
+ *
+ *  @return Default display duration (3 seconds).
+ */
++ (CGFloat)defaultDuration;
+
+/**
  *  An object conforming to the TWMessageBarStyleSheet protocol defines the message bar's look and feel.
  *  If no style sheet is supplied, a default class is provided on initialization (see implementation for details).
  */
@@ -111,6 +119,17 @@ typedef enum {
  *  @param callback     Callback block to be executed if a message is tapped.
  */
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback;
+
+/**
+ *  Shows a message with the supplied title, description, type (dictates color, stroke and icon), callback block & duration.
+ *
+ *  @param title            Header text in the message view.
+ *  @param description      Description text in the message view.
+ *  @param type             Type dictates color, stroke and icon shown in the message view.
+ *  @param statusBarStyle   Applied during the presentation of the message. After dismissal, the style will revert to preferredStatusBarStyle.
+ *  @param callback         Callback block to be executed if a message is tapped.
+ */
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
 
 /**
  *  Shows a message with the supplied title, description, type (dictates color, stroke and icon), callback block & duration.
