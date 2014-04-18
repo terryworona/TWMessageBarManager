@@ -1,5 +1,9 @@
 # Changelog
 
+## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.5.1">1.5.1</a>
+#### 04/18/14
+- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/40">#40</a>.
+ 
 ## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.5.0">1.5.0</a>
 #### 04/12/14
 - Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/38">#38</a> (custom UIStatusBarStyle).
