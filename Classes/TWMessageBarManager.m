@@ -781,7 +781,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 {
     _statusBarStyle = statusBarStyle;
     
-    if ([[UIDevice currentDevice] isRunningiOS7OrLater]) {
+    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+    {
         [self setNeedsStatusBarAppearanceUpdate];
     }
 }
