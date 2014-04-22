@@ -190,7 +190,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type duration:duration statusBarStyle:self.preferredStatusBarStyle callback:callback];
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarStyle:UIStatusBarStyleDefault callback:callback];
 }
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
@@ -339,7 +339,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             }
             else
             {
-                [self messageBarViewController].statusBarStyle = self.preferredStatusBarStyle;
                 self.messageWindow = nil;
             }
         }];

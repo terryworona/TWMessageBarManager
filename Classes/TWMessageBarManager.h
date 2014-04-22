@@ -71,16 +71,6 @@ typedef enum {
 @property (nonatomic, strong) NSObject<TWMessageBarStyleSheet> *styleSheet;
 
 /**
- *  Because the manager utilizes a custom UIWindow & UIViewController to manage orientation, 
- *  the statusBarStyle must be set accordingly. By default, it's value is UIStatusBarStyleDefault. 
- *  If a message is presented with a new UIStatusBarStyle, after dismissal, the status bar will revert
- *  back to the preferredStatusBarStyle. 
- *
- *  If no style is supplied when presenting a message, the preferredStatusBarStyle will be used.
- */
-@property (nonatomic, assign) UIStatusBarStyle preferredStatusBarStyle;
-
-/**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).
  *
  *  @param title        Header text in the message view.
@@ -126,7 +116,7 @@ typedef enum {
  *  @param title            Header text in the message view.
  *  @param description      Description text in the message view.
  *  @param type             Type dictates color, stroke and icon shown in the message view.
- *  @param statusBarStyle   Applied during the presentation of the message. After dismissal, the style will revert to preferredStatusBarStyle.
+ *  @param statusBarStyle   Applied during the presentation of the message. If not supplied, style will default to UIStatusBarStyleDefault.
  *  @param callback         Callback block to be executed if a message is tapped.
  */
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
@@ -138,7 +128,7 @@ typedef enum {
  *  @param description      Description text in the message view.
  *  @param type             Type dictates color, stroke and icon shown in the message view.
  *  @param duration         Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
- *  @param statusBarStyle   Applied during the presentation of the message. After dismissal, the style will revert to preferredStatusBarStyle.
+ *  @param statusBarStyle   Applied during the presentation of the message. If not supplied, style will default to UIStatusBarStyleDefault.
  *  @param callback         Callback block to be executed if a message is tapped.
  */
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
