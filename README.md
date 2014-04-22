@@ -45,7 +45,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your podfile should look something like:
 
 	platform :ios, '6.0'
-	pod 'TWMessageBarManager', '~> 1.5.1'
+	pod 'TWMessageBarManager', '~> 1.5.2'
 	
 ### The Old School Way
 
@@ -119,15 +119,12 @@ The manager is backed by a queue that can handle an infinite number of sequentia
 
 ### UIStatusBarStyle
 
-The manager utilizes a custom UIWindow & UIViewController to manage orientation. For targets >= iOS7, if a UIStatusBarStyle other than UIStatusBarStyleDefault is desired, two things must occur:
-
-1. Set the preferredStatusBarStyle of the manager; this value will be used in-between message presentations. 
-2. Set the style of the status bar on a per-message basis via:
+The manager utilizes a custom UIWindow & UIViewController to manage orientation. For targets >= iOS7, if a UIStatusBarStyle other than UIStatusBarStyleDefault is desired, simply call:
 
 		- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
 
 
-If a message is presented with a custom UIStatusBarStyle, after dismissal, the status bar will revert back to the preferredStatusBarStyle. 
+If a message is presented with a custom UIStatusBarStyle, after dismissal, the status bar will revert back to the the system style (that of the current UIVIewController). 
 
 ### Customization
 
