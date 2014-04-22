@@ -121,7 +121,7 @@ The manager is backed by a queue that can handle an infinite number of sequentia
 
 The manager utilizes a custom UIWindow & UIViewController to manage orientation. For targets >= iOS7, if a UIStatusBarStyle other than UIStatusBarStyleDefault is desired, simply call:
 
-		- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
+	- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
 
 
 If a message is presented with a custom UIStatusBarStyle, after dismissal, the status bar will revert back to the the system style (that of the current UIVIewController). 
