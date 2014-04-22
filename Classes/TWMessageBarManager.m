@@ -340,6 +340,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             else
             {
                 [self messageBarViewController].statusBarStyle = self.preferredStatusBarStyle;
+                self.messageWindow = nil;
             }
         }];
     }
