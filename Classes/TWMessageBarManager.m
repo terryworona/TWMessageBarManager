@@ -63,6 +63,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, assign) CGFloat duration;
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, assign) BOOL hideStatusBar;
 
 @property (nonatomic, weak) id <TWMessageViewDelegate> delegate;
 
@@ -105,6 +106,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @interface TWMessageBarViewController : UIViewController
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, assign) BOOL hideStatusBar;
 
 @end
 
@@ -167,6 +169,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
+        _hideStatusBar = NO;
     }
     return self;
 }
@@ -210,6 +213,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     messageView.hidden = YES;
     
     messageView.statusBarStyle = statusBarStyle;
+    messageView.hideStatusBar = self.hideStatusBar;
     
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
@@ -362,6 +366,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageWindow.windowLevel = UIWindowLevelNormal;
         self.messageWindow.backgroundColor = [UIColor clearColor];
         self.messageWindow.rootViewController = [[TWMessageBarViewController alloc] init];
+        ((TWMessageBarViewController *) self.messageWindow.rootViewController).hideStatusBar = self.hideStatusBar;
     }
     return (TWMessageBarViewController *)self.messageWindow.rootViewController;
 }
@@ -384,6 +389,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
         _styleSheet = styleSheet;
     }
+}
+
+- (void)setStatusBarHidden:(BOOL)hideStatusBar {
+    _hideStatusBar = hideStatusBar;
 }
 
 #pragma mark - TWMessageViewDelegate
@@ -787,11 +796,25 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
+- (void)setHideStatusBar:(BOOL)hideStatusBar {
+    _hideStatusBar = hideStatusBar;
+
+    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+    {
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
+}
+
 #pragma mark - Status Bar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return _statusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return _hideStatusBar;
 }
 
 @end

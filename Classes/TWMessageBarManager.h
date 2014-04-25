@@ -71,6 +71,11 @@ typedef enum {
 @property (nonatomic, strong) NSObject<TWMessageBarStyleSheet> *styleSheet;
 
 /**
+*   If set to true, the StatusBar will be hidden behind the MessageBar.
+*/
+@property (nonatomic, assign, setter=setStatusBarHidden:) BOOL hideStatusBar;
+
+/**
  *  Shows a message with the supplied title, description and type (dictates color, stroke and icon).
  *
  *  @param title        Header text in the message view.
