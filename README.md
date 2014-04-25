@@ -45,7 +45,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your podfile should look something like:
 
 	platform :ios, '6.0'
-	pod 'TWMessageBarManager', '~> 1.5.2'
+	pod 'TWMessageBarManager', '~> 1.6.0'
 	
 ### The Old School Way
 
@@ -125,6 +125,10 @@ The manager utilizes a custom UIWindow & UIViewController to manage orientation.
 
 
 If a message is presented with a custom UIStatusBarStyle, after dismissal, the status bar will revert back to the the system style (that of the current UIVIewController). 
+
+If you wish to hide the status bar altogether during presentations, you can do so via:
+
+	- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback;
 
 ### Customization
 
