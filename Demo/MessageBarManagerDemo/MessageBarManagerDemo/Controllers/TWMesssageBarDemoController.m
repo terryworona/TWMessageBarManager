@@ -151,7 +151,9 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 {
     [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
                                                    description:kStringMessageBarInfoMessage
-                                                          type:TWMessageBarMessageTypeInfo];
+                                                          type:TWMessageBarMessageTypeInfo
+                                               statusBarHidden:YES
+                                                      callback:nil];
 }
 
 - (void)hideAllButtonPressed:(id)sender

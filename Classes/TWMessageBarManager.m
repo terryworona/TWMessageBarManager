@@ -63,7 +63,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, assign) CGFloat duration;
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
-@property (nonatomic, assign) BOOL hideStatusBar;
+@property (nonatomic, assign) BOOL statusBarHidden;
 
 @property (nonatomic, weak) id <TWMessageViewDelegate> delegate;
 
@@ -106,7 +106,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @interface TWMessageBarViewController : UIViewController
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
-@property (nonatomic, assign) BOOL hideStatusBar;
+@property (nonatomic, assign) BOOL statusBarHidden;
 
 @end
 
@@ -130,6 +130,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 // Getters
 - (UIView *)messageWindowView;
 - (TWMessageBarViewController *)messageBarViewController;
+
+// Master presetation
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
 
 @end
 
@@ -169,7 +172,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
-        _hideStatusBar = NO;
     }
     return self;
 }
@@ -203,6 +205,23 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
 {
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:NO statusBarStyle:statusBarStyle callback:callback];
+}
+
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback
+{
+    [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault callback:callback];
+}
+
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback
+{
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault callback:callback];
+}
+
+#pragma mark - Master Presentation
+
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
+{
     TWMessageView *messageView = [[TWMessageView alloc] initWithTitle:title description:description type:type];
     messageView.delegate = self;
     
@@ -213,7 +232,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     messageView.hidden = YES;
     
     messageView.statusBarStyle = statusBarStyle;
-    messageView.hideStatusBar = self.hideStatusBar;
+    messageView.statusBarHidden = statusBarHidden;
     
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
@@ -267,6 +286,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageVisible = YES;
         
         TWMessageView *messageView = [self.messageBarQueue objectAtIndex:0];
+        [self messageBarViewController].statusBarHidden = messageView.statusBarHidden; // important to do this prior to hiding
         messageView.frame = CGRectMake(0, -[messageView height], [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
@@ -279,7 +299,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [self.messageBarQueue removeObject:messageView];
             
             [self messageBarViewController].statusBarStyle = messageView.statusBarStyle;
-            
+
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
@@ -366,7 +386,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageWindow.windowLevel = UIWindowLevelNormal;
         self.messageWindow.backgroundColor = [UIColor clearColor];
         self.messageWindow.rootViewController = [[TWMessageBarViewController alloc] init];
-        ((TWMessageBarViewController *) self.messageWindow.rootViewController).hideStatusBar = self.hideStatusBar;
     }
     return (TWMessageBarViewController *)self.messageWindow.rootViewController;
 }
@@ -389,10 +408,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
         _styleSheet = styleSheet;
     }
-}
-
-- (void)setStatusBarHidden:(BOOL)hideStatusBar {
-    _hideStatusBar = hideStatusBar;
 }
 
 #pragma mark - TWMessageViewDelegate
@@ -796,8 +811,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-- (void)setHideStatusBar:(BOOL)hideStatusBar {
-    _hideStatusBar = hideStatusBar;
+- (void)setStatusBarHidden:(BOOL)statusBarHidden
+{
+    _statusBarHidden = statusBarHidden;
 
     if ([[UIDevice currentDevice] isRunningiOS7OrLater])
     {
@@ -809,12 +825,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return _statusBarStyle;
+    return self.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return _hideStatusBar;
+    return self.statusBarHidden;
 }
 
 @end
