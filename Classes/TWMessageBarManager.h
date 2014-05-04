@@ -10,16 +10,16 @@
 /**
  *  Three base message bar types. Their look & feel is defined within the MessageBarStyleSheet.
  */
-typedef enum {
+typedef NS_ENUM(NSUInteger, TWMessageBarMessageType){
     TWMessageBarMessageTypeError,
     TWMessageBarMessageTypeSuccess,
     TWMessageBarMessageTypeInfo
-} TWMessageBarMessageType;
+};
 
 /**
- * Location on screen where the message should be displayed from and subsequently hidden back under
+ *  Message presentation location (dismissed from same place).
  */
-typedef NS_ENUM(NSUInteger, TWMessageBarDisplayLocation) {
+typedef NS_ENUM(NSUInteger, TWMessageBarDisplayLocation){
     TWMessageBarDisplayLocationTop,
     TWMessageBarDisplayLocationBottom
 };

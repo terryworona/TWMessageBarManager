@@ -166,7 +166,12 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 
 - (void)infoFromBottomButtonPressed:(id)sender
 {
-    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle description:kStringButtonLabelInfoMessage type:TWMessageBarMessageTypeInfo duration:3.0 displayLocation:TWMessageBarDisplayLocationBottom callback:nil];
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
+                                                   description:kStringButtonLabelInfoMessage
+                                                          type:TWMessageBarMessageTypeInfo
+                                                      duration:[TWMessageBarManager defaultDuration]
+                                               displayLocation:TWMessageBarDisplayLocationBottom
+                                                      callback:nil];
 }
 
 - (void)hideAllButtonPressed:(id)sender

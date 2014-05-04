@@ -264,7 +264,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             if (animated)
             {
                 CGFloat yPosition;
-                switch (currentMessageView.displayLocation) {
+                switch (currentMessageView.displayLocation){
                     case TWMessageBarDisplayLocationTop:
                         yPosition = -currentMessageView.frame.size.height;
                         break;
@@ -309,7 +309,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         TWMessageView *messageView = [self.messageBarQueue objectAtIndex:0];
         CGFloat yPosition;
-        switch (messageView.displayLocation) {
+        switch (messageView.displayLocation){
             case TWMessageBarDisplayLocationTop:
                 yPosition = -[messageView height];
                 break;
@@ -332,7 +332,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 CGFloat yPosition;
-                switch (messageView.displayLocation) {
+                switch (messageView.displayLocation){
                     case TWMessageBarDisplayLocationTop:
                         yPosition = messageView.frame.origin.y + [messageView height];
                         break;
@@ -343,7 +343,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x,
                                                  yPosition,
                                                  [messageView width],
-                                                 [messageView height])]; // slide down
+                                                 [messageView height])];
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
             
@@ -563,13 +563,13 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        // bottom/top stroke depending on display location
+        // bottom/top stroke (dependent on location)
         CGContextSaveGState(context);
         {
             if ([styleSheet respondsToSelector:@selector(strokeColorForMessageType:)])
             {
                 CGFloat strokeYPosition;
-                switch (self.displayLocation) {
+                switch (self.displayLocation){
                     case TWMessageBarDisplayLocationTop:
                         strokeYPosition = rect.size.height;
                         break;
