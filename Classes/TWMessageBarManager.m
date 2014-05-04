@@ -132,6 +132,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 // Getters
 - (UIView *)messageWindowView;
 - (TWMessageBarViewController *)messageBarViewController;
+- (CGFloat)yOffsetForMessageView:(TWMessageView *)messageView hidden:(BOOL)hidden;
 
 // Master presetation
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle displayLocation:(TWMessageBarDisplayLocation)location callback:(void (^)())callback;
@@ -263,19 +264,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             TWMessageView *currentMessageView = (TWMessageView *)subview;
             if (animated)
             {
-                CGFloat yPosition;
-                switch (currentMessageView.displayLocation){
-                    case TWMessageBarDisplayLocationTop:
-                        yPosition = -currentMessageView.frame.size.height;
-                        break;
-                    case TWMessageBarDisplayLocationBottom:
-                        yPosition = CGRectGetHeight(self.messageBarViewController.view.frame);
-                        break;
-                }
-                
                 [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                     currentMessageView.frame = CGRectMake(currentMessageView.frame.origin.x,
-                                                          yPosition,
+                                                          [self yOffsetForMessageView:currentMessageView hidden:YES],
                                                           currentMessageView.frame.size.width,
                                                           currentMessageView.frame.size.height);
                 } completion:^(BOOL finished) {
@@ -308,16 +299,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageVisible = YES;
         
         TWMessageView *messageView = [self.messageBarQueue objectAtIndex:0];
-        CGFloat yPosition;
-        switch (messageView.displayLocation){
-            case TWMessageBarDisplayLocationTop:
-                yPosition = -[messageView height];
-                break;
-            case TWMessageBarDisplayLocationBottom:
-                yPosition = CGRectGetHeight(self.messageBarViewController.view.frame);
-                break;
-        }
-        messageView.frame = CGRectMake(0, yPosition, [messageView width], [messageView height]);
+        messageView.frame = CGRectMake(0, [self yOffsetForMessageView:messageView hidden:YES], [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
         
@@ -331,17 +313,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [self messageBarViewController].statusBarStyle = messageView.statusBarStyle;
             
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                CGFloat yPosition;
-                switch (messageView.displayLocation){
-                    case TWMessageBarDisplayLocationTop:
-                        yPosition = messageView.frame.origin.y + [messageView height];
-                        break;
-                    case TWMessageBarDisplayLocationBottom:
-                        yPosition = messageView.frame.origin.y - [messageView height];
-                        break;
-                }
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x,
-                                                 yPosition,
+                                                 [self yOffsetForMessageView:messageView hidden:NO],
                                                  [messageView width],
                                                  [messageView height])];
             }];
@@ -382,18 +355,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         messageView.hit = YES;
         
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-            CGFloat yPosition;
-            switch (messageView.displayLocation) {
-                case TWMessageBarDisplayLocationTop:
-                    yPosition = messageView.frame.origin.y - [messageView height];
-                    break;
-                case TWMessageBarDisplayLocationBottom:
-                    yPosition = CGRectGetHeight(self.messageBarViewController.view.frame);
-                    break;
-            }
-            
             [messageView setFrame:CGRectMake(messageView.frame.origin.x,
-                                             yPosition,
+                                             [self yOffsetForMessageView:messageView hidden:YES],
                                              [messageView width],
                                              [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
@@ -443,6 +406,36 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageWindow.rootViewController = [[TWMessageBarViewController alloc] init];
     }
     return (TWMessageBarViewController *)self.messageWindow.rootViewController;
+}
+
+- (CGFloat)yOffsetForMessageView:(TWMessageView *)messageView hidden:(BOOL)hidden
+{
+    CGFloat yOffset = 0.0f;
+    
+    if (messageView.displayLocation == TWMessageBarDisplayLocationTop)
+    {
+        if (hidden)
+        {
+            yOffset = -[messageView height];
+        }
+        else
+        {
+            yOffset = messageView.frame.origin.y + [messageView height];
+        }
+    }
+    else if (messageView.displayLocation == TWMessageBarDisplayLocationBottom)
+    {
+        if (hidden)
+        {
+            yOffset = CGRectGetHeight(self.messageBarViewController.view.frame);
+        }
+        else
+        {
+            yOffset = messageView.frame.origin.y - [messageView height];
+        }
+    }
+
+    return yOffset;
 }
 
 - (NSArray *)accessibleElements
@@ -568,20 +561,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             if ([styleSheet respondsToSelector:@selector(strokeColorForMessageType:)])
             {
-                CGFloat strokeYPosition;
-                switch (self.displayLocation){
-                    case TWMessageBarDisplayLocationTop:
-                        strokeYPosition = rect.size.height;
-                        break;
-                    case TWMessageBarDisplayLocationBottom:
-                        strokeYPosition = 0.0f;
-                        break;
-                }
+                CGFloat strokeYOffset = self.displayLocation == TWMessageBarDisplayLocationTop ? rect.size.height : 0.0f;
                 CGContextBeginPath(context);
-                CGContextMoveToPoint(context, 0, strokeYPosition);
+                CGContextMoveToPoint(context, 0, strokeYOffset);
                 CGContextSetStrokeColorWithColor(context, [styleSheet strokeColorForMessageType:self.messageType].CGColor);
                 CGContextSetLineWidth(context, 1.0);
-                CGContextAddLineToPoint(context, rect.size.width, strokeYPosition);
+                CGContextAddLineToPoint(context, rect.size.width, strokeYOffset);
                 CGContextStrokePath(context);
             }
         }
