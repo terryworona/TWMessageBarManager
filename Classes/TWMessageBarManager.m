@@ -55,6 +55,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @property (nonatomic, assign) TWMessageBarMessageType messageType;
 
+@property (nonatomic, assign) TWMessageBarDisplayLocation displayLocation;
+
 @property (nonatomic, assign) BOOL hasCallback;
 @property (nonatomic, strong) NSArray *callbacks;
 
@@ -132,7 +134,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (TWMessageBarViewController *)messageBarViewController;
 
 // Master presetation
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback;
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle displayLocation:(TWMessageBarDisplayLocation)location callback:(void (^)())callback;
 
 @end
 
@@ -205,22 +207,27 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:NO statusBarStyle:statusBarStyle callback:callback];
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:NO statusBarStyle:statusBarStyle displayLocation:TWMessageBarDisplayLocationTop callback:callback];
 }
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault callback:callback];
+    [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault displayLocation:TWMessageBarDisplayLocationTop callback:callback];
 }
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault callback:callback];
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault displayLocation:TWMessageBarDisplayLocationTop callback:callback];
+}
+
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration displayLocation:(TWMessageBarDisplayLocation)location callback:(void (^)())callback
+{
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:NO statusBarStyle:UIStatusBarStyleDefault displayLocation:location callback:callback];
 }
 
 #pragma mark - Master Presentation
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle displayLocation:(TWMessageBarDisplayLocation)location callback:(void (^)())callback
 {
     TWMessageView *messageView = [[TWMessageView alloc] initWithTitle:title description:description type:type];
     messageView.delegate = self;
@@ -233,6 +240,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     messageView.statusBarStyle = statusBarStyle;
     messageView.statusBarHidden = statusBarHidden;
+    
+    messageView.displayLocation = location;
     
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
@@ -254,8 +263,21 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             TWMessageView *currentMessageView = (TWMessageView *)subview;
             if (animated)
             {
+                CGFloat yPosition;
+                switch (currentMessageView.displayLocation) {
+                    case TWMessageBarDisplayLocationTop:
+                        yPosition = -currentMessageView.frame.size.height;
+                        break;
+                    case TWMessageBarDisplayLocationBottom:
+                        yPosition = CGRectGetHeight(self.messageBarViewController.view.frame);
+                        break;
+                }
+                
                 [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                    currentMessageView.frame = CGRectMake(currentMessageView.frame.origin.x, -currentMessageView.frame.size.height, currentMessageView.frame.size.width, currentMessageView.frame.size.height);
+                    currentMessageView.frame = CGRectMake(currentMessageView.frame.origin.x,
+                                                          yPosition,
+                                                          currentMessageView.frame.size.width,
+                                                          currentMessageView.frame.size.height);
                 } completion:^(BOOL finished) {
                     [currentMessageView removeFromSuperview];
                 }];
@@ -286,8 +308,16 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageVisible = YES;
         
         TWMessageView *messageView = [self.messageBarQueue objectAtIndex:0];
-        [self messageBarViewController].statusBarHidden = messageView.statusBarHidden; // important to do this prior to hiding
-        messageView.frame = CGRectMake(0, -[messageView height], [messageView width], [messageView height]);
+        CGFloat yPosition;
+        switch (messageView.displayLocation) {
+            case TWMessageBarDisplayLocationTop:
+                yPosition = -[messageView height];
+                break;
+            case TWMessageBarDisplayLocationBottom:
+                yPosition = CGRectGetHeight(self.messageBarViewController.view.frame);
+                break;
+        }
+        messageView.frame = CGRectMake(0, yPosition, [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
         
@@ -299,9 +329,21 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [self.messageBarQueue removeObject:messageView];
             
             [self messageBarViewController].statusBarStyle = messageView.statusBarStyle;
-
+            
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
+                CGFloat yPosition;
+                switch (messageView.displayLocation) {
+                    case TWMessageBarDisplayLocationTop:
+                        yPosition = messageView.frame.origin.y + [messageView height];
+                        break;
+                    case TWMessageBarDisplayLocationBottom:
+                        yPosition = messageView.frame.origin.y - [messageView height];
+                        break;
+                }
+                [messageView setFrame:CGRectMake(messageView.frame.origin.x,
+                                                 yPosition,
+                                                 [messageView width],
+                                                 [messageView height])]; // slide down
             }];
             [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
             
@@ -340,7 +382,20 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         messageView.hit = YES;
         
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-            [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height], [messageView width], [messageView height])]; // slide back up
+            CGFloat yPosition;
+            switch (messageView.displayLocation) {
+                case TWMessageBarDisplayLocationTop:
+                    yPosition = messageView.frame.origin.y - [messageView height];
+                    break;
+                case TWMessageBarDisplayLocationBottom:
+                    yPosition = CGRectGetHeight(self.messageBarViewController.view.frame);
+                    break;
+            }
+            
+            [messageView setFrame:CGRectMake(messageView.frame.origin.x,
+                                             yPosition,
+                                             [messageView width],
+                                             [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
             self.messageVisible = NO;
             [messageView removeFromSuperview];
@@ -595,7 +650,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)statusBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
+    return [[UIDevice currentDevice] isRunningiOS7OrLater] && (self.displayLocation == TWMessageBarDisplayLocationTop) ? [self statusBarFrame].size.height : 0.0;
 }
 
 - (CGFloat)availableWidth
