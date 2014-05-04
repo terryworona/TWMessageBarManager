@@ -563,16 +563,25 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        // bottom stroke
+        // bottom/top stroke depending on display location
         CGContextSaveGState(context);
         {
             if ([styleSheet respondsToSelector:@selector(strokeColorForMessageType:)])
             {
+                CGFloat strokeYPosition;
+                switch (self.displayLocation) {
+                    case TWMessageBarDisplayLocationTop:
+                        strokeYPosition = rect.size.height;
+                        break;
+                    case TWMessageBarDisplayLocationBottom:
+                        strokeYPosition = 0.0f;
+                        break;
+                }
                 CGContextBeginPath(context);
-                CGContextMoveToPoint(context, 0, rect.size.height);
+                CGContextMoveToPoint(context, 0, strokeYPosition);
                 CGContextSetStrokeColorWithColor(context, [styleSheet strokeColorForMessageType:self.messageType].CGColor);
                 CGContextSetLineWidth(context, 1.0);
-                CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+                CGContextAddLineToPoint(context, rect.size.width, strokeYPosition);
                 CGContextStrokePath(context);
             }
         }
