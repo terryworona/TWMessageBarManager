@@ -427,7 +427,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
         if (hidden)
         {
-            yOffset = CGRectGetHeight(self.messageBarViewController.view.frame);
+            if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
+            {
+                yOffset = CGRectGetWidth(self.messageBarViewController.view.frame);
+            }
+            else
+            {
+                yOffset = CGRectGetHeight(self.messageBarViewController.view.frame);
+            }
         }
         else
         {
@@ -716,7 +723,28 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)didChangeDeviceOrientation:(NSNotification *)notification
 {
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [self statusBarFrame].size.width, self.frame.size.height);
+    CGFloat yOffset = 0.0f;
+    if (self.displayLocation == TWMessageBarDisplayLocationBottom)
+    {
+        CGRect superViewRect = self.superview.frame;
+        CGFloat superViewHeight = CGRectGetHeight(superViewRect);
+        CGFloat superViewWidth = CGRectGetWidth(superViewRect);
+        if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation))
+        {
+            yOffset = superViewWidth;
+        }
+        else
+        {
+            yOffset = superViewHeight;
+        }
+        yOffset -= CGRectGetHeight(self.frame);
+    }
+
+    self.frame = CGRectMake(0.0f,
+                            yOffset,
+                            CGRectGetWidth([self statusBarFrame]),
+                            self.frame.size.height);
+    
     [self setNeedsDisplay];
 }
 
