@@ -79,7 +79,7 @@ The default display duration is ***3 seconds***. You can override this value by 
     [[TWMessageBarManager sharedInstance] showMessageWithTitle:@"Account Updated!"
                                                    description:@"Your account was successfully updated."
                                                           type:TWMessageBarMessageTypeSuccess
-                                                   forDuration:6.0];
+                                                      duration:6.0];
 
 
 ### Hiding messages
