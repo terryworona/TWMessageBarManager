@@ -134,7 +134,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarErrorTitle
                                                    description:kStringMessageBarErrorMessage
                                                           type:TWMessageBarMessageTypeError
-                                                statusBarStyle:UIStatusBarStyleBlackOpaque
+                                                statusBarStyle:UIStatusBarStyleLightContent
                                                       callback:nil];
 }
 
