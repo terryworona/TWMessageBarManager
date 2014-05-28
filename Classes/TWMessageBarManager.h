@@ -198,6 +198,20 @@ typedef NS_ENUM(NSUInteger, TWMessageBarDisplayLocation){
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration displayLocation:(TWMessageBarDisplayLocation)location callback:(void (^)())callback;
 
 /**
+ *  Shows a message with the supplied title, description, type, duration, status bar hidden, status bar style, display location, and callback block.
+ *
+ *  @param title            Header text in the message view.
+ *  @param description      Description text in the message view.
+ *  @param type             Type dictates color, stroke and icon shown in the message view.
+ *  @param duration         Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
+ *  @param statusBarHidden  Status bars are shown by default. To hide it during the presentation of a message, set to NO.
+ *  @param statusBarStyle   Applied during the presentation of the message. If not supplied, style will default to UIStatusBarStyleDefault.
+ *  @param displayLocation  Dictates where the message will be displayed from. Defualt is TWMessageBarDisplayLocationTop.
+ *  @param callback         Callback block to be executed if a message is tapped.
+ */
+- (void) showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle displayLocation:(TWMessageBarDisplayLocation)location callback:(void (^)())callback;
+
+/**
  *  Hides the topmost message and removes all remaining messages in the queue.
  *
  *  @param animated     Animates the current message view off the screen.

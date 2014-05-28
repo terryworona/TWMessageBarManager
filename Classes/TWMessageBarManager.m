@@ -4,6 +4,8 @@
 //  Created by Terry Worona on 5/13/13.
 //  Copyright (c) 2013 Terry Worona. All rights reserved.
 //
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 #import "TWMessageBarManager.h"
 
@@ -914,3 +916,5 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 }
 
 @end
+
+#pragma clang diagnostic pop
