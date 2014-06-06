@@ -3,6 +3,7 @@
 ## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.6.1">1.7.0</a>
 #### 06/06/14
 - Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/52">#52</a>.
+- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/53">#53</a>.
 
 ## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.6.1">1.6.1</a>
 #### 05/20/14
