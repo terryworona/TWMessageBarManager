@@ -134,9 +134,16 @@ If you wish to hide the status bar altogether during presentations, you can do s
 
 An object conforming to the ***TWMessageBarStyleSheet*** protocol defines the message bar's look and feel:  
 
-	+ (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type;
-	+ (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type;
-	+ (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
+	@required
+	
+	- (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type;
+	- (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type;
+	- (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
+	
+	@optional
+	
+	- (UIFont *)titleFontForMessageType:(TWMessageBarMessageType)type;
+	- (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type;
 	
 If no style sheet is supplied, a default class is provided on initialization. To customize the look and feel of your message bars, simply supply an object conforming to the ***TWMessageBarStyleSheet*** protocol via:
 

@@ -56,7 +56,7 @@ typedef enum {
  *
  *  @return UIFont instance representing the title font.
  */
-- (UIFont *)messageTitleFontForMessageType:(TWMessageBarMessageType)type;
+- (UIFont *)titleFontForMessageType:(TWMessageBarMessageType)type;
 
 /**
  *  The (optional) UIFont to be used for the message's description.
@@ -67,7 +67,7 @@ typedef enum {
  *
  *  @return UIFont instance representing the description font.
  */
-- (UIFont *)messageDescriptionFontForMessageType:(TWMessageBarMessageType)type;
+- (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type;
 
 @end
 

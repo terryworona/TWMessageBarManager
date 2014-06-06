@@ -671,9 +671,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-        if ([styleSheet respondsToSelector:@selector(messageTitleFontForMessageType:)])
+        if ([styleSheet respondsToSelector:@selector(titleFontForMessageType:)])
         {
-            return [styleSheet messageTitleFontForMessageType:self.messageType];
+            return [styleSheet titleFontForMessageType:self.messageType];
         }
     }
     return kTWMessageViewTitleFont;
@@ -684,9 +684,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-        if ([styleSheet respondsToSelector:@selector(messageDescriptionFontForMessageType:)])
+        if ([styleSheet respondsToSelector:@selector(descriptionFontForMessageType:)])
         {
-            return [styleSheet messageDescriptionFontForMessageType:self.messageType];
+            return [styleSheet descriptionFontForMessageType:self.messageType];
         }
     }
     return kTWMessageViewDescriptionFont;
