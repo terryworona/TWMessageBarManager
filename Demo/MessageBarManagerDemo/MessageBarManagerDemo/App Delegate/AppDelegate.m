@@ -118,14 +118,24 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     return iconImage;
 }
 
-- (UIFont *)messageTitleFontForMessageType:(TWMessageBarMessageType)type
+- (UIFont *)titleFontForMessageType:(TWMessageBarMessageType)type
 {
     return [UIFont fontWithName:@"AvenirNext-DemiBold" size:16.0f];
 }
 
-- (UIFont *)messageDescriptionFontForMessageType:(TWMessageBarMessageType)type
+- (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type
 {
     return [UIFont fontWithName:@"AvenirNext-Regular" size:14.0f];
+}
+
+- (UIColor *)titleColorForMessageType:(TWMessageBarMessageType)type
+{
+    return [UIColor blackColor];
+}
+
+- (UIColor *)descriptionColorForMessageType:(TWMessageBarMessageType)type
+{
+    return [UIColor purpleColor];
 }
 
 @end
