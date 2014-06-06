@@ -546,6 +546,19 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
         }
+
+        UIFont* messageViewTitleFont = kTWMessageViewTitleFont;
+        UIFont* messageViewDescriptionFont = kTWMessageViewDescriptionFont;
+
+        if ([styleSheet respondsToSelector:@selector(messageTitleFontForMessageType:)])
+        {
+            messageViewTitleFont = [styleSheet messageTitleFontForMessageType:self.messageType];
+        }
+
+        if ([styleSheet respondsToSelector:@selector(messageDescriptionFontForMessageType:)])
+        {
+		    messageViewDescriptionFont = [styleSheet messageDescriptionFontForMessageType:self.messageType];
+        }
         
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
         {
@@ -555,7 +568,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [kTWMessageViewTitleColor set];
             [self.titleString drawWithRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height)
                                    options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine
-                                attributes:@{NSFontAttributeName:kTWMessageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewTitleColor, NSParagraphStyleAttributeName:paragraphStyle}
+                                attributes:@{NSFontAttributeName:messageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewTitleColor, NSParagraphStyleAttributeName:paragraphStyle}
                                    context:nil];
             
             yOffset += titleLabelSize.height;
@@ -563,7 +576,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [kTWMessageViewDescriptionColor set];
             [self.descriptionString drawWithRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height)
                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine
-                                      attributes:@{NSFontAttributeName:kTWMessageViewDescriptionFont, NSForegroundColorAttributeName:kTWMessageViewDescriptionColor, NSParagraphStyleAttributeName:paragraphStyle}
+                                      attributes:@{NSFontAttributeName:messageViewDescriptionFont, NSForegroundColorAttributeName:kTWMessageViewDescriptionColor, NSParagraphStyleAttributeName:paragraphStyle}
                                          context:nil];
         }
         else
@@ -571,7 +584,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [kTWMessageViewTitleColor set];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:kTWMessageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+            [self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:messageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 #pragma clang diagnostic pop
             
             yOffset += titleLabelSize.height;
@@ -579,7 +592,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [kTWMessageViewDescriptionColor set];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:kTWMessageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
+            [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:messageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
 #pragma clang diagnostic pop
         }
     }

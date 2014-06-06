@@ -118,4 +118,14 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     return iconImage;
 }
 
+- (UIFont *)messageTitleFontForMessageType:(TWMessageBarMessageType)type
+{
+    return [UIFont fontWithName:@"AvenirNext-DemiBold" size:16.0f];
+}
+
+- (UIFont *)messageDescriptionFontForMessageType:(TWMessageBarMessageType)type
+{
+    return [UIFont fontWithName:@"AvenirNext-Regular" size:14.0f];
+}
+
 @end
