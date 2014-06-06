@@ -50,6 +50,8 @@ typedef enum {
 /**
  *  The (optional) UIFont to be used for the message's title.
  *
+ *  Default: 16pt bold
+ *
  *  @param type A MessageBarMessageType (error, information, success, etc).
  *
  *  @return UIFont instance representing the title font.
@@ -58,6 +60,8 @@ typedef enum {
 
 /**
  *  The (optional) UIFont to be used for the message's description.
+ *
+ *  Default: 14pt regular
  *
  *  @param type A MessageBarMessageType (error, information, success, etc).
  *
