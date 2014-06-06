@@ -39,17 +39,16 @@ typedef enum {
 /**
  *  Icon image of the message view.
  *
- *  @param type A MessageBarMessageType (error, information, success, etc)
+ *  @param type A MessageBarMessageType (error, information, success, etc).
  *
  *  @return UIImage istance representing the message view's icon.
  */
 - (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type;
 
-
 @optional
 
 /**
- * Font to use for message title.
+ *  The (optional) UIFont to be used for the message's title.
  *
  *  @param type A MessageBarMessageType (error, information, success, etc).
  *
@@ -58,14 +57,13 @@ typedef enum {
 - (UIFont *)messageTitleFontForMessageType:(TWMessageBarMessageType)type;
 
 /**
- * Font to use for message description.
+ *  The (optional) UIFont to be used for the message's description.
  *
  *  @param type A MessageBarMessageType (error, information, success, etc).
  *
- *  @return UIFont instance representing the title font.
+ *  @return UIFont instance representing the description font.
  */
 - (UIFont *)messageDescriptionFontForMessageType:(TWMessageBarMessageType)type;
-
 
 @end
 

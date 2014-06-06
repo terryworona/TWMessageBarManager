@@ -31,12 +31,12 @@ NSString * const kTWMessageBarStyleSheetImageIconSuccess = @"icon-success.png";
 NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
 // Fonts (TWMessageView)
-static UIFont *kTWMessageViewTitleFont = nil;
-static UIFont *kTWMessageViewDescriptionFont = nil;
+static UIFont *kTWMessageViewDefaultTitleFont = nil;
+static UIFont *kTWMessageViewDefaultDescriptionFont = nil;
 
 // Colors (TWMessageView)
-static UIColor *kTWMessageViewTitleColor = nil;
-static UIColor *kTWMessageViewDescriptionColor = nil;
+static UIColor *kTWMessageViewDefaultTitleColor = nil;
+static UIColor *kTWMessageViewDefaultDescriptionColor = nil;
 
 // Colors (TWDefaultMessageBarStyleSheet)
 static UIColor *kTWDefaultMessageBarStyleSheetErrorBackgroundColor = nil;
@@ -450,12 +450,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 	if (self == [TWMessageView class])
 	{
         // Fonts
-        kTWMessageViewTitleFont = [UIFont boldSystemFontOfSize:16.0];
-        kTWMessageViewDescriptionFont = [UIFont systemFontOfSize:14.0];
+        kTWMessageViewDefaultTitleFont = [UIFont boldSystemFontOfSize:16.0];
+        kTWMessageViewDefaultDescriptionFont = [UIFont systemFontOfSize:14.0];
         
         // Colors
-        kTWMessageViewTitleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
-        kTWMessageViewDescriptionColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        kTWMessageViewDefaultTitleColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+        kTWMessageViewDefaultDescriptionColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 	}
 }
 
@@ -547,8 +547,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
         }
 
-        UIFont* messageViewTitleFont = kTWMessageViewTitleFont;
-        UIFont* messageViewDescriptionFont = kTWMessageViewDescriptionFont;
+        UIFont* messageViewTitleFont = kTWMessageViewDefaultTitleFont;
+        UIFont* messageViewDescriptionFont = kTWMessageViewDefaultDescriptionFont;
 
         if ([styleSheet respondsToSelector:@selector(messageTitleFontForMessageType:)])
         {
@@ -565,23 +565,23 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
             paragraphStyle.alignment = NSTextAlignmentLeft;
             
-            [kTWMessageViewTitleColor set];
+            [kTWMessageViewDefaultTitleColor set];
             [self.titleString drawWithRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height)
                                    options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine
-                                attributes:@{NSFontAttributeName:messageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewTitleColor, NSParagraphStyleAttributeName:paragraphStyle}
+                                attributes:@{NSFontAttributeName:messageViewTitleFont, NSForegroundColorAttributeName:kTWMessageViewDefaultTitleColor, NSParagraphStyleAttributeName:paragraphStyle}
                                    context:nil];
             
             yOffset += titleLabelSize.height;
             
-            [kTWMessageViewDescriptionColor set];
+            [kTWMessageViewDefaultDescriptionColor set];
             [self.descriptionString drawWithRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height)
                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine
-                                      attributes:@{NSFontAttributeName:messageViewDescriptionFont, NSForegroundColorAttributeName:kTWMessageViewDescriptionColor, NSParagraphStyleAttributeName:paragraphStyle}
+                                      attributes:@{NSFontAttributeName:messageViewDescriptionFont, NSForegroundColorAttributeName:kTWMessageViewDefaultDescriptionColor, NSParagraphStyleAttributeName:paragraphStyle}
                                          context:nil];
         }
         else
         {
-            [kTWMessageViewTitleColor set];
+            [kTWMessageViewDefaultTitleColor set];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [self.titleString drawInRect:CGRectMake(xOffset, yOffset, titleLabelSize.width, titleLabelSize.height) withFont:messageViewTitleFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
@@ -589,7 +589,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             
             yOffset += titleLabelSize.height;
             
-            [kTWMessageViewDescriptionColor set];
+            [kTWMessageViewDefaultDescriptionColor set];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [self.descriptionString drawInRect:CGRectMake(xOffset, yOffset, descriptionLabelSize.width, descriptionLabelSize.height) withFont:messageViewDescriptionFont lineBreakMode:NSLineBreakByTruncatingTail alignment:NSTextAlignmentLeft];
@@ -629,7 +629,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     if ([[UIDevice currentDevice] isRunningiOS7OrLater])
     {
-        NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewTitleFont forKey: NSFontAttributeName];
+        NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewDefaultTitleFont forKey: NSFontAttributeName];
         titleLabelSize = [self.titleString boundingRectWithSize:boundedSize
                                                         options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
                                                      attributes:titleStringAttributes
@@ -639,7 +639,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        titleLabelSize = [_titleString sizeWithFont:kTWMessageViewTitleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
+        titleLabelSize = [_titleString sizeWithFont:kTWMessageViewDefaultTitleFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
 #pragma clang diagnostic pop
     }
     
@@ -653,7 +653,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     if ([[UIDevice currentDevice] isRunningiOS7OrLater])
     {
-        NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewDescriptionFont forKey: NSFontAttributeName];
+        NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:kTWMessageViewDefaultDescriptionFont forKey: NSFontAttributeName];
         descriptionLabelSize = [self.descriptionString boundingRectWithSize:boundedSize
                                                                     options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin
                                                                  attributes:descriptionStringAttributes
@@ -663,7 +663,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        descriptionLabelSize = [_descriptionString sizeWithFont:kTWMessageViewDescriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
+        descriptionLabelSize = [_descriptionString sizeWithFont:kTWMessageViewDefaultDescriptionFont constrainedToSize:boundedSize lineBreakMode:NSLineBreakByTruncatingTail];
 #pragma clang diagnostic pop
     }
     
