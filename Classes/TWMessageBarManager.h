@@ -69,6 +69,28 @@ typedef enum {
  */
 - (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type;
 
+/**
+ *  The (optional) UIColor to be used for the message's title.
+ *
+ *  Default: white
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc).
+ *
+ *  @return UIColor instance representing the title color.
+ */
+- (UIColor *)titleColorForMessageType:(TWMessageBarMessageType)type;
+
+/**
+ *  The (optional) UIColor to be used for the message's description.
+ *
+ *  Default: white
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc).
+ *
+ *  @return UIColor instance representing the description color.
+ */
+- (UIColor *)descriptionColorForMessageType:(TWMessageBarMessageType)type;
+
 @end
 
 @interface TWMessageBarManager : NSObject

@@ -45,7 +45,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your podfile should look something like:
 
 	platform :ios, '6.0'
-	pod 'TWMessageBarManager', '~> 1.6.1'
+	pod 'TWMessageBarManager', '~> 1.7.0'
 	
 ### The Old School Way
 
@@ -144,7 +144,9 @@ An object conforming to the ***TWMessageBarStyleSheet*** protocol defines the me
 	
 	- (UIFont *)titleFontForMessageType:(TWMessageBarMessageType)type;
 	- (UIFont *)descriptionFontForMessageType:(TWMessageBarMessageType)type;
-	
+	- (UIColor *)titleColorForMessageType:(TWMessageBarMessageType)type;
+	- (UIColor *)descriptionColorForMessageType:(TWMessageBarMessageType)type;
+
 If no style sheet is supplied, a default class is provided on initialization. To customize the look and feel of your message bars, simply supply an object conforming to the ***TWMessageBarStyleSheet*** protocol via:
 
 	@property (nonatomic, weak) id<TWMessageBarStyleSheet> styleSheet;
