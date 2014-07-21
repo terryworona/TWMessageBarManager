@@ -91,6 +91,28 @@ typedef enum {
  */
 - (UIColor *)descriptionColorForMessageType:(TWMessageBarMessageType)type;
 
+/**
+ *  The (optional) CGSize to be used for the icon size
+ *
+ *  Default: CGSize(36.f, 36.f)
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc).
+ *
+ *  @return CGSize representing the icon size
+ */
+- (CGSize)iconSizeForMessageType:(TWMessageBarMessageType)type;
+
+/**
+ *  The (optional) CGFLoat to be used for bar padding (top, bottom, left, right)
+ *
+ *  Default: 10.0f
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc).
+ *
+ *  @return CGFloat representing the bar padding
+ */
+- (CGFloat)barPaddingForMessageType:(TWMessageBarMessageType)type;
+
 @end
 
 @interface TWMessageBarManager : NSObject

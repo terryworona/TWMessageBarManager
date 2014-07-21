@@ -526,21 +526,25 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        CGFloat xOffset = kTWMessageViewBarPadding;
-        CGFloat yOffset = kTWMessageViewBarPadding + [self statusBarOffset];
+        CGFloat barPadding = [self barPadding];
+        
+        CGFloat xOffset = barPadding;
+        CGFloat yOffset = barPadding + [self statusBarOffset];
         
         // icon
+        CGSize iconSize = [self iconSize];
+        
         CGContextSaveGState(context);
         {
             if ([styleSheet respondsToSelector:@selector(iconImageForMessageType:)])
             {
-                [[styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
+                [[styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, iconSize.width, iconSize.height)];
             }
         }
         CGContextRestoreGState(context);
         
         yOffset -= kTWMessageViewTextOffset;
-        xOffset += kTWMessageViewIconSize + kTWMessageViewBarPadding;
+        xOffset += iconSize.width + barPadding;
         
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
@@ -594,7 +598,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 {
     CGSize titleLabelSize = [self titleSize];
     CGSize descriptionLabelSize = [self descriptionSize];
-    return MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize + [self statusBarOffset]);
+    
+    CGFloat barPadding = [self barPadding];
+    CGSize iconSize = [self iconSize];
+    
+    return MAX((barPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (barPadding * 2) + iconSize.height + [self statusBarOffset]);
 }
 
 - (CGFloat)width
@@ -614,7 +622,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)availableWidth
 {
-    return ([self width] - (kTWMessageViewBarPadding * 3) - kTWMessageViewIconSize);
+    CGFloat barPadding = [self barPadding];
+    CGSize iconSize = [self iconSize];
+    
+    return ([self width] - (barPadding * 3) - iconSize.width);
 }
 
 - (CGSize)titleSize
@@ -722,6 +733,32 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
     }
     return kTWMessageViewDescriptionColor;
+}
+
+- (CGSize)iconSize
+{
+    if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
+    {
+        id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
+        if ([styleSheet respondsToSelector:@selector(iconSizeForMessageType:)])
+        {
+            return [styleSheet iconSizeForMessageType:self.messageType];
+        }
+    }
+    return CGSizeMake(kTWMessageViewIconSize, kTWMessageViewIconSize);
+}
+
+- (CGFloat)barPadding
+{
+    if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
+    {
+        id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
+        if ([styleSheet respondsToSelector:@selector(barPaddingForMessageType:)])
+        {
+            return [styleSheet barPaddingForMessageType:self.messageType];
+        }
+    }
+    return kTWMessageViewBarPadding;
 }
 
 #pragma mark - Helpers
