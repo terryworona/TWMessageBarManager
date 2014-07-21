@@ -110,7 +110,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @interface TWMessageBarViewController : UIViewController
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
-@property (nonatomic, assign) BOOL statusBarHidden;
 
 @end
 
@@ -290,7 +289,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         self.messageVisible = YES;
         
         TWMessageView *messageView = [self.messageBarQueue objectAtIndex:0];
-        [self messageBarViewController].statusBarHidden = messageView.statusBarHidden; // important to do this prior to hiding
+        [self messageWindow].windowLevel = messageView.statusBarHidden ? UIWindowLevelStatusBar + 1 : UIWindowLevelNormal;
         messageView.frame = CGRectMake(0, -[messageView height], [messageView width], [messageView height]);
         messageView.hidden = NO;
         [messageView setNeedsDisplay];
@@ -605,7 +604,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)statusBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
+    if (self.statusBarHidden) {
+        return 0.0f;
+    }
+    else {
+        return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
+    }
 }
 
 - (CGFloat)availableWidth
@@ -879,26 +883,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-- (void)setStatusBarHidden:(BOOL)statusBarHidden
-{
-    _statusBarHidden = statusBarHidden;
-
-    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
-    {
-        [self setNeedsStatusBarAppearanceUpdate];
-    }
-}
-
 #pragma mark - Status Bar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.statusBarStyle;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return self.statusBarHidden;
 }
 
 @end
