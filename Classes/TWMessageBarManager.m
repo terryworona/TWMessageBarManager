@@ -547,7 +547,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         if (self.titleString && !self.descriptionString)
         {
-            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
+            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset + ([self statusBarOffset] * 0.5);
         }
         
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
