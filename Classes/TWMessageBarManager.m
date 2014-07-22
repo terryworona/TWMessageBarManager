@@ -16,7 +16,6 @@ CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
 // Numerics (TWMessageView)
 CGFloat const kTWMessageViewBarPadding = 10.0f;
 CGFloat const kTWMessageViewIconSize = 36.0f;
-CGFloat const kTWMessageViewTextOffset = 2.0f;
 NSUInteger const kTWMessageViewiOS7Identifier = 7;
 
 // Numerics (TWMessageBarManager)
@@ -526,10 +525,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        CGFloat barPadding = [self barPadding];
+        CGFloat outerPadding = [self outerPadding];
+        CGFloat iconTextSpacing = [self iconTextSpacing];
         
-        CGFloat xOffset = barPadding;
-        CGFloat yOffset = barPadding + [self statusBarOffset];
+        CGFloat xOffset = outerPadding;
+        CGFloat yOffset = outerPadding + [self statusBarOffset];
         
         // icon
         CGSize iconSize = [self iconSize];
@@ -543,15 +543,16 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        yOffset -= kTWMessageViewTextOffset;
-        xOffset += iconSize.width + barPadding;
+        CGFloat textOffset = [self titleFont].lineHeight - [self titleFont].ascender;
+        yOffset -= textOffset;
+        xOffset += iconSize.width + iconTextSpacing;
         
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
         
         if (self.titleString && !self.descriptionString)
         {
-            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset + ([self statusBarOffset] * 0.5);
+            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - textOffset + ([self statusBarOffset] * 0.5);
         }
         
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
@@ -599,10 +600,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize titleLabelSize = [self titleSize];
     CGSize descriptionLabelSize = [self descriptionSize];
     
-    CGFloat barPadding = [self barPadding];
+    CGFloat outerPadding = [self outerPadding];
     CGSize iconSize = [self iconSize];
     
-    return MAX((barPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (barPadding * 2) + iconSize.height + [self statusBarOffset]);
+    CGFloat textOffset = [self titleFont].lineHeight - [self titleFont].ascender;
+    
+    return MAX((outerPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset] - (2*textOffset), (outerPadding * 2) + iconSize.height + [self statusBarOffset]);
 }
 
 - (CGFloat)width
@@ -622,10 +625,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)availableWidth
 {
-    CGFloat barPadding = [self barPadding];
+    CGFloat outerPadding = [self outerPadding];
+    CGFloat iconTextSpacing = [self iconTextSpacing];
     CGSize iconSize = [self iconSize];
     
-    return ([self width] - (barPadding * 3) - iconSize.width);
+    return ([self width] - (outerPadding * 2) - iconTextSpacing - iconSize.width);
 }
 
 - (CGSize)titleSize
@@ -748,14 +752,26 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return CGSizeMake(kTWMessageViewIconSize, kTWMessageViewIconSize);
 }
 
-- (CGFloat)barPadding
+- (CGFloat)outerPadding
 {
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-        if ([styleSheet respondsToSelector:@selector(barPaddingForMessageType:)])
+        if ([styleSheet respondsToSelector:@selector(outerPaddingForMessageType:)])
         {
-            return [styleSheet barPaddingForMessageType:self.messageType];
+            return [styleSheet outerPaddingForMessageType:self.messageType];
+        }
+    }
+    return kTWMessageViewBarPadding;
+}
+
+- (CGFloat)iconTextSpacing {
+    if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
+    {
+        id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
+        if ([styleSheet respondsToSelector:@selector(iconTextSpacingForMessageType:)])
+        {
+            return [styleSheet iconTextSpacingForMessageType:self.messageType];
         }
     }
     return kTWMessageViewBarPadding;
