@@ -103,7 +103,7 @@ typedef enum {
 - (CGSize)iconSizeForMessageType:(TWMessageBarMessageType)type;
 
 /**
- *  The (optional) CGFLoat to be used for outer padding (top, bottom, left, right)
+ *  The (optional) CGFLoat to be used for outer horizontal padding (left, right)
  *
  *  Default: 10.0f
  *
@@ -111,7 +111,18 @@ typedef enum {
  *
  *  @return CGFloat representing the bar padding
  */
-- (CGFloat)outerPaddingForMessageType:(TWMessageBarMessageType)type;
+- (CGFloat)outerHorizontalPaddingForMessageType:(TWMessageBarMessageType)type;
+
+/**
+ *  The (optional) CGFLoat to be used for outer vertical padding (top, bottom)
+ *
+ *  Default: 10.0f
+ *
+ *  @param type A MessageBarMessageType (error, information, success, etc).
+ *
+ *  @return CGFloat representing the bar padding
+ */
+- (CGFloat)outerVerticalPaddingForMessageType:(TWMessageBarMessageType)type;
 
 /**
  *  The (optional) CGFLoat to be used for spacing between the icon and text

@@ -525,11 +525,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        CGFloat outerPadding = [self outerPadding];
+        CGFloat outerVerticalPadding = [self outerVerticalPadding];
+        CGFloat outerHorizontalPadding = [self outerHorizontalPadding];
         CGFloat iconTextSpacing = [self iconTextSpacing];
         
-        CGFloat xOffset = outerPadding;
-        CGFloat yOffset = outerPadding + [self statusBarOffset];
+        CGFloat xOffset = outerHorizontalPadding;
+        CGFloat yOffset = outerVerticalPadding + [self statusBarOffset];
         
         // icon
         CGSize iconSize = [self iconSize];
@@ -552,7 +553,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         if (self.titleString && !self.descriptionString)
         {
-            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - textOffset + ([self statusBarOffset] * 0.5);
+            yOffset = ((rect.size.height * 0.5) - (titleLabelSize.height * 0.5) + ([self statusBarOffset] * 0.5));
         }
         
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
@@ -600,12 +601,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize titleLabelSize = [self titleSize];
     CGSize descriptionLabelSize = [self descriptionSize];
     
-    CGFloat outerPadding = [self outerPadding];
+    CGFloat outerVerticalPadding = [self outerVerticalPadding];
     CGSize iconSize = [self iconSize];
     
     CGFloat textOffset = [self titleFont].lineHeight - [self titleFont].ascender;
     
-    return MAX((outerPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset] - (2*textOffset), (outerPadding * 2) + iconSize.height + [self statusBarOffset]);
+    return MAX((outerVerticalPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset] - (2*textOffset), (outerVerticalPadding * 2) + iconSize.height + [self statusBarOffset]);
 }
 
 - (CGFloat)width
@@ -625,11 +626,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)availableWidth
 {
-    CGFloat outerPadding = [self outerPadding];
+    CGFloat outerHorizontalPadding = [self outerHorizontalPadding];
     CGFloat iconTextSpacing = [self iconTextSpacing];
     CGSize iconSize = [self iconSize];
     
-    return ([self width] - (outerPadding * 2) - iconTextSpacing - iconSize.width);
+    return ([self width] - (outerHorizontalPadding * 2) - iconTextSpacing - iconSize.width);
 }
 
 - (CGSize)titleSize
@@ -752,14 +753,27 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return CGSizeMake(kTWMessageViewIconSize, kTWMessageViewIconSize);
 }
 
-- (CGFloat)outerPadding
+- (CGFloat)outerHorizontalPadding
 {
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
     {
         id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
-        if ([styleSheet respondsToSelector:@selector(outerPaddingForMessageType:)])
+        if ([styleSheet respondsToSelector:@selector(outerHorizontalPaddingForMessageType:)])
         {
-            return [styleSheet outerPaddingForMessageType:self.messageType];
+            return [styleSheet outerHorizontalPaddingForMessageType:self.messageType];
+        }
+    }
+    return kTWMessageViewBarPadding;
+}
+
+- (CGFloat)outerVerticalPadding
+{
+    if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
+    {
+        id<TWMessageBarStyleSheet> styleSheet = [self.delegate styleSheetForMessageView:self];
+        if ([styleSheet respondsToSelector:@selector(outerVerticalPaddingForMessageType:)])
+        {
+            return [styleSheet outerVerticalPaddingForMessageType:self.messageType];
         }
     }
     return kTWMessageViewBarPadding;
