@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 
 // Controllers
-#import "TWMesssageBarDemoController.h"
+#import "TWMessageBarDemoViewController.h"
 
 // Strings
 NSString * const kAppDelegateDemoStyleSheetImageIconError = @"icon-error.png";
@@ -29,7 +29,7 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     // default style sheet
-    self.window.rootViewController = [[TWMesssageBarDemoController alloc] init];
+    self.window.rootViewController = [[TWMessageBarDemoViewController alloc] initWithNibName:NSStringFromClass([TWMessageBarDemoViewController class]) bundle:nil];
     
     /*
      * Uncomment for custom style sheet (disabled)
