@@ -106,6 +106,7 @@
     }
     else {
         self.statusBarStyle = sender.selectedSegmentIndex;
+        self.hidesStatusBar = NO;
     }
 }
 

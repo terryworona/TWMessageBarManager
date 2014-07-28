@@ -555,8 +555,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             yOffset = ((rect.size.height * 0.5) - (titleLabelSize.height * 0.5) + ([self statusBarOffset] * 0.5));
         }
-        else if (rect.size.height == (outerVerticalPadding * 2) + iconSize.height) {
-            yOffset = ((rect.size.height * 0.5) - titleLabelSize.height) + ([self statusBarOffset]);
+        //-- Determine if the height is governed by the icon or the text, if it's the icon we need to center the labels vertically
+        else if (rect.size.height == (outerVerticalPadding * 2) + iconSize.height + [self statusBarOffset]) {
+            CGFloat centerPoint = ((titleLabelSize.height + descriptionLabelSize.height) / 2);
+            CGFloat centerPointOffset = titleLabelSize.height - centerPoint;
+            yOffset = ((rect.size.height * 0.5) - titleLabelSize.height + centerPointOffset) + ([self statusBarOffset] * 0.5);
         }
         else {
             yOffset -= textOffset;
