@@ -544,16 +544,22 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        CGFloat textOffset = [self titleFont].lineHeight - [self titleFont].ascender;
-        yOffset -= textOffset;
-        xOffset += iconSize.width + iconTextSpacing;
-        
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
+        
+        CGFloat textOffset = [self titleFont].lineHeight - [self titleFont].ascender;
+        
+        xOffset += iconSize.width + iconTextSpacing;
         
         if (self.titleString && !self.descriptionString)
         {
             yOffset = ((rect.size.height * 0.5) - (titleLabelSize.height * 0.5) + ([self statusBarOffset] * 0.5));
+        }
+        else if (rect.size.height == (outerVerticalPadding * 2) + iconSize.height) {
+            yOffset = ((rect.size.height * 0.5) - titleLabelSize.height) + ([self statusBarOffset]);
+        }
+        else {
+            yOffset -= textOffset;
         }
         
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
