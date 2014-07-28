@@ -795,7 +795,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGRect)orientFrame:(CGRect)frame
 {
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) || UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
         frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
     }
@@ -955,6 +955,17 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.statusBarStyle;
+}
+
+- (BOOL)shouldAutorotate {
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    if (rootViewController.presentedViewController) {
+        return [rootViewController.presentedViewController shouldAutorotate];
+    }
+    else {
+        return [rootViewController shouldAutorotate];
+    }
 }
 
 @end
