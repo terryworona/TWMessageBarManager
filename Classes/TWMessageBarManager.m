@@ -142,7 +142,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Singleton
 
-+ (TWMessageBarManager *)sharedInstance
++ (instancetype)sharedInstance
 {
     static dispatch_once_t pred;
     static TWMessageBarManager *instance = nil;

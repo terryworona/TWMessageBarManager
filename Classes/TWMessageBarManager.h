@@ -144,7 +144,7 @@ typedef enum {
  *
  *  @return MessageBarManager instance (singleton).
  */
-+ (TWMessageBarManager *)sharedInstance;
++ (instancetype)sharedInstance;
 
 /**
  *  Default display duration for each message.
