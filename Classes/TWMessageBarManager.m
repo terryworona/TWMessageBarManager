@@ -967,7 +967,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 }
 
 - (BOOL)shouldAutorotate {
-    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *rootViewController = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
     
     if (rootViewController.presentedViewController) {
         return [rootViewController.presentedViewController shouldAutorotate];
