@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /**
  *  Three base message bar types. Their look & feel is defined within the MessageBarStyleSheet.
