@@ -26,6 +26,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
 @property (nonatomic, strong) UIButton *errorButton;
 @property (nonatomic, strong) UIButton *successButton;
 @property (nonatomic, strong) UIButton *infoButton;
+@property (nonatomic, strong) UIButton *infoFromBottomButton;
 @property (nonatomic, strong) UIButton *hideAllButton;
 
 // Button presses
@@ -98,6 +99,13 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     [self.view addSubview:self.infoButton];
     
     yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
+    
+    self.infoFromBottomButton = [self buttonWithTitle:kStringButtonLabelInfoFromBottomMessage];
+    self.infoFromBottomButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
+    [self.infoFromBottomButton addTarget:self action:@selector(infoFromBottomButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.infoFromBottomButton];
+    
+    yOffset += kTWMesssageBarDemoControllerButtonHeight + kTWMesssageBarDemoControllerButtonPadding;
 
     self.hideAllButton = [self buttonWithTitle:kStringButtonLabelHideAll];
     self.hideAllButton.frame = CGRectMake(xOffset, yOffset, self.view.bounds.size.width - (xOffset * 2), kTWMesssageBarDemoControllerButtonHeight);
@@ -153,6 +161,16 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
                                                    description:kStringMessageBarInfoMessage
                                                           type:TWMessageBarMessageTypeInfo
                                                statusBarHidden:YES
+                                                      callback:nil];
+}
+
+- (void)infoFromBottomButtonPressed:(id)sender
+{
+    [[TWMessageBarManager sharedInstance] showMessageWithTitle:kStringMessageBarInfoTitle
+                                                   description:kStringButtonLabelInfoMessage
+                                                          type:TWMessageBarMessageTypeInfo
+                                                      duration:[TWMessageBarManager defaultDuration]
+                                               displayLocation:TWMessageBarDisplayLocationBottom
                                                       callback:nil];
 }
 

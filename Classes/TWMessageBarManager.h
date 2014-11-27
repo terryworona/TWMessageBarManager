@@ -11,11 +11,19 @@
 /**
  *  Three base message bar types. Their look & feel is defined within the MessageBarStyleSheet.
  */
-typedef enum {
+typedef NS_ENUM(NSUInteger, TWMessageBarMessageType){
     TWMessageBarMessageTypeError,
     TWMessageBarMessageTypeSuccess,
     TWMessageBarMessageTypeInfo
-} TWMessageBarMessageType;
+};
+
+/**
+ *  Message presentation location (dismissed from same place).
+ */
+typedef NS_ENUM(NSUInteger, TWMessageBarDisplayLocation){
+    TWMessageBarDisplayLocationTop,
+    TWMessageBarDisplayLocationBottom
+};
 
 @protocol TWMessageBarStyleSheet <NSObject>
 
@@ -202,6 +210,18 @@ typedef enum {
  *  @param callback         Callback block to be executed if a message is tapped.
  */
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback;
+
+/**
+ *  Shows a message with the supplied title, description, type, duration, status bar style, display location, and callback block.
+ *
+ *  @param title            Header text in the message view.
+ *  @param description      Description text in the message view.
+ *  @param type             Type dictates color, stroke and icon shown in the message view.
+ *  @param duration         Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
+ *  @param displayLocation  Dictates where the message will be displayed from. Defualt is TWMessageBarDisplayLocationTop.
+ *  @param callback         Callback block to be executed if a message is tapped.
+ */
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration displayLocation:(TWMessageBarDisplayLocation)location callback:(void (^)())callback;
 
 /**
  *  Hides the topmost message and removes all remaining messages in the queue.
