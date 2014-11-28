@@ -662,11 +662,22 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     return CGSizeMake(ceilf(descriptionLabelSize.width), ceilf(descriptionLabelSize.height));
 }
 
-- (CGRect)statusBarFrame
-{
+- (CGRect)statusBarFrame {
     CGRect windowFrame = [self orientFrame:[UIApplication sharedApplication].keyWindow.frame];
     CGRect statusFrame = [self orientFrame:[UIApplication sharedApplication].statusBarFrame];
-    return CGRectMake(windowFrame.origin.x, windowFrame.origin.y, windowFrame.size.width, statusFrame.size.height);
+    CGRect statusBarFrame;
+    if (UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]))
+    {
+        statusBarFrame = CGRectMake(windowFrame.origin.x, windowFrame.origin.y,
+                                    windowFrame.size.width, statusFrame.size.height);
+    }
+    else
+    {
+        statusBarFrame = CGRectMake(windowFrame.origin.x, windowFrame.origin.y,
+                                    windowFrame.size.height, statusFrame.size.width);
+    }
+    
+    return statusBarFrame;
 }
 
 - (UIFont *)titleFont
