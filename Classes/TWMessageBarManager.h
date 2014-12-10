@@ -16,6 +16,8 @@ typedef enum {
     TWMessageBarMessageTypeInfo
 } TWMessageBarMessageType;
 
+extern CGFloat const kTWMessageBarManagerDisplayDurationIndefinite;
+
 @protocol TWMessageBarStyleSheet <NSObject>
 
 /**

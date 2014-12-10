@@ -87,7 +87,8 @@
 }
 
 - (IBAction)changedDisplayLength:(UISlider *)sender {
-    self.displayLength = [[self.numberFormatter stringFromNumber:@(sender.value)] floatValue];
+    CGFloat length = [[self.numberFormatter stringFromNumber:@(sender.value)] floatValue];
+    self.displayLength = length == 10.0f ? kTWMessageBarManagerDisplayDurationIndefinite : length;
 }
 
 - (IBAction)changedSubtitleLength:(UISlider *)sender {
@@ -125,7 +126,12 @@
 - (void)setDisplayLength:(CGFloat)displayLength {
     _displayLength = displayLength;
     
-    self.labelDisplayLength.text = [NSString stringWithFormat:@"Display for: %@ second(s)", [self.numberFormatter stringFromNumber:@(displayLength)]];
+    if (displayLength == kTWMessageBarManagerDisplayDurationIndefinite) {
+        self.labelDisplayLength.text = [NSString stringWithFormat:@"Display indefinetely"];
+    }
+    else {
+        self.labelDisplayLength.text = [NSString stringWithFormat:@"Display for: %@ second(s)", [self.numberFormatter stringFromNumber:@(displayLength)]];
+    }
 }
 
 - (NSString *)titleMessage {

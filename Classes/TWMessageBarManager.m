@@ -20,6 +20,7 @@ NSUInteger const kTWMessageViewiOS7Identifier = 7;
 
 // Numerics (TWMessageBarManager)
 CGFloat const kTWMessageBarManagerDisplayDelay = 3.0f;
+CGFloat const kTWMessageBarManagerDisplayDurationIndefinite = FLT_MAX;
 CGFloat const kTWMessageBarManagerDismissAnimationDuration = 0.25f;
 CGFloat const kTWMessageBarManagerPanVelocity = 0.2f;
 CGFloat const kTWMessageBarManagerPanAnimationDuration = 0.0002f;
@@ -305,7 +306,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
-            [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
+            if (messageView.duration != kTWMessageBarManagerDisplayDurationIndefinite) {
+                [self performSelector:@selector(itemSelected:) withObject:messageView afterDelay:messageView.duration];
+            }
             
             [self generateAccessibleElementWithTitle:messageView.titleString description:messageView.descriptionString];
         }
