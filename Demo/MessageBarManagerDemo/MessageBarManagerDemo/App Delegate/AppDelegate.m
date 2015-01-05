@@ -26,6 +26,8 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [TWMessageBarManager sharedInstance].managerSupportedOrientationsMask = UIInterfaceOrientationMaskPortrait;
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     // default style sheet

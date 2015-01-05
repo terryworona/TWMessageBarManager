@@ -275,6 +275,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     self.messageVisible = NO;
     [self.messageBarQueue removeAllObjects];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    self.messageWindow = nil;
 }
 
 - (void)hideAll
@@ -723,12 +724,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Helpers
 
-- (CGRect)orientFrame:(CGRect)frame
-{
-//    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) || UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
-//    {
-//        frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
-//    }
+- (CGRect)orientFrame:(CGRect)frame {
     return frame;
 }
 
