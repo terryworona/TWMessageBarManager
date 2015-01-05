@@ -176,6 +176,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
+        self.managerSupportedOrientationsMask = UIInterfaceOrientationMaskAll;
     }
     return self;
 }
@@ -274,7 +275,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     self.messageVisible = NO;
     [self.messageBarQueue removeAllObjects];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    self.messageWindow = nil;
 }
 
 - (void)hideAll
@@ -725,10 +725,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGRect)orientFrame:(CGRect)frame
 {
-    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) || UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
-    {
-        frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
-    }
+//    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) || UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+//    {
+//        frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
+//    }
     return frame;
 }
 
@@ -867,6 +867,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @end
 
 @implementation TWMessageBarViewController
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return [TWMessageBarManager sharedInstance].managerSupportedOrientationsMask;
+}
 
 #pragma mark - Setters
 

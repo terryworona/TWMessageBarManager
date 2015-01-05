@@ -112,6 +112,14 @@ typedef enum {
 + (CGFloat)defaultDuration;
 
 /**
+ *  Orientations to support by bar manager.
+ *  This can be customized.
+ *
+ *  @return Default behaviour - all orientations.
+ */
+@property (nonatomic, assign) UIInterfaceOrientationMask managerSupportedOrientationsMask;
+
+/**
  *  An object conforming to the TWMessageBarStyleSheet protocol defines the message bar's look and feel.
  *  If no style sheet is supplied, a default class is provided on initialization (see implementation for details).
  */
