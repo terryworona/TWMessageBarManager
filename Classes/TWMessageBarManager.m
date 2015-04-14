@@ -664,8 +664,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGRect)statusBarFrame
 {
-    CGRect windowFrame = [self orientFrame:[UIApplication sharedApplication].keyWindow.frame];
-    CGRect statusFrame = [self orientFrame:[UIApplication sharedApplication].statusBarFrame];
+    CGRect windowFrame = NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 ? [self orientFrame:[UIApplication sharedApplication].keyWindow.frame] : [UIApplication sharedApplication].keyWindow.frame;
+    CGRect statusFrame = NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 ?  [self orientFrame:[UIApplication sharedApplication].statusBarFrame] : [UIApplication sharedApplication].statusBarFrame;
     return CGRectMake(windowFrame.origin.x, windowFrame.origin.y, windowFrame.size.width, statusFrame.size.height);
 }
 
