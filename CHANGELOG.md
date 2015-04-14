@@ -1,84 +1,293 @@
-# Changelog
+# Change Log
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.7.1">1.7.1</a>
-#### 11/12/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/63">#63</a>.
+## [Unreleased](https://github.com/terryworona/TWMessageBarManager/tree/HEAD)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.7.0">1.7.0</a>
-#### 06/06/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/52">#52</a>.
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/53">#53</a>.
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.7.2...HEAD)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.6.1">1.6.1</a>
-#### 05/20/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/50">#50</a>.
+**Closed issues:**
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.6.0">1.6.0</a>
-#### 04/25/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/46">#46</a>.
+- Two large or wrongly positioned message on landscape iPad app with iOS 8 [\#73](https://github.com/terryworona/TWMessageBarManager/issues/73)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.5.2">1.5.2</a>
-#### 04/21/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/42">#42</a>.
+- Implicit conversion from enumeration type 'UIInterfaceOrientation' \(aka 'enum UIInterfaceOrientation'\) to different enumeration type 'UIDeviceOrientation' \(aka 'enum UIDeviceOrientation'\) [\#71](https://github.com/terryworona/TWMessageBarManager/issues/71)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.5.1">1.5.1</a>
-#### 04/18/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/40">#40</a>.
- 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.5.0">1.5.0</a>
-#### 04/12/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/38">#38</a> (custom UIStatusBarStyle).
+## [v1.7.2](https://github.com/terryworona/TWMessageBarManager/tree/v1.7.2) (2015-04-14)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.4.2">1.4.2</a>
-#### 04/06/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/35">#35</a>.
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.7.1...v1.7.2)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.4.1">1.4.1</a>
-#### 04/01/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/32">#32</a> (accessibility support).
+**Fixed bugs:**
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.4.0">1.4.0</a>
-#### 03/28/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/29">#29</a> (orientation support).
+- Deprecation Warnings [\#57](https://github.com/terryworona/TWMessageBarManager/issues/57)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.3.5">1.3.5</a>
-#### 03/18/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/28">#28</a>.
+**Closed issues:**
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.3.4">1.3.4</a>
-#### 03/14/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/26">#26</a>.
+- A way to hide a specific view [\#69](https://github.com/terryworona/TWMessageBarManager/issues/69)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.3.3">1.3.3</a>
-#### 03/13/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/23">#23</a>.
+- Use of \[UIApplication sharedApplication\] [\#68](https://github.com/terryworona/TWMessageBarManager/issues/68)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.3.2">1.3.2</a>
-#### 02/05/14
-- Fixes issue <a href="https://github.com/terryworona/TWMessageBarManager/pull/16">#16</a>.
+**Merged pull requests:**
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.3.1">1.3.1</a>
-#### 01/06/14
-- iOS 7 cleanup.
+- Fixed status bar frame to only reorient the frame on iOS 7.1 and prior a... [\#72](https://github.com/terryworona/TWMessageBarManager/pull/72) ([cms5822](https://github.com/cms5822))
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.3.0">1.3.0</a>
-#### 12/16/13
-- Moved customization over to a subclass adhereing to stylesheet protocol.
+- Enum changed to NSENUM to support Swift [\#70](https://github.com/terryworona/TWMessageBarManager/pull/70) ([VojtaStavik](https://github.com/VojtaStavik))
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.2.1">1.2.1</a>
-#### 12/14/13
-- iOS 6.0 support.
+- restore status bar style after hide [\#65](https://github.com/terryworona/TWMessageBarManager/pull/65) ([setoff](https://github.com/setoff))
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.2.0">1.2.0</a>
-#### 12/13/13
-- Namespace refactoring. 
+## [v1.7.1](https://github.com/terryworona/TWMessageBarManager/tree/v1.7.1) (2014-11-13)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.1.0">1.1.0</a>
-#### 12/11/13
-- iOS 7 based height calculations.
-- iOS 6 font size crashes.
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.7.0...v1.7.1)
 
-## <a href="https://github.com/terryworona/TWMessageBarManager/tree/v1.0.0">1.0.0</a>
-#### 12/09/13
-- Initial public release.
-- Base manager support for error, information and success messages.
+**Closed issues:**
+
+- feature request: dismissable [\#61](https://github.com/terryworona/TWMessageBarManager/issues/61)
+
+- iOS 8 landscape orientation issue [\#59](https://github.com/terryworona/TWMessageBarManager/issues/59)
+
+- managing push notification payload [\#58](https://github.com/terryworona/TWMessageBarManager/issues/58)
+
+- can I display message above status bar on IOS 6 [\#55](https://github.com/terryworona/TWMessageBarManager/issues/55)
+
+- How can I disable rotation mess ego to landscape?  [\#54](https://github.com/terryworona/TWMessageBarManager/issues/54)
+
+**Merged pull requests:**
+
+- \[TWMessageBarManager.h\] Import UIKit [\#63](https://github.com/terryworona/TWMessageBarManager/pull/63) ([dasmer](https://github.com/dasmer))
+
+- Fix float suffix [\#56](https://github.com/terryworona/TWMessageBarManager/pull/56) ([midnightSuyama](https://github.com/midnightSuyama))
+
+## [v1.7.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.7.0) (2014-06-06)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.6.1...v1.7.0)
+
+**Implemented enhancements:**
+
+- Add custom title and description color [\#53](https://github.com/terryworona/TWMessageBarManager/issues/53)
+
+- Provide font customization options [\#48](https://github.com/terryworona/TWMessageBarManager/issues/48)
+
+**Merged pull requests:**
+
+- Added optional methods to stylesheet protocol for customizing fonts. [\#52](https://github.com/terryworona/TWMessageBarManager/pull/52) ([mdelaporta](https://github.com/mdelaporta))
+
+- Added methods to stylesheet protocol for specifying fonts [\#51](https://github.com/terryworona/TWMessageBarManager/pull/51) ([mdelaporta](https://github.com/mdelaporta))
+
+## [v1.6.1](https://github.com/terryworona/TWMessageBarManager/tree/v1.6.1) (2014-05-20)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.6.0...v1.6.1)
+
+**Closed issues:**
+
+- deprecated methods [\#50](https://github.com/terryworona/TWMessageBarManager/issues/50)
+
+**Merged pull requests:**
+
+- Update README.md [\#49](https://github.com/terryworona/TWMessageBarManager/pull/49) ([jonathanng](https://github.com/jonathanng))
+
+## [v1.6.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.6.0) (2014-04-25)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.5.2...v1.6.0)
+
+**Closed issues:**
+
+- Reveal option for prefersStatusBarHidden [\#45](https://github.com/terryworona/TWMessageBarManager/issues/45)
+
+- StatusBar persists after showing [\#44](https://github.com/terryworona/TWMessageBarManager/issues/44)
+
+- StatusBar doesn't get hidden again after showing [\#43](https://github.com/terryworona/TWMessageBarManager/issues/43)
+
+**Merged pull requests:**
+
+- add property to hide the statusbar [\#46](https://github.com/terryworona/TWMessageBarManager/pull/46) ([Leandros](https://github.com/Leandros))
+
+## [v1.5.2](https://github.com/terryworona/TWMessageBarManager/tree/v1.5.2) (2014-04-22)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.5.1...v1.5.2)
+
+**Closed issues:**
+
+- TWMessageViewController retains control of status bar style after message dismissed [\#41](https://github.com/terryworona/TWMessageBarManager/issues/41)
+
+**Merged pull requests:**
+
+- TWMessageViewController retains control of status bar style after message dismissed [\#42](https://github.com/terryworona/TWMessageBarManager/pull/42) ([jeffmc](https://github.com/jeffmc))
+
+## [v1.5.1](https://github.com/terryworona/TWMessageBarManager/tree/v1.5.1) (2014-04-18)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.5.0...v1.5.1)
+
+**Closed issues:**
+
+- Status Bar is left with wrong style in called from a VC with UIStatusBarStyleLightContent [\#38](https://github.com/terryworona/TWMessageBarManager/issues/38)
+
+**Merged pull requests:**
+
+- fix iOS 6 crash [\#40](https://github.com/terryworona/TWMessageBarManager/pull/40) ([mkutgt72](https://github.com/mkutgt72))
+
+- Addresses \#38 - add a method to pass in the preferred status bar style, ... [\#39](https://github.com/terryworona/TWMessageBarManager/pull/39) ([jeffmc](https://github.com/jeffmc))
+
+## [v1.5.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.5.0) (2014-04-12)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.4.2...v1.5.0)
+
+**Merged pull requests:**
+
+- Account for Status Bar types based on background [\#37](https://github.com/terryworona/TWMessageBarManager/pull/37) ([jeffmc](https://github.com/jeffmc))
+
+## [v1.4.2](https://github.com/terryworona/TWMessageBarManager/tree/v1.4.2) (2014-04-07)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.4.1...v1.4.2)
+
+**Fixed bugs:**
+
+- MessageBar doesn't appear if app has no status bar. [\#35](https://github.com/terryworona/TWMessageBarManager/issues/35)
+
+**Closed issues:**
+
+- Rendering glitch / disappearing message bar [\#34](https://github.com/terryworona/TWMessageBarManager/issues/34)
+
+**Merged pull requests:**
+
+- Added support for hidden statusBar. Using UIDevice instead of statusBar ... [\#36](https://github.com/terryworona/TWMessageBarManager/pull/36) ([DanielKrofchick](https://github.com/DanielKrofchick))
+
+## [v1.4.1](https://github.com/terryworona/TWMessageBarManager/tree/v1.4.1) (2014-04-02)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.4.0...v1.4.1)
+
+**Implemented enhancements:**
+
+- Does not support other orientation. [\#2](https://github.com/terryworona/TWMessageBarManager/issues/2)
+
+**Closed issues:**
+
+- Add accessibility to the TWMessageBarManager [\#31](https://github.com/terryworona/TWMessageBarManager/issues/31)
+
+**Merged pull requests:**
+
+- Add implementation of UIAccessibilityContainer Protocol [\#32](https://github.com/terryworona/TWMessageBarManager/pull/32) ([JanenePappas](https://github.com/JanenePappas))
+
+## [v1.4.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.4.0) (2014-03-28)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.3.5...v1.4.0)
+
+**Merged pull requests:**
+
+- Added rotation support by placing the messages in the rootViewController... [\#29](https://github.com/terryworona/TWMessageBarManager/pull/29) ([DanielKrofchick](https://github.com/DanielKrofchick))
+
+## [v1.3.5](https://github.com/terryworona/TWMessageBarManager/tree/v1.3.5) (2014-03-18)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.3.4...v1.3.5)
+
+**Closed issues:**
+
+- Not showing messages in one project [\#27](https://github.com/terryworona/TWMessageBarManager/issues/27)
+
+**Merged pull requests:**
+
+- Fixed \#27 [\#28](https://github.com/terryworona/TWMessageBarManager/pull/28) ([ChrisGrant](https://github.com/ChrisGrant))
+
+## [v1.3.4](https://github.com/terryworona/TWMessageBarManager/tree/v1.3.4) (2014-03-14)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.3.3...v1.3.4)
+
+**Closed issues:**
+
+- Multi-Line problem with iOS SDK 7.1 [\#26](https://github.com/terryworona/TWMessageBarManager/issues/26)
+
+**Merged pull requests:**
+
+- Landscape and Portrait Orientations [\#24](https://github.com/terryworona/TWMessageBarManager/pull/24) ([norfanos](https://github.com/norfanos))
+
+## [v1.3.3](https://github.com/terryworona/TWMessageBarManager/tree/v1.3.3) (2014-03-13)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.3.2...v1.3.3)
+
+**Implemented enhancements:**
+
+- Message background cover status bar on iOS 7 [\#16](https://github.com/terryworona/TWMessageBarManager/issues/16)
+
+- Add withAnimation: option to hideAll API call [\#9](https://github.com/terryworona/TWMessageBarManager/issues/9)
+
+**Merged pull requests:**
+
+- Multi-line message height calculation [\#23](https://github.com/terryworona/TWMessageBarManager/pull/23) ([amyworrall](https://github.com/amyworrall))
+
+## [v1.3.2](https://github.com/terryworona/TWMessageBarManager/tree/v1.3.2) (2014-02-06)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.3.1...v1.3.2)
+
+**Merged pull requests:**
+
+- StatusBar fixes for iOS6 and 7 [\#22](https://github.com/terryworona/TWMessageBarManager/pull/22) ([Amnell](https://github.com/Amnell))
+
+-  Adding a property coversStatusBar to modify the offset, to show the message view covering the status bar if on iOS 7 or higher [\#20](https://github.com/terryworona/TWMessageBarManager/pull/20) ([mergesort](https://github.com/mergesort))
+
+- Alert shown from Status Bar [\#19](https://github.com/terryworona/TWMessageBarManager/pull/19) ([kurtbradd](https://github.com/kurtbradd))
+
+## [v1.3.1](https://github.com/terryworona/TWMessageBarManager/tree/v1.3.1) (2014-01-07)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.3.0...v1.3.1)
+
+## [v1.3.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.3.0) (2013-12-17)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.2.1...v1.3.0)
+
+**Merged pull requests:**
+
+- Better customization through use of a specific stylesheet protocol [\#18](https://github.com/terryworona/TWMessageBarManager/pull/18) ([grantjk](https://github.com/grantjk))
+
+## [v1.2.1](https://github.com/terryworona/TWMessageBarManager/tree/v1.2.1) (2013-12-15)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.2.0...v1.2.1)
+
+**Closed issues:**
+
+- Vertically align icon when message is too big [\#17](https://github.com/terryworona/TWMessageBarManager/issues/17)
+
+- Why is iOS 6.1 required? [\#15](https://github.com/terryworona/TWMessageBarManager/issues/15)
+
+**Merged pull requests:**
+
+- Added ability to swipe to dismiss, fixed a couple things. [\#14](https://github.com/terryworona/TWMessageBarManager/pull/14) ([Pearapps](https://github.com/Pearapps))
+
+- Add the TW namespace and rename the Classes directory. [\#13](https://github.com/terryworona/TWMessageBarManager/pull/13) ([adonoho](https://github.com/adonoho))
+
+## [v1.2.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.2.0) (2013-12-13)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.1.0...v1.2.0)
+
+**Closed issues:**
+
+- Dealing with push notifications [\#12](https://github.com/terryworona/TWMessageBarManager/issues/12)
+
+- Updated label sizing for iOS 7 [\#10](https://github.com/terryworona/TWMessageBarManager/issues/10)
+
+**Merged pull requests:**
+
+- Add verticalSpacer option [\#8](https://github.com/terryworona/TWMessageBarManager/pull/8) ([sirvine](https://github.com/sirvine))
+
+## [v1.1.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.1.0) (2013-12-12)
+
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.0.0...v1.1.0)
+
+**Closed issues:**
+
+- Message view display location wrong in iPad 6.1 [\#11](https://github.com/terryworona/TWMessageBarManager/issues/11)
+
+- Please add to CocoaPods [\#5](https://github.com/terryworona/TWMessageBarManager/issues/5)
+
+## [v1.0.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.0.0) (2013-12-10)
+
+**Closed issues:**
+
+- API to cancel all messages [\#6](https://github.com/terryworona/TWMessageBarManager/issues/6)
+
+- Icon [\#4](https://github.com/terryworona/TWMessageBarManager/issues/4)
+
+**Merged pull requests:**
+
+- Easier start and Typo fixed [\#1](https://github.com/terryworona/TWMessageBarManager/pull/1) ([lukaswelte](https://github.com/lukaswelte))
+
+- Added verticalOffset option to specify the top position of the message [\#7](https://github.com/terryworona/TWMessageBarManager/pull/7) ([sirvine](https://github.com/sirvine))
+
+
+
+\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*

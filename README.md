@@ -45,7 +45,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your podfile should look something like:
 
 	platform :ios, '6.0'
-	pod 'TWMessageBarManager', '~> 1.7.1'
+	pod 'TWMessageBarManager'
 	
 ### The Old School Way
 
