@@ -11,11 +11,11 @@
 /**
  *  Three base message bar types. Their look & feel is defined within the MessageBarStyleSheet.
  */
-typedef enum {
+typedef NS_ENUM(NSInteger, TWMessageBarMessageType) {
     TWMessageBarMessageTypeError,
     TWMessageBarMessageTypeSuccess,
     TWMessageBarMessageTypeInfo
-} TWMessageBarMessageType;
+};
 
 @protocol TWMessageBarStyleSheet <NSObject>
 
