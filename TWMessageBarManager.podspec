@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "TWMessageBarManager"
-  s.version      = "1.7.2"
+  s.version      = "1.7.3"
   s.summary      = "An iOS manager for presenting system-wide notifications via a dropdown message bar."
   s.homepage     = "https://github.com/terryworona/TWMessageBarManager"
 
@@ -9,8 +9,8 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Terry Worona" => "terryworona@gmail.com" }
   s.source       = { 
-	:git => "https://github.com/terryworona/TWMessageBarManager.git",
-	:tag => "v1.7.2"
+	:git => "https://github.com/Backelite/TWMessageBarManager.git",
+	:tag => "v1.7.3"
   }
 
   s.platform = :ios, '6.0'
