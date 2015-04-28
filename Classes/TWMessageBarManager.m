@@ -120,6 +120,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, strong) TWMessageWindow *messageWindow;
 @property (nonatomic, readwrite) NSArray *accessibleElements; // accessibility
+@property (nonatomic, assign) BOOL singleDisplay;
+
 
 // Static
 + (CGFloat)durationForMessageType:(TWMessageBarMessageType)messageType;
@@ -176,6 +178,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
+        _singleDisplay = NO;
     }
     return self;
 }
@@ -222,6 +225,13 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault callback:callback];
 }
 
+#pragma mark - Single Display Mode
+
+- (void)setSingleDisplay:(BOOL)singleDisplay
+{
+    _singleDisplay = singleDisplay;
+}
+
 #pragma mark - Master Presentation
 
 - (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
@@ -241,7 +251,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     [[self messageWindowView] addSubview:messageView];
     [[self messageWindowView] bringSubviewToFront:messageView];
     
-    [self.messageBarQueue addObject:messageView];
+    if (!self.singleDisplay || !self.messageVisible) {
+        [self.messageBarQueue addObject:messageView];
+    }
     
     if (!self.messageVisible)
     {

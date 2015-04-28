@@ -211,6 +211,16 @@ typedef NS_ENUM(NSInteger, TWMessageBarMessageType) {
 - (void)hideAllAnimated:(BOOL)animated;
 - (void)hideAll; // non-animated
 
+/**
+ *  Set single display to YES to prevent duplicate messages from showing.
+ *  When a message is showing, additional messages will not be added to the display queue.
+ *
+ *  Defaults to NO.
+ *
+ *  @param singleDisplay  Enable single display mode
+ */
+- (void)setSingleDisplay:(BOOL)singleDisplay;
+
 @end
 
 @interface UIDevice (Additions)
