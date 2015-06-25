@@ -64,6 +64,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL statusBarHidden;
+@property (nonatomic) BOOL displayInWindow;
 
 @property (nonatomic, weak) id <TWMessageViewDelegate> delegate;
 
@@ -250,10 +251,12 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     messageView.duration = duration;
     messageView.hidden = YES;
     
-    messageView.statusBarStyle = statusBarStyle;
+    //-- Always mark this as even in the non-window mode this property affects the height calculation of the banner
     messageView.statusBarHidden = statusBarHidden;
+    messageView.statusBarStyle = statusBarStyle;
     
     if (view) {
+        messageView.displayInWindow = NO;
         [view addSubview:messageView];
         [view bringSubviewToFront:messageView];
     }
@@ -323,8 +326,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             [self.messageBarQueue removeObject:messageView];
             
-            [self messageBarViewController].statusBarStyle = messageView.statusBarStyle;
-
+            if (messageView.displayInWindow) {
+                [self messageBarViewController].statusBarStyle = messageView.statusBarStyle;
+            }
+            
             [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
                 [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y + [messageView height], [messageView width], [messageView height])]; // slide down
             }];
@@ -501,6 +506,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         _hasCallback = NO;
         _hit = NO;
+        _displayInWindow = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeDeviceOrientation:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
@@ -648,7 +654,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)width
 {
-    return [self statusBarFrame].size.width;
+    return self.displayInWindow ? [self statusBarFrame].size.width : self.superview.frame.size.width;
 }
 
 - (CGFloat)statusBarOffset
