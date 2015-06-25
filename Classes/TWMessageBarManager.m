@@ -618,7 +618,10 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     
     CGFloat textOffset = [self titleFont].lineHeight - [self titleFont].ascender;
     
-    return MAX((outerVerticalPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset] - (2*textOffset), (outerVerticalPadding * 2) + iconSize.height + [self statusBarOffset]);
+    CGFloat labelBasedHeight = (outerVerticalPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset] - (2*textOffset);
+    CGFloat iconBasedHeight = (outerVerticalPadding * 2) + iconSize.height + [self statusBarOffset];
+    
+    return MAX(labelBasedHeight, iconBasedHeight);
 }
 
 - (CGFloat)width
@@ -807,7 +810,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGRect)orientFrame:(CGRect)frame
 {
-    if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) && [[NSProcessInfo processInfo] respondsToSelector:@selector(isOperatingSystemAtLeastVersion:)] == NO)
     {
         frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.height, frame.size.width);
     }
@@ -818,8 +821,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)didChangeDeviceOrientation:(NSNotification *)notification
 {
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, [self statusBarFrame].size.width, self.frame.size.height);
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, [self width], [self height])];
     [self setNeedsDisplay];
+}
+
+- (void)layoutSubviews {
+    [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, [self width], [self height])];
+    
+    [super layoutSubviews];
 }
 
 @end
