@@ -163,6 +163,54 @@ extern CGFloat const kTWMessageBarManagerDisplayDurationIndefinite;
 @property (nonatomic, strong) NSObject<TWMessageBarStyleSheet> *styleSheet;
 
 /**
+ *  Show a message with the supplied title, description and type from a particular view.  
+ *  These methods are intended for use in popovers on an iPad for example, and in particular on views that do not have a status bar to contend with.
+ *
+ *  @param title       Header text in the message view.
+ *  @param description Description text in the message view.
+ *  @param type        Type dictates color, stroke and icon shown in the message view.
+ *  @param view        View to display the message in
+ */
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type inView:(UIView *)view;
+
+/**
+ *  Show a message with the supplied title, description and type from a particular view.
+ *  These methods are intended for use in popovers on an iPad for example, and in particular on views that do not have a status bar to contend with.
+ *
+ *  @param title       Header text in the message view.
+ *  @param description Description text in the message view.
+ *  @param type        Type dictates color, stroke and icon shown in the message view.
+ *  @param duration    Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
+ *  @param view        View to display the message in
+ */
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration inView:(UIView *)view;
+
+/**
+ *  Show a message with the supplied title, description and type from a particular view.
+ *  These methods are intended for use in popovers on an iPad for example, and in particular on views that do not have a status bar to contend with.
+ *
+ *  @param title       Header text in the message view.
+ *  @param description Description text in the message view.
+ *  @param type        Type dictates color, stroke and icon shown in the message view.
+ *  @param view        View to display the message in
+ *  @param callback    Callback block to be executed if a message is tapped.
+ */
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type inView:(UIView *)view callback:(void (^)())callback;
+
+/**
+ *  Show a message with the supplied title, description and type from a particular view.
+ *  These methods are intended for use in popovers on an iPad for example, and in particular on views that do not have a status bar to contend with.
+ *
+ *  @param title       Header text in the message view.
+ *  @param description Description text in the message view.
+ *  @param type        Type dictates color, stroke and icon shown in the message view.
+ *  @param duration    Default duration is 3 seconds, this can be overridden by supplying an optional duration parameter.
+ *  @param view        View to display the message in
+ *  @param callback    Callback block to be executed if a message is tapped.
+ */
+- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration inView:(UIView *)view callback:(void (^)())callback;
+
+/**
  *  Shows a message with the supplied title, description and type.
  *
  *  @param title        Header text in the message view.
