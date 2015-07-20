@@ -255,6 +255,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     messageView.statusBarHidden = statusBarHidden;
     messageView.statusBarStyle = statusBarStyle;
     
+    NSMutableString *accessibilityLabel = [[NSMutableString alloc] initWithString:title];
+    
+    if ([description length] > 0) {
+        [accessibilityLabel appendFormat:@", %@", description];
+    }
+    
+    messageView.accessibilityLabel = accessibilityLabel;
+    
     if (view) {
         messageView.displayInWindow = NO;
         [view addSubview:messageView];
