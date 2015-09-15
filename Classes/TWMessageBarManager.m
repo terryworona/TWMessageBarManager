@@ -144,7 +144,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Singleton
 
-+ (TWMessageBarManager *)sharedInstance
++ (nonnull TWMessageBarManager *)sharedInstance
 {
     static dispatch_once_t pred;
     static TWMessageBarManager *instance = nil;
@@ -182,42 +182,42 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Public
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type
 {
     [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type callback:(void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type callback:(nullable void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration
 {
     [self showMessageWithTitle:title description:description type:type duration:duration callback:nil];
 }
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration callback:(nullable void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type duration:duration statusBarStyle:UIStatusBarStyleDefault callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(nullable void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type duration:kTWMessageBarManagerDisplayDelay statusBarStyle:statusBarStyle callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(nullable void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:NO statusBarStyle:statusBarStyle callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden callback:(nullable void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault callback:callback];
 }
 
-- (void)showMessageWithTitle:(NSString *)title description:(NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden callback:(void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden callback:(nullable void (^)())callback
 {
     [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault callback:callback];
 }
@@ -552,7 +552,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
         }
         
-        if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+        if ([[UIDevice currentDevice] tw_isRunningiOS7OrLater])
         {
             NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
             paragraphStyle.alignment = NSTextAlignmentLeft;
@@ -606,7 +606,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)statusBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
+    return [[UIDevice currentDevice] tw_isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
 }
 
 - (CGFloat)availableWidth
@@ -619,7 +619,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize titleLabelSize;
     
-    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+    if ([[UIDevice currentDevice] tw_isRunningiOS7OrLater])
     {
         NSDictionary *titleStringAttributes = [NSDictionary dictionaryWithObject:[self titleFont] forKey: NSFontAttributeName];
         titleLabelSize = [self.titleString boundingRectWithSize:boundedSize
@@ -643,7 +643,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     CGSize boundedSize = CGSizeMake([self availableWidth], CGFLOAT_MAX);
     CGSize descriptionLabelSize;
     
-    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+    if ([[UIDevice currentDevice] tw_isRunningiOS7OrLater])
     {
         NSDictionary *descriptionStringAttributes = [NSDictionary dictionaryWithObject:[self descriptionFont] forKey: NSFontAttributeName];
         descriptionLabelSize = [self.descriptionString boundingRectWithSize:boundedSize
@@ -772,7 +772,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - TWMessageBarStyleSheet
 
-- (UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
+- (nonnull UIColor *)backgroundColorForMessageType:(TWMessageBarMessageType)type
 {
     UIColor *backgroundColor = nil;
     switch (type)
@@ -786,13 +786,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         case TWMessageBarMessageTypeInfo:
             backgroundColor = kTWDefaultMessageBarStyleSheetInfoBackgroundColor;
             break;
-        default:
-            break;
     }
     return backgroundColor;
 }
 
-- (UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
+- (nonnull UIColor *)strokeColorForMessageType:(TWMessageBarMessageType)type
 {
     UIColor *strokeColor = nil;
     switch (type)
@@ -806,13 +804,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         case TWMessageBarMessageTypeInfo:
             strokeColor = kTWDefaultMessageBarStyleSheetInfoStrokeColor;
             break;
-        default:
-            break;
     }
     return strokeColor;
 }
 
-- (UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
+- (nonnull UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
 {
     UIImage *iconImage = nil;
     switch (type)
@@ -825,8 +821,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             break;
         case TWMessageBarMessageTypeInfo:
             iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconInfo];
-            break;
-        default:
             break;
     }
     return iconImage;
@@ -860,7 +854,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - OS Helpers
 
-- (BOOL)isRunningiOS7OrLater
+- (BOOL)tw_isRunningiOS7OrLater
 {
     NSString *systemVersion = self.systemVersion;
     NSUInteger systemInt = [systemVersion intValue];
@@ -877,7 +871,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 {
     _statusBarStyle = statusBarStyle;
     
-    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+    if ([[UIDevice currentDevice] tw_isRunningiOS7OrLater])
     {
         [self setNeedsStatusBarAppearanceUpdate];
     }
@@ -887,7 +881,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 {
     _statusBarHidden = statusBarHidden;
 
-    if ([[UIDevice currentDevice] isRunningiOS7OrLater])
+    if ([[UIDevice currentDevice] tw_isRunningiOS7OrLater])
     {
         [self setNeedsStatusBarAppearanceUpdate];
     }
