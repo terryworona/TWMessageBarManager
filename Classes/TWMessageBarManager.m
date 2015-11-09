@@ -16,7 +16,7 @@ CGFloat const kIphone45ScreenWidth = 320;
 CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
 
 // Numerics (TWMessageView)
-CGFloat const kTWMessageViewBarPadding = 0.0f;
+CGFloat const kTWMessageViewBarPadding = 10.0f;
 CGFloat const kTWMessageViewIconSize = 36.0f;
 CGFloat const kTWMessageViewTextOffset = 2.0f;
 NSUInteger const kTWMessageViewiOS7Identifier = 7;
