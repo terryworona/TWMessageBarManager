@@ -10,6 +10,8 @@
 // Quartz
 #import <QuartzCore/QuartzCore.h>
 
+CGFloat const kIphone45ScreenWidth = 320;
+
 // Numerics (TWMessageBarStyleSheet)
 CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
 
@@ -61,6 +63,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, assign, getter = isHit) BOOL hit;
 
 @property (nonatomic, assign) CGFloat duration;
+
+@property (nonatomic, assign) CGFloat screenRatio;
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL statusBarHidden;
@@ -496,6 +500,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)drawRect:(CGRect)rect
 {
+    CGFloat screenRatio = [UISCreen mainScreen].bounds.size.width / kIphone45ScreenWidth;
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
@@ -528,28 +534,28 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        CGFloat xOffset = kTWMessageViewBarPadding;
-        CGFloat yOffset = kTWMessageViewBarPadding + [self statusBarOffset];
+        CGFloat xOffset = kTWMessageViewBarPadding * screenRatio;
+        CGFloat yOffset = kTWMessageViewBarPadding * screenRatio + [self statusBarOffset];
         
         // icon
         CGContextSaveGState(context);
         {
             if ([styleSheet respondsToSelector:@selector(iconImageForMessageType:)])
             {
-                [[styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
+                [[styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize * screenRatio, kTWMessageViewIconSize * screenRatio)];
             }
         }
         CGContextRestoreGState(context);
         
-        yOffset -= kTWMessageViewTextOffset;
-        xOffset += kTWMessageViewIconSize + kTWMessageViewBarPadding;
+        yOffset -= kTWMessageViewTextOffset * screenRatio;
+        xOffset += kTWMessageViewIconSize * screenRatio + kTWMessageViewBarPadding * screenRatio;
         
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
         
         if (self.titleString && !self.descriptionString)
         {
-            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
+            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset * screenRatio;
         }
         
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
