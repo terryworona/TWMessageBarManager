@@ -535,7 +535,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         CGContextRestoreGState(context);
         
         CGFloat xOffset = kTWMessageViewBarPadding * _screenRatio;
-        CGFloat yOffset = kTWMessageViewBarPadding * _screenRatio + [self statusBarOffset];
+        CGFloat yOffset = kTWMessageViewBarPadding * _screenRatio;
         
         // icon
         CGContextSaveGState(context);
