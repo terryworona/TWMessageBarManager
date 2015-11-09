@@ -500,7 +500,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)drawRect:(CGRect)rect
 {
-    CGFloat screenRatio = [UISCreen mainScreen].bounds.size.width / kIphone45ScreenWidth;
+    CGFloat screenRatio = [UIScreen mainScreen].bounds.size.width / kIphone45ScreenWidth;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
