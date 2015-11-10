@@ -15,7 +15,7 @@ CGFloat const kIphone45ScreenWidth = 320;
 // Numerics (TWMessageBarStyleSheet)
 CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
 
-CGFloat const kNavBarHeight 64;
+CGFloat const kNavBarHeight = 64;
 
 // Numerics (TWMessageView)
 CGFloat const kTWMessageViewBarPadding = 10.0f;
