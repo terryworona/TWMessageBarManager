@@ -15,6 +15,8 @@ CGFloat const kIphone45ScreenWidth = 320;
 // Numerics (TWMessageBarStyleSheet)
 CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
 
+CGFloat const kNavBarHeight 64;
+
 // Numerics (TWMessageView)
 CGFloat const kTWMessageViewBarPadding = 10.0f;
 CGFloat const kTWMessageViewIconSize = 36.0f;
@@ -555,7 +557,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         if (self.titleString && !self.descriptionString)
         {
-            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset * _screenRatio;
+            yOffset = ceil(rect.size.height * 0.5) - ceil(titleLabelSize.height * 0.5) - kTWMessageViewTextOffset;
         }
         
         if ([[UIDevice currentDevice] isRunningiOS7OrLater])
@@ -600,9 +602,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)height
 {
-    CGSize titleLabelSize = [self titleSize];
-    CGSize descriptionLabelSize = [self descriptionSize];
-    return MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize * _screenRatio + [self statusBarOffset]);
+    return kNavBarHeight;
 }
 
 - (CGFloat)width
