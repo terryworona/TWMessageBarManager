@@ -10,11 +10,15 @@
 // Quartz
 #import <QuartzCore/QuartzCore.h>
 
+CGFloat const kIphone45ScreenWidth = 320;
+
 // Numerics (TWMessageBarStyleSheet)
 CGFloat const kTWMessageBarStyleSheetMessageBarAlpha = 0.96f;
 
+CGFloat const kNavBarHeight = 64;
+
 // Numerics (TWMessageView)
-CGFloat const kTWMessageViewBarPadding = 10.0f;
+CGFloat const kTWMessageViewBarPadding = 15.0f;
 CGFloat const kTWMessageViewIconSize = 36.0f;
 CGFloat const kTWMessageViewTextOffset = 2.0f;
 NSUInteger const kTWMessageViewiOS7Identifier = 7;
@@ -61,6 +65,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @property (nonatomic, assign, getter = isHit) BOOL hit;
 
 @property (nonatomic, assign) CGFloat duration;
+
+@property (nonatomic, assign) CGFloat screenRatio;
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL statusBarHidden;
@@ -496,6 +502,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)drawRect:(CGRect)rect
 {
+    _screenRatio = [UIScreen mainScreen].bounds.size.width / kIphone45ScreenWidth;
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     if ([self.delegate respondsToSelector:@selector(styleSheetForMessageView:)])
@@ -528,21 +536,21 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        CGFloat xOffset = kTWMessageViewBarPadding;
-        CGFloat yOffset = kTWMessageViewBarPadding + [self statusBarOffset];
+        CGFloat xOffset = kTWMessageViewBarPadding * _screenRatio;
+        CGFloat yOffset = kTWMessageViewBarPadding * _screenRatio;
         
         // icon
         CGContextSaveGState(context);
         {
             if ([styleSheet respondsToSelector:@selector(iconImageForMessageType:)])
             {
-                [[styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize, kTWMessageViewIconSize)];
+                [[styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, kTWMessageViewIconSize * _screenRatio, kTWMessageViewIconSize * _screenRatio)];
             }
         }
         CGContextRestoreGState(context);
         
         yOffset -= kTWMessageViewTextOffset;
-        xOffset += kTWMessageViewIconSize + kTWMessageViewBarPadding;
+        xOffset += kTWMessageViewIconSize * _screenRatio + kTWMessageViewBarPadding * _screenRatio;
         
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
@@ -594,9 +602,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)height
 {
-    CGSize titleLabelSize = [self titleSize];
-    CGSize descriptionLabelSize = [self descriptionSize];
-    return MAX((kTWMessageViewBarPadding * 2) + titleLabelSize.height + descriptionLabelSize.height + [self statusBarOffset], (kTWMessageViewBarPadding * 2) + kTWMessageViewIconSize + [self statusBarOffset]);
+    return kNavBarHeight;
 }
 
 - (CGFloat)width
@@ -606,7 +612,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (CGFloat)statusBarOffset
 {
-    return [[UIDevice currentDevice] isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
+    return 0.0;
 }
 
 - (CGFloat)availableWidth
