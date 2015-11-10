@@ -549,7 +549,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        yOffset -= kTWMessageViewTextOffset * _screenRatio;
+        yOffset -= kTWMessageViewTextOffset;
         xOffset += kTWMessageViewIconSize * _screenRatio + kTWMessageViewBarPadding * _screenRatio;
         
         CGSize titleLabelSize = [self titleSize];
