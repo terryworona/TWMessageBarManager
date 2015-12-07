@@ -368,7 +368,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
             }
             else
             {
-                self.messageWindow = nil;
+				self.messageWindow.hidden = YES;
+				self.messageWindow = nil;
             }
         }];
     }
