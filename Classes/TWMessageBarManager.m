@@ -347,9 +347,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
             [messageView setFrame:CGRectMake(messageView.frame.origin.x, messageView.frame.origin.y - [messageView height], [messageView width], [messageView height])]; // slide back up
         } completion:^(BOOL finished) {
-            self.messageVisible = NO;
-            [messageView removeFromSuperview];
-            
             if (itemHit)
             {
                 if ([messageView.callbacks count] > 0)
@@ -361,6 +358,9 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
                     }
                 }
             }
+            
+            self.messageVisible = NO;
+            [messageView removeFromSuperview];
             
             if([self.messageBarQueue count] > 0)
             {
