@@ -112,6 +112,14 @@ typedef NS_ENUM(NSInteger, TWMessageBarMessageType) {
 + (CGFloat)defaultDuration;
 
 /**
+ *  The orientations supported by the manager. 
+ *  In most cases, this value will match the caller's orientation mask. 
+ *
+ *  @return Default behaviour - all orientations.
+ */
+@property (nonatomic, assign) UIInterfaceOrientationMask managerSupportedOrientationsMask;
+
+/**
  *  An object conforming to the TWMessageBarStyleSheet protocol defines the message bar's look and feel.
  *  If no style sheet is supplied, a default class is provided on initialization (see implementation for details).
  */

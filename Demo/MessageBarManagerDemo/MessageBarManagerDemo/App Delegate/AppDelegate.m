@@ -34,13 +34,18 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     /*
      * Uncomment for custom style sheet (disabled)
      */
+	
     // self.window.rootViewController = [[TWMesssageBarDemoController alloc] initWithStyleSheet:[TWAppDelegateDemoStyleSheet styleSheet]];
     
     /*
      * Uncomment for hidden status bar (testing purposes)
      */
+	
     // [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
+
+	// Portrait only for demo
+	[TWMessageBarManager sharedInstance].managerSupportedOrientationsMask = UIInterfaceOrientationMaskPortrait;
+	
     [self.window makeKeyAndVisible];
     return YES;
 }

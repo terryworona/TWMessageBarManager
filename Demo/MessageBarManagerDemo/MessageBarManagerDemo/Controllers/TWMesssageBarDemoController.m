@@ -117,7 +117,7 @@ static UIColor *kTWMesssageBarDemoControllerButtonColor = nil;
     return YES;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

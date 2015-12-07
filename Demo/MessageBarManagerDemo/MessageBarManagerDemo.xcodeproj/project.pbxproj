@@ -212,7 +212,7 @@
 		564982521741BF7A00077B8C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Terry Worona";
 			};
 			buildConfigurationList = 564982551741BF7A00077B8C /* Build configuration list for PBXProject "MessageBarManagerDemo" */;
@@ -292,6 +292,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -340,6 +341,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MessageBarManagerDemo/MessageBarManagerDemo-Prefix.pch";
 				INFOPLIST_FILE = "MessageBarManagerDemo/MessageBarManagerDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.terryworona.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -351,6 +353,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MessageBarManagerDemo/MessageBarManagerDemo-Prefix.pch";
 				INFOPLIST_FILE = "MessageBarManagerDemo/MessageBarManagerDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.terryworona.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
