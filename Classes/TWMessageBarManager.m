@@ -117,7 +117,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @interface TWMessageBarManager () <TWMessageViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *messageBarQueue;
-@property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
 @property (nonatomic, strong) TWMessageWindow *messageWindow;
 @property (nonatomic, readwrite) NSArray *accessibleElements; // accessibility
 
