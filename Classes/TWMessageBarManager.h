@@ -114,7 +114,7 @@ typedef NS_ENUM(NSInteger, TWMessageBarMessageType) {
 /**
  *  Flag indicating if message is currently visible on screen.
  */
-@property (nonatomic, assign, getter = isMessageVisible) BOOL messageVisible;
+@property (nonatomic, readonly, getter = isMessageVisible) BOOL messageVisible;
 
 /**
  *  The orientations supported by the manager. 
