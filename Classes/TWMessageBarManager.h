@@ -112,6 +112,11 @@ typedef NS_ENUM(NSInteger, TWMessageBarMessageType) {
 + (CGFloat)defaultDuration;
 
 /**
+ *  Flag indicating if message is currently visible on screen.
+ */
+@property (nonatomic, readonly, getter = isMessageVisible) BOOL messageVisible;
+
+/**
  *  The orientations supported by the manager. 
  *  In most cases, this value will match the caller's orientation mask. 
  *
