@@ -30,6 +30,8 @@ NSString * const kTWMessageBarStyleSheetImageIconError = @"icon-error.png";
 NSString * const kTWMessageBarStyleSheetImageIconSuccess = @"icon-success.png";
 NSString * const kTWMessageBarStyleSheetImageIconInfo = @"icon-info.png";
 
+NSString * const kTWMessageViewSizeChangeNotification = @"kTWMessageViewSizeChangeNotification";
+
 // Fonts (TWMessageView)
 static UIFont *kTWMessageViewTitleFont = nil;
 static UIFont *kTWMessageViewDescriptionFont = nil;
@@ -111,7 +113,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 @interface TWMessageBarViewController : UIViewController
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
-@property (nonatomic, assign) BOOL statusBarHidden;
 
 @end
 
@@ -177,7 +178,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _messageBarQueue = [[NSMutableArray alloc] init];
         _messageVisible = NO;
         _styleSheet = [TWDefaultMessageBarStyleSheet styleSheet];
-        _managerSupportedOrientationsMask = UIInterfaceOrientationMaskAll;
+        _managerSupportedOrientationsMask = UIInterfaceOrientationMaskAllButUpsideDown;
     }
     return self;
 }
@@ -214,14 +215,14 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:NO statusBarStyle:statusBarStyle inView:nil callback:callback];
 }
 
-- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden callback:(nullable void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(nullable void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault inView:nil callback:callback];
+    [self showMessageWithTitle:title description:description type:type duration:[TWMessageBarManager durationForMessageType:type] statusBarHidden:statusBarHidden statusBarStyle:statusBarStyle inView:nil callback:callback];
 }
 
-- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden callback:(nullable void (^)())callback
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(nullable void (^)())callback
 {
-    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:statusBarHidden statusBarStyle:UIStatusBarStyleDefault inView:nil callback:callback];
+    [self showMessageWithTitle:title description:description type:type duration:duration statusBarHidden:statusBarHidden statusBarStyle:statusBarStyle inView:nil callback:callback];
 }
 
 #pragma mark - Master Presentation
@@ -506,7 +507,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         _displayInWindow = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeDeviceOrientation:) name:UIDeviceOrientationDidChangeNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeDeviceOrientation:) name:@"test" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeDeviceOrientation:) name:kTWMessageViewSizeChangeNotification object:nil];
     }
     return self;
 }
@@ -515,7 +516,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:nil];
 }
 
 #pragma mark - Drawing
@@ -984,7 +985,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"test" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTWMessageViewSizeChangeNotification object:nil];
     } completion:nil];
 }
 
@@ -1005,26 +1006,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
     }
 }
 
-- (void)setStatusBarHidden:(BOOL)statusBarHidden
-{
-    _statusBarHidden = statusBarHidden;
-    
-    if ([[UIDevice currentDevice] tw_isRunningiOS7OrLater])
-    {
-        [self setNeedsStatusBarAppearanceUpdate];
-    }
-}
-
 #pragma mark - Status Bar
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.statusBarStyle;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return self.statusBarHidden;
 }
 
 - (BOOL)shouldAutorotate {

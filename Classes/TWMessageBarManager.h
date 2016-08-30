@@ -176,7 +176,7 @@ extern CGFloat const kTWMessageBarManagerDisplayDurationIndefinite;
  *  The orientations supported by the manager.
  *  In most cases, this value will match the caller's orientation mask.
  *
- *  @return Default behaviour - all orientations.
+ *  @return Default behaviour - UIInterfaceOrientationMaskAllButUpsideDown.
  */
 @property (nonatomic, assign) UIInterfaceOrientationMask managerSupportedOrientationsMask;
 
@@ -258,7 +258,7 @@ extern CGFloat const kTWMessageBarManagerDisplayDurationIndefinite;
  *  @param statusBarHidden  Status bars are shown by default. To hide it during the presentation of a message, set to NO.
  *  @param callback         Callback block to be executed if a message is tapped.
  */
-- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden callback:(nullable void (^)())callback;
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(nullable void (^)())callback;
 
 /**
  *  Shows a message with the supplied title, description, type, duration, status bar hidden toggle and callback block.
@@ -270,7 +270,7 @@ extern CGFloat const kTWMessageBarManagerDisplayDurationIndefinite;
  *  @param statusBarHidden  Status bars are shown by default. To hide it during the presentation of a message, set to NO.
  *  @param callback         Callback block to be executed if a message is tapped.
  */
-- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden callback:(nullable void (^)())callback;
+- (void)showMessageWithTitle:(nullable NSString *)title description:(nullable NSString *)description type:(TWMessageBarMessageType)type duration:(CGFloat)duration statusBarHidden:(BOOL)statusBarHidden statusBarStyle:(UIStatusBarStyle)statusBarStyle callback:(nullable void (^)())callback;
 
 /**
  *  Hides the topmost message and removes all remaining messages in the queue.
