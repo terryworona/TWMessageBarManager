@@ -1,12 +1,19 @@
 # Change Log
 
-## [Unreleased](https://github.com/terryworona/TWMessageBarManager/tree/HEAD)
-
-[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.8.0...HEAD)
+## [v1.8.1](https://github.com/terryworona/TWMessageBarManager/tree/v1.8.1) (2016-02-18)
+[Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.8.0...v1.8.1)
 
 **Fixed bugs:**
 
 - Status bar orientation [\#33](https://github.com/terryworona/TWMessageBarManager/issues/33)
+
+**Closed issues:**
+
+- Swift support? [\#87](https://github.com/terryworona/TWMessageBarManager/issues/87)
+
+**Merged pull requests:**
+
+- Moved 'messageVisible' flag to .h file so that it can be read from outside [\#88](https://github.com/terryworona/TWMessageBarManager/pull/88) ([burczyk](https://github.com/burczyk))
 
 ## [v1.8.0](https://github.com/terryworona/TWMessageBarManager/tree/v1.8.0) (2015-12-07)
 [Full Changelog](https://github.com/terryworona/TWMessageBarManager/compare/v1.7.2...v1.8.0)
