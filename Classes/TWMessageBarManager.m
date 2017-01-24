@@ -807,16 +807,23 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (nonnull UIImage *)iconImageForMessageType:(TWMessageBarMessageType)type
 {
     UIImage *iconImage = nil;
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     switch (type)
     {
         case TWMessageBarMessageTypeError:
-            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconError];
+            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconError
+                                   inBundle:bundle
+              compatibleWithTraitCollection:nil];
             break;
         case TWMessageBarMessageTypeSuccess:
-            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconSuccess];
+            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconSuccess
+                                   inBundle:bundle
+              compatibleWithTraitCollection:nil];
             break;
         case TWMessageBarMessageTypeInfo:
-            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconInfo];
+            iconImage = [UIImage imageNamed:kTWMessageBarStyleSheetImageIconInfo
+                                   inBundle:bundle
+              compatibleWithTraitCollection:nil];
             break;
     }
     return iconImage;
