@@ -270,30 +270,30 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 - (void)hideAllAnimated:(BOOL)animated
 {
+    NSMutableArray *messageViews = [NSMutableArray array];
     for (UIView *subview in [[self messageWindowView] subviews])
     {
         if ([subview isKindOfClass:[TWMessageView class]])
         {
-            TWMessageView *currentMessageView = (TWMessageView *)subview;
-            if (animated)
-            {
-                [UIView animateWithDuration:kTWMessageBarManagerDismissAnimationDuration animations:^{
-                    currentMessageView.frame = CGRectMake(currentMessageView.frame.origin.x, -currentMessageView.frame.size.height, currentMessageView.frame.size.width, currentMessageView.frame.size.height);
-                } completion:^(BOOL finished) {
-                    [currentMessageView removeFromSuperview];
-                }];
-            }
-            else
-            {
-                [currentMessageView removeFromSuperview];
-            }
+            [messageViews addObject:subview];
         }
     }
+    
+    __block UIWindow *window = self.messageWindow;
+    [UIView animateWithDuration:animated ? kTWMessageBarManagerDismissAnimationDuration : 0.0 animations:^{
+        for (UIView *view in messageViews)
+        {
+            view.frame = CGRectMake(view.frame.origin.x, -view.frame.size.height, view.frame.size.width, view.frame.size.height);
+        }
+    } completion:^(BOOL finished) {
+        [messageViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        window.hidden = YES;
+        window = nil;
+    }];
     
     self.messageVisible = NO;
     [self.messageBarQueue removeAllObjects];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    self.messageWindow.hidden = YES;
     self.messageWindow = nil;
 }
 
