@@ -567,7 +567,11 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         {
             if ([styleSheet respondsToSelector:@selector(iconImageForMessageType:)])
             {
-                [[styleSheet iconImageForMessageType:self.messageType] drawInRect:CGRectMake(xOffset, yOffset, iconSize.width, iconSize.height)];
+                UIImage *image = [styleSheet iconImageForMessageType:self.messageType];
+                if (image.renderingMode == UIImageRenderingModeAlwaysTemplate) {
+                    [[self titleColor] set];
+                }
+                [image drawInRect:CGRectMake(xOffset, yOffset, iconSize.width, iconSize.height)];
             }
         }
         CGContextRestoreGState(context);
