@@ -555,7 +555,6 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         }
         CGContextRestoreGState(context);
         
-        CGFloat outerVerticalPadding = [self outerVerticalPadding];
         CGFloat outerHorizontalPadding = [self outerHorizontalPadding];
         CGFloat iconTextSpacing = [self iconTextSpacing];
         
@@ -578,9 +577,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         CGSize titleLabelSize = [self titleSize];
         CGSize descriptionLabelSize = [self descriptionSize];
-        
-        CGFloat textOffset = [self titleFont].lineHeight - [self titleFont].ascender;
-        
+                
         xOffset += iconSize.width + iconTextSpacing;
         
         if (self.titleString && !self.descriptionString)
