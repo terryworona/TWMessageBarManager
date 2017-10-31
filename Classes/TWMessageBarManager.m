@@ -560,7 +560,7 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
         
         CGFloat xOffset = outerHorizontalPadding;
         CGSize iconSize = [self iconSize];
-        CGFloat yOffset = (rect.size.height / 2) - (iconSize.height / 2);
+        CGFloat yOffset = ((rect.size.height + [self statusBarOffset]) / 2) - (iconSize.height / 2);
         
         CGContextSaveGState(context);
         {
@@ -631,6 +631,16 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 
 #pragma mark - Getters
 
+//required for iPhone X
+- (CGFloat)topSafeArea {
+    if (@available(iOS 11.0, *)) {
+        return [[[UIApplication sharedApplication] delegate] window].safeAreaInsets.top;
+    }
+    else {
+        return 0.0f;
+    }
+}
+
 - (CGFloat)height
 {
     CGSize titleLabelSize = [self titleSize];
@@ -667,7 +677,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGFloat)statusBarOffset
 {
     if (self.statusBarHidden) {
-        return 0.0f;
+        //24 is the difference between iPhone x status bar and previous status bars
+        return [self topSafeArea] > 0.0f ? 24.0f : 0.0f;
     }
     else {
         return [[UIDevice currentDevice] tw_isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;
