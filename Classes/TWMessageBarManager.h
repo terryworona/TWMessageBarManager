@@ -224,6 +224,8 @@ typedef NS_ENUM(NSInteger, TWMessageBarMessageType) {
 - (void)hideAllAnimated:(BOOL)animated;
 - (void)hideAll; // non-animated
 
+@property (nonatomic, assign) BOOL allowsPanning;
+
 @end
 
 @interface UIDevice (Additions)
