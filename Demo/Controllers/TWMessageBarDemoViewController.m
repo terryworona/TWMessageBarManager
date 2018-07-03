@@ -8,6 +8,8 @@
 
 #import "TWMessageBarDemoViewController.h"
 
+@import TWMessageBarManager;
+
 @interface TWMessageBarDemoViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTitleLength;
@@ -61,7 +63,7 @@
 
 - (IBAction)touchedButtonError:(id)sender {
     if (self.hidesStatusBar) {
-        [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeError duration:self.displayLength statusBarHidden:self.hidesStatusBar callback:nil];
+        [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeError duration:self.displayLength statusBarHidden:self.hidesStatusBar statusBarStyle:self.statusBarStyle callback:nil];
     }
     else {
         [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeError duration:self.displayLength statusBarStyle:self.statusBarStyle callback:nil];
@@ -70,7 +72,7 @@
 
 - (IBAction)touchedButtonInformation:(id)sender {
     if (self.hidesStatusBar) {
-        [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeInfo duration:self.displayLength statusBarHidden:self.hidesStatusBar callback:nil];
+        [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeInfo duration:self.displayLength statusBarHidden:self.hidesStatusBar statusBarStyle:self.statusBarStyle callback:nil];
     }
     else {
         [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeInfo duration:self.displayLength statusBarStyle:self.statusBarStyle callback:nil];
@@ -79,7 +81,7 @@
 
 - (IBAction)touchedButtonSuccess:(id)sender {
     if (self.hidesStatusBar) {
-        [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeSuccess duration:self.displayLength statusBarHidden:self.hidesStatusBar callback:nil];
+        [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeSuccess duration:self.displayLength statusBarHidden:self.hidesStatusBar statusBarStyle:self.statusBarStyle callback:nil];
     }
     else {
         [[TWMessageBarManager sharedInstance] showMessageWithTitle:[self titleMessage] description:[self subtitleMessage] type:TWMessageBarMessageTypeSuccess duration:self.displayLength statusBarStyle:self.statusBarStyle callback:nil];

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0460"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,67 +14,61 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "564982591741BF7A00077B8C"
-               BuildableName = "MessageBarManagerDemo.app"
-               BlueprintName = "MessageBarManagerDemo"
-               ReferencedContainer = "container:MessageBarManagerDemo.xcodeproj">
+               BlueprintIdentifier = "CDBB4FD720EC251B00785DDD"
+               BuildableName = "TWMessageBarManager.framework"
+               BlueprintName = "TWMessageBarManager"
+               ReferencedContainer = "container:TWMessageBarManager.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "564982591741BF7A00077B8C"
-            BuildableName = "MessageBarManagerDemo.app"
-            BlueprintName = "MessageBarManagerDemo"
-            ReferencedContainer = "container:MessageBarManagerDemo.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "564982591741BF7A00077B8C"
-            BuildableName = "MessageBarManagerDemo.app"
-            BlueprintName = "MessageBarManagerDemo"
-            ReferencedContainer = "container:MessageBarManagerDemo.xcodeproj">
+            BlueprintIdentifier = "CDBB4FD720EC251B00785DDD"
+            BuildableName = "TWMessageBarManager.framework"
+            BlueprintName = "TWMessageBarManager"
+            ReferencedContainer = "container:TWMessageBarManager.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "564982591741BF7A00077B8C"
-            BuildableName = "MessageBarManagerDemo.app"
-            BlueprintName = "MessageBarManagerDemo"
-            ReferencedContainer = "container:MessageBarManagerDemo.xcodeproj">
+            BlueprintIdentifier = "CDBB4FD720EC251B00785DDD"
+            BuildableName = "TWMessageBarManager.framework"
+            BlueprintName = "TWMessageBarManager"
+            ReferencedContainer = "container:TWMessageBarManager.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
