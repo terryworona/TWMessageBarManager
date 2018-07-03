@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TWMessageBarManager.h"
-
 @interface TWMessageBarDemoViewController : UIViewController
 
 @end

@@ -22,38 +22,12 @@
 		5669FE461766C47700B8630B /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE401766C47700B8630B /* icon-success.png */; };
 		5669FE471766C47700B8630B /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE411766C47700B8630B /* icon-success@2x.png */; };
 		569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF41741C09300F2B74C /* AppDelegate.m */; };
-		CDBB4FDC20EC251B00785DDD /* TWMessageBarManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CDBB4FDA20EC251B00785DDD /* TWMessageBarManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CDBB4FDF20EC251B00785DDD /* TWMessageBarManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */; };
-		CDBB4FE020EC251B00785DDD /* TWMessageBarManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CDBB4FE720EC254000785DDD /* TWMessageBarManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */; };
+		CDBB4FE720EC254000785DDD /* TWMessageBarManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CDBB4FE820EC254000785DDD /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CDBB4FE620EC254000785DDD /* TWMessageBarManager.m */; };
+		CDBB4FE920EC2AAE00785DDD /* TWMessageBarManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */; };
 		F49E76921985FF3B00AAAC85 /* TWMessageBarDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E76901985FF3B00AAAC85 /* TWMessageBarDemoViewController.m */; };
 		F49E76931985FF3B00AAAC85 /* TWMessageBarDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F49E76911985FF3B00AAAC85 /* TWMessageBarDemoViewController.xib */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		CDBB4FDD20EC251B00785DDD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 564982521741BF7A00077B8C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CDBB4FD720EC251B00785DDD;
-			remoteInfo = TWMessageBarManager;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		CDBB4FE420EC251B00785DDD /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				CDBB4FE020EC251B00785DDD /* TWMessageBarManager.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		561DB434174AFADA006D7D1E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -76,8 +50,7 @@
 		569FCDF31741C09300F2B74C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		569FCDF41741C09300F2B74C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TWMessageBarManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CDBB4FDA20EC251B00785DDD /* TWMessageBarManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWMessageBarManager.h; sourceTree = "<group>"; };
-		CDBB4FDB20EC251B00785DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CDBB4FDB20EC251B00785DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Classes/Info.plist; sourceTree = "<group>"; };
 		CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TWMessageBarManager.h; path = Classes/TWMessageBarManager.h; sourceTree = SOURCE_ROOT; };
 		CDBB4FE620EC254000785DDD /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWMessageBarManager.m; path = Classes/TWMessageBarManager.m; sourceTree = SOURCE_ROOT; };
 		F49E768F1985FF3B00AAAC85 /* TWMessageBarDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarDemoViewController.h; sourceTree = "<group>"; };
@@ -90,8 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDBB4FE920EC2AAE00785DDD /* TWMessageBarManager.framework in Frameworks */,
 				5649825E1741BF7A00077B8C /* UIKit.framework in Frameworks */,
-				CDBB4FDF20EC251B00785DDD /* TWMessageBarManager.framework in Frameworks */,
 				564982601741BF7A00077B8C /* Foundation.framework in Frameworks */,
 				564982621741BF7A00077B8C /* CoreGraphics.framework in Frameworks */,
 			);
@@ -122,7 +95,6 @@
 			children = (
 				CDBB4FD220EC24AD00785DDD /* TWMessageBarManager */,
 				564982631741BF7A00077B8C /* Demo */,
-				CDBB4FD920EC251B00785DDD /* TWMessageBarManager */,
 				5649825C1741BF7A00077B8C /* Frameworks */,
 				5649825B1741BF7A00077B8C /* Products */,
 			);
@@ -216,14 +188,6 @@
 			children = (
 				CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */,
 				CDBB4FE620EC254000785DDD /* TWMessageBarManager.m */,
-			);
-			path = TWMessageBarManager;
-			sourceTree = "<group>";
-		};
-		CDBB4FD920EC251B00785DDD /* TWMessageBarManager */ = {
-			isa = PBXGroup;
-			children = (
-				CDBB4FDA20EC251B00785DDD /* TWMessageBarManager.h */,
 				CDBB4FDB20EC251B00785DDD /* Info.plist */,
 			);
 			path = TWMessageBarManager;
@@ -236,7 +200,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDBB4FDC20EC251B00785DDD /* TWMessageBarManager.h in Headers */,
 				CDBB4FE720EC254000785DDD /* TWMessageBarManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -251,12 +214,10 @@
 				564982561741BF7A00077B8C /* Sources */,
 				564982571741BF7A00077B8C /* Frameworks */,
 				564982581741BF7A00077B8C /* Resources */,
-				CDBB4FE420EC251B00785DDD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CDBB4FDE20EC251B00785DDD /* PBXTargetDependency */,
 			);
 			name = MessageBarManagerDemo;
 			productName = MessageBarManagerDemo;
@@ -362,14 +323,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		CDBB4FDE20EC251B00785DDD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CDBB4FD720EC251B00785DDD /* TWMessageBarManager */;
-			targetProxy = CDBB4FDD20EC251B00785DDD /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		564982661741BF7A00077B8C /* InfoPlist.strings */ = {
@@ -512,7 +465,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = TWMessageBarManager/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Classes/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -568,7 +521,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = TWMessageBarManager/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Classes/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

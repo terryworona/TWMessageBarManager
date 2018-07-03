@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+@import TWMessageBarManager;
+
 // Controllers
 #import "TWMessageBarDemoViewController.h"
 
