@@ -145,4 +145,8 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     return [UIColor purpleColor];
 }
 
+- (CGFloat)outerVerticalPaddingForMessageType:(TWMessageBarMessageType)type {
+    return 8.0f;
+}
+
 @end

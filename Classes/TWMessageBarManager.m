@@ -677,8 +677,8 @@ static UIColor *kTWDefaultMessageBarStyleSheetInfoStrokeColor = nil;
 - (CGFloat)statusBarOffset
 {
     if (self.statusBarHidden) {
-        //24 is the difference between iPhone x status bar and previous status bars
-        return [self topSafeArea] > 0.0f ? 24.0f : 0.0f;
+        CGFloat iPhone6StyleStatusBarHeight = 20.0f;
+        return [self topSafeArea] > iPhone6StyleStatusBarHeight ? [self topSafeArea] - iPhone6StyleStatusBarHeight : 0.0f;
     }
     else {
         return [[UIDevice currentDevice] tw_isRunningiOS7OrLater] ? [self statusBarFrame].size.height : 0.0;

@@ -22,6 +22,7 @@
 		5669FE461766C47700B8630B /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE401766C47700B8630B /* icon-success.png */; };
 		5669FE471766C47700B8630B /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE411766C47700B8630B /* icon-success@2x.png */; };
 		569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF41741C09300F2B74C /* AppDelegate.m */; };
+		CD092D35214F212200D3D138 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD092D34214F212200D3D138 /* Launch Screen.storyboard */; };
 		CDBB4FE720EC254000785DDD /* TWMessageBarManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CDBB4FE820EC254000785DDD /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CDBB4FE620EC254000785DDD /* TWMessageBarManager.m */; };
 		CDBB4FE920EC2AAE00785DDD /* TWMessageBarManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */; };
@@ -49,6 +50,7 @@
 		5669FE411766C47700B8630B /* icon-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success@2x.png"; sourceTree = "<group>"; };
 		569FCDF31741C09300F2B74C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		569FCDF41741C09300F2B74C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CD092D34214F212200D3D138 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TWMessageBarManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDBB4FDB20EC251B00785DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Classes/Info.plist; sourceTree = "<group>"; };
 		CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TWMessageBarManager.h; path = Classes/TWMessageBarManager.h; sourceTree = SOURCE_ROOT; };
@@ -93,6 +95,7 @@
 		564982511741BF7A00077B8C = {
 			isa = PBXGroup;
 			children = (
+				CD092D34214F212200D3D138 /* Launch Screen.storyboard */,
 				CDBB4FD220EC24AD00785DDD /* TWMessageBarManager */,
 				564982631741BF7A00077B8C /* Demo */,
 				5649825C1741BF7A00077B8C /* Frameworks */,
@@ -286,6 +289,7 @@
 				561DB439174AFADA006D7D1E /* Default@2x.png in Resources */,
 				5669FE421766C47700B8630B /* icon-error.png in Resources */,
 				5669FE431766C47700B8630B /* icon-error@2x.png in Resources */,
+				CD092D35214F212200D3D138 /* Launch Screen.storyboard in Resources */,
 				5669FE441766C47700B8630B /* icon-info.png in Resources */,
 				5669FE451766C47700B8630B /* icon-info@2x.png in Resources */,
 				5669FE461766C47700B8630B /* icon-success.png in Resources */,
