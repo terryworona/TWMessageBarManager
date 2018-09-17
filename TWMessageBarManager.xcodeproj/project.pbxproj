@@ -22,8 +22,12 @@
 		5669FE461766C47700B8630B /* icon-success.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE401766C47700B8630B /* icon-success.png */; };
 		5669FE471766C47700B8630B /* icon-success@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5669FE411766C47700B8630B /* icon-success@2x.png */; };
 		569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF41741C09300F2B74C /* AppDelegate.m */; };
-		569FCDF91741C09300F2B74C /* TWMesssageBarDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569FCDF71741C09300F2B74C /* TWMesssageBarDemoController.m */; };
-		9B903012185BA74B005BCFF5 /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B903011185BA74B005BCFF5 /* TWMessageBarManager.m */; };
+		CD092D35214F212200D3D138 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD092D34214F212200D3D138 /* Launch Screen.storyboard */; };
+		CDBB4FE720EC254000785DDD /* TWMessageBarManager.h in Headers */ = {isa = PBXBuildFile; fileRef = CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CDBB4FE820EC254000785DDD /* TWMessageBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CDBB4FE620EC254000785DDD /* TWMessageBarManager.m */; };
+		CDBB4FE920EC2AAE00785DDD /* TWMessageBarManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */; };
+		F49E76921985FF3B00AAAC85 /* TWMessageBarDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49E76901985FF3B00AAAC85 /* TWMessageBarDemoViewController.m */; };
+		F49E76931985FF3B00AAAC85 /* TWMessageBarDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F49E76911985FF3B00AAAC85 /* TWMessageBarDemoViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,11 +50,14 @@
 		5669FE411766C47700B8630B /* icon-success@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-success@2x.png"; sourceTree = "<group>"; };
 		569FCDF31741C09300F2B74C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		569FCDF41741C09300F2B74C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		569FCDF61741C09300F2B74C /* TWMesssageBarDemoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMesssageBarDemoController.h; sourceTree = "<group>"; };
-		569FCDF71741C09300F2B74C /* TWMesssageBarDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMesssageBarDemoController.m; sourceTree = "<group>"; };
-		56DE553917458AB20026B7D2 /* StringConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringConstants.h; sourceTree = "<group>"; };
-		9B903010185BA74B005BCFF5 /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TWMessageBarManager.h; path = ../../../Classes/TWMessageBarManager.h; sourceTree = "<group>"; };
-		9B903011185BA74B005BCFF5 /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWMessageBarManager.m; path = ../../../Classes/TWMessageBarManager.m; sourceTree = "<group>"; };
+		CD092D34214F212200D3D138 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TWMessageBarManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDBB4FDB20EC251B00785DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Classes/Info.plist; sourceTree = "<group>"; };
+		CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TWMessageBarManager.h; path = Classes/TWMessageBarManager.h; sourceTree = SOURCE_ROOT; };
+		CDBB4FE620EC254000785DDD /* TWMessageBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TWMessageBarManager.m; path = Classes/TWMessageBarManager.m; sourceTree = SOURCE_ROOT; };
+		F49E768F1985FF3B00AAAC85 /* TWMessageBarDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWMessageBarDemoViewController.h; sourceTree = "<group>"; };
+		F49E76901985FF3B00AAAC85 /* TWMessageBarDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWMessageBarDemoViewController.m; sourceTree = "<group>"; };
+		F49E76911985FF3B00AAAC85 /* TWMessageBarDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TWMessageBarDemoViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +65,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDBB4FE920EC2AAE00785DDD /* TWMessageBarManager.framework in Frameworks */,
 				5649825E1741BF7A00077B8C /* UIKit.framework in Frameworks */,
 				564982601741BF7A00077B8C /* Foundation.framework in Frameworks */,
 				564982621741BF7A00077B8C /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDBB4FD420EC251B00785DDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +95,9 @@
 		564982511741BF7A00077B8C = {
 			isa = PBXGroup;
 			children = (
-				564982631741BF7A00077B8C /* MessageBarManagerDemo */,
+				CD092D34214F212200D3D138 /* Launch Screen.storyboard */,
+				CDBB4FD220EC24AD00785DDD /* TWMessageBarManager */,
+				564982631741BF7A00077B8C /* Demo */,
 				5649825C1741BF7A00077B8C /* Frameworks */,
 				5649825B1741BF7A00077B8C /* Products */,
 			);
@@ -90,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				5649825A1741BF7A00077B8C /* MessageBarManagerDemo.app */,
+				CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,17 +122,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		564982631741BF7A00077B8C /* MessageBarManagerDemo */ = {
+		564982631741BF7A00077B8C /* Demo */ = {
 			isa = PBXGroup;
 			children = (
 				569FCDF21741C09300F2B74C /* App Delegate */,
-				56DE553817458AB20026B7D2 /* Constants */,
 				569FCDF51741C09300F2B74C /* Controllers */,
-				569FCDFA1741C33700F2B74C /* Managers */,
 				56DE552917458A7B0026B7D2 /* Resources */,
 				564982641741BF7A00077B8C /* Supporting Files */,
 			);
-			path = MessageBarManagerDemo;
+			path = Demo;
 			sourceTree = "<group>";
 		};
 		564982641741BF7A00077B8C /* Supporting Files */ = {
@@ -139,7 +155,7 @@
 				5669FE411766C47700B8630B /* icon-success@2x.png */,
 			);
 			name = Icons;
-			path = ../../../../Classes/Icons;
+			path = ../../Classes/Icons;
 			sourceTree = "<group>";
 		};
 		569FCDF21741C09300F2B74C /* App Delegate */ = {
@@ -154,19 +170,11 @@
 		569FCDF51741C09300F2B74C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				569FCDF61741C09300F2B74C /* TWMesssageBarDemoController.h */,
-				569FCDF71741C09300F2B74C /* TWMesssageBarDemoController.m */,
+				F49E768F1985FF3B00AAAC85 /* TWMessageBarDemoViewController.h */,
+				F49E76901985FF3B00AAAC85 /* TWMessageBarDemoViewController.m */,
+				F49E76911985FF3B00AAAC85 /* TWMessageBarDemoViewController.xib */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		569FCDFA1741C33700F2B74C /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				9B903010185BA74B005BCFF5 /* TWMessageBarManager.h */,
-				9B903011185BA74B005BCFF5 /* TWMessageBarManager.m */,
-			);
-			name = Managers;
 			sourceTree = "<group>";
 		};
 		56DE552917458A7B0026B7D2 /* Resources */ = {
@@ -178,15 +186,28 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		56DE553817458AB20026B7D2 /* Constants */ = {
+		CDBB4FD220EC24AD00785DDD /* TWMessageBarManager */ = {
 			isa = PBXGroup;
 			children = (
-				56DE553917458AB20026B7D2 /* StringConstants.h */,
+				CDBB4FE520EC254000785DDD /* TWMessageBarManager.h */,
+				CDBB4FE620EC254000785DDD /* TWMessageBarManager.m */,
+				CDBB4FDB20EC251B00785DDD /* Info.plist */,
 			);
-			path = Constants;
+			path = TWMessageBarManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CDBB4FD520EC251B00785DDD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDBB4FE720EC254000785DDD /* TWMessageBarManager.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		564982591741BF7A00077B8C /* MessageBarManagerDemo */ = {
@@ -206,6 +227,24 @@
 			productReference = 5649825A1741BF7A00077B8C /* MessageBarManagerDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CDBB4FD720EC251B00785DDD /* TWMessageBarManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDBB4FE120EC251B00785DDD /* Build configuration list for PBXNativeTarget "TWMessageBarManager" */;
+			buildPhases = (
+				CDBB4FD320EC251B00785DDD /* Sources */,
+				CDBB4FD420EC251B00785DDD /* Frameworks */,
+				CDBB4FD520EC251B00785DDD /* Headers */,
+				CDBB4FD620EC251B00785DDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TWMessageBarManager;
+			productName = TWMessageBarManager;
+			productReference = CDBB4FD820EC251B00785DDD /* TWMessageBarManager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -214,8 +253,14 @@
 			attributes = {
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Terry Worona";
+				TargetAttributes = {
+					CDBB4FD720EC251B00785DDD = {
+						CreatedOnToolsVersion = 9.3;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
-			buildConfigurationList = 564982551741BF7A00077B8C /* Build configuration list for PBXProject "MessageBarManagerDemo" */;
+			buildConfigurationList = 564982551741BF7A00077B8C /* Build configuration list for PBXProject "TWMessageBarManager" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -228,6 +273,7 @@
 			projectRoot = "";
 			targets = (
 				564982591741BF7A00077B8C /* MessageBarManagerDemo */,
+				CDBB4FD720EC251B00785DDD /* TWMessageBarManager */,
 			);
 		};
 /* End PBXProject section */
@@ -243,10 +289,19 @@
 				561DB439174AFADA006D7D1E /* Default@2x.png in Resources */,
 				5669FE421766C47700B8630B /* icon-error.png in Resources */,
 				5669FE431766C47700B8630B /* icon-error@2x.png in Resources */,
+				CD092D35214F212200D3D138 /* Launch Screen.storyboard in Resources */,
 				5669FE441766C47700B8630B /* icon-info.png in Resources */,
 				5669FE451766C47700B8630B /* icon-info@2x.png in Resources */,
 				5669FE461766C47700B8630B /* icon-success.png in Resources */,
+				F49E76931985FF3B00AAAC85 /* TWMessageBarDemoViewController.xib in Resources */,
 				5669FE471766C47700B8630B /* icon-success@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDBB4FD620EC251B00785DDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,10 +312,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B903012185BA74B005BCFF5 /* TWMessageBarManager.m in Sources */,
 				5649826A1741BF7A00077B8C /* main.m in Sources */,
+				F49E76921985FF3B00AAAC85 /* TWMessageBarDemoViewController.m in Sources */,
 				569FCDF81741C09300F2B74C /* AppDelegate.m in Sources */,
-				569FCDF91741C09300F2B74C /* TWMesssageBarDemoController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDBB4FD320EC251B00785DDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDBB4FE820EC254000785DDD /* TWMessageBarManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,9 +400,13 @@
 		5649827E1741BF7A00077B8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MessageBarManagerDemo/MessageBarManagerDemo-Prefix.pch";
-				INFOPLIST_FILE = "MessageBarManagerDemo/MessageBarManagerDemo-Info.plist";
+				GCC_PREFIX_HEADER = "Demo/MessageBarManagerDemo-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/Demo/MessageBarManagerDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terryworona.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -350,19 +416,133 @@
 		5649827F1741BF7A00077B8C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MessageBarManagerDemo/MessageBarManagerDemo-Prefix.pch";
-				INFOPLIST_FILE = "MessageBarManagerDemo/MessageBarManagerDemo-Info.plist";
+				GCC_PREFIX_HEADER = "Demo/MessageBarManagerDemo-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/Demo/MessageBarManagerDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.terryworona.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
+		CDBB4FE220EC251B00785DDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Classes/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.terryworona.TWMessageBarManager;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		CDBB4FE320EC251B00785DDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Classes/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.terryworona.TWMessageBarManager;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		564982551741BF7A00077B8C /* Build configuration list for PBXProject "MessageBarManagerDemo" */ = {
+		564982551741BF7A00077B8C /* Build configuration list for PBXProject "TWMessageBarManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5649827B1741BF7A00077B8C /* Debug */,
@@ -376,6 +556,15 @@
 			buildConfigurations = (
 				5649827E1741BF7A00077B8C /* Debug */,
 				5649827F1741BF7A00077B8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDBB4FE120EC251B00785DDD /* Build configuration list for PBXNativeTarget "TWMessageBarManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDBB4FE220EC251B00785DDD /* Debug */,
+				CDBB4FE320EC251B00785DDD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

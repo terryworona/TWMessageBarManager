@@ -8,8 +8,10 @@
 
 #import "AppDelegate.h"
 
+@import TWMessageBarManager;
+
 // Controllers
-#import "TWMesssageBarDemoController.h"
+#import "TWMessageBarDemoViewController.h"
 
 // Strings
 NSString * const kAppDelegateDemoStyleSheetImageIconError = @"icon-error.png";
@@ -29,7 +31,7 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
     // default style sheet
-    self.window.rootViewController = [[TWMesssageBarDemoController alloc] init];
+    self.window.rootViewController = [[TWMessageBarDemoViewController alloc] initWithNibName:NSStringFromClass([TWMessageBarDemoViewController class]) bundle:nil];
     
     /*
      * Uncomment for custom style sheet (disabled)
@@ -44,7 +46,7 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
     // [[UIApplication sharedApplication] setStatusBarHidden:YES];
 
 	// Portrait only for demo
-	[TWMessageBarManager sharedInstance].managerSupportedOrientationsMask = UIInterfaceOrientationMaskPortrait;
+//	[TWMessageBarManager sharedInstance].managerSupportedOrientationsMask = UIInterfaceOrientationMaskPortrait;
 	
     [self.window makeKeyAndVisible];
     return YES;
@@ -141,6 +143,10 @@ NSString * const kAppDelegateDemoStyleSheetImageIconInfo = @"icon-info.png";
 - (UIColor *)descriptionColorForMessageType:(TWMessageBarMessageType)type
 {
     return [UIColor purpleColor];
+}
+
+- (CGFloat)outerVerticalPaddingForMessageType:(TWMessageBarMessageType)type {
+    return 8.0f;
 }
 
 @end
